@@ -1,0 +1,3 @@
+# Machetă de prezentare — nu se indexează.
+User-agent: *
+Disallow: /

@@ -1,0 +1,2483 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Baffi Cafe Bragadiru — comandă, rezervă, sărbătorește</title>
+<meta name="description" content="Restaurant și grătar în Bragadiru, Str. Safirului 69R. Comandă direct de la Baffi, fără aplicație și fără comision, cu livrare gratuită de la 70 de lei. Rezervări, terasă și evenimente private.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#071c2c">
+<link rel="icon" href="img/favicon.svg">
+<link rel="canonical" href="https://bafficafe.ro/">
+<!-- ÎNAINTE DE PUBLICARE: schimbă https://bafficafe.ro/ cu domeniul real, în
+     canonical, în og:url și în og:image (Facebook/WhatsApp cer adresă completă,
+     nu una relativă — altfel linkul apare fără imagine). -->
+<meta property="og:title" content="Baffi Cafe Bragadiru — tot la Baffi e mai bine">
+<meta property="og:description" content="Grătar, terasă și evenimente în Bragadiru. Comanzi direct de la noi: fără aplicație, fără comision, livrare gratuită de la 70 de lei.">
+<meta property="og:image" content="https://bafficafe.ro/img/baffi-entrance-premium-v6.webp">
+<meta property="og:image:alt" content="Intrarea în Baffi Cafe din Bragadiru">
+<meta property="og:url" content="https://bafficafe.ro/">
+<meta property="og:site_name" content="Baffi Cafe">
+<meta property="og:type" content="restaurant">
+<meta property="og:locale" content="ro_RO">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600;1,800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="preload" as="image" href="img/baffi-entrance-premium-v6.webp">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant","@id":"https://bafficafe.ro/#restaurant",
+"name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-entrance-premium-v6.webp",
+"url":"https://bafficafe.ro/","hasMenu":"https://bafficafe.ro/#meniu",
+"description":"Restaurant și grătar în Bragadiru, cu terasă, comenzi directe fără comision de aplicație și evenimente private.",
+"address":{"@type":"PostalAddress","streetAddress":"Strada Safirului 69R","addressLocality":"Bragadiru","addressRegion":"Ilfov","addressCountry":"RO"},
+"telephone":"+40756021501","servesCuisine":["Românească","Grătar","Paste","Pește și fructe de mare","Burgeri"],
+"priceRange":"$$","currenciesAccepted":"RON","paymentAccepted":"Numerar, Card",
+"acceptsReservations":"True",
+"amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Terasă","value":true},
+{"@type":"LocationFeatureSpecification","name":"Parcare","value":true},
+{"@type":"LocationFeatureSpecification","name":"Evenimente private","value":true}],
+"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.5","reviewCount":"450","bestRating":"5"},
+"openingHoursSpecification":[
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday"],"opens":"10:00","closes":"22:00"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Friday","Saturday"],"opens":"10:00","closes":"23:00"},
+{"@type":"OpeningHoursSpecification","dayOfWeek":["Sunday"],"opens":"11:00","closes":"22:00"}]}
+</script>
+<style>
+/* ============================================================
+   BAFFI CAFE — sistem de design v3
+   Identitate: firma reala de pe fatada (navy + auriu) + logo-ul
+   real al casei (chef cu baffi), recolorat pentru fundal navy.
+   Regula: o singura lume vizuala. Navy = casa, auriu = accentul,
+   crem = pagina.
+   ============================================================ */
+:root{
+  --navy:#071c2c; --navy-2:#0c2940; --sapphire:#0c4169; --sapphire-2:#12557f;
+  --gold:#c99a4a; --gold-lite:#e2c17c; --gold-deep:#a97c33;
+  --crimson:#a82d35;
+  --cream:#f5f0e7; --paper:#fbf8f1; --white:#fff;
+  --ink:#14212a; --ink-2:#3c4a53; --muted:#6c716f;
+  --line:rgba(7,28,44,.12); --line-2:rgba(7,28,44,.07);
+  --line-gold:rgba(201,154,74,.32);
+
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+
+  --pad:clamp(20px,5vw,64px);
+  --maxw:1280px;
+  --r:14px; --r-lg:22px;
+  --shadow:0 1px 2px rgba(7,28,44,.06),0 12px 34px -16px rgba(7,28,44,.28);
+  --shadow-lg:0 2px 6px rgba(7,28,44,.08),0 40px 80px -32px rgba(7,28,44,.42);
+  --ease:cubic-bezier(.22,.68,.28,1);
+  --hdr-h:74px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr-h) + 18px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 16px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+body.locked{overflow:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+:focus-visible{outline:2.5px solid var(--gold);outline-offset:3px;border-radius:4px}
+h1,h2,h3,h4{margin:0;font-family:var(--serif);font-weight:800;letter-spacing:-.015em;line-height:1.04}
+p{margin:0}
+.wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.eyebrow{font:600 11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep)}
+.eyebrow.on-navy{color:var(--gold-lite)}
+.lead{font-size:clamp(16px,1.25vw,18.5px);line-height:1.65;color:var(--ink-2);max-width:56ch}
+.lead.on-navy{color:rgba(245,240,231,.76)}
+.h-lg{font-size:clamp(32px,4.6vw,60px)}
+.h-md{font-size:clamp(24px,2.7vw,36px)}
+.it{font-style:italic;font-weight:600;color:var(--gold)}
+.sect{padding-block:clamp(64px,8vw,124px)}
+.sect-head{display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(34px,4.4vw,58px)}
+.hr-gold{height:1px;background:linear-gradient(90deg,var(--gold),rgba(201,154,74,0));border:0;margin:0}
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+
+/* ---------- butoane ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:15px 26px;border-radius:999px;font:600 14.5px/1 var(--sans);letter-spacing:.02em;
+  transition:transform .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
+  white-space:nowrap}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-gold{background:var(--gold);color:var(--navy);box-shadow:0 10px 26px -14px rgba(201,154,74,.9)}
+.btn-gold:hover{background:var(--gold-lite);box-shadow:0 14px 30px -12px rgba(201,154,74,.95)}
+.btn-navy{background:var(--navy);color:var(--cream)}
+.btn-navy:hover{background:var(--navy-2)}
+.btn-ghost{border:1px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--navy);background:rgba(7,28,44,.04)}
+.btn-ghost-gold{border:1px solid var(--line-gold);color:var(--cream)}
+.btn-ghost-gold:hover{border-color:var(--gold);background:rgba(201,154,74,.12)}
+.btn-sm{padding:11px 18px;font-size:13px}
+.btn .ar{transition:transform .3s var(--ease)}
+.btn:hover .ar{transform:translateX(4px)}
+
+/* ---------- banda locațiilor (identică pe toate trei site-urile) ----------
+   Valorile sunt copiate exact din referință: fundal #04131f, activul
+   pe auriu cu monograma albă, aceleași dimensiuni și spații. */
+.network-bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  min-height:31px;padding:0 5vw;background:#04131f;color:#dfe6e9;
+  font:800 8px/1 var(--sans);letter-spacing:.18em}
+.network-bar>span{color:var(--gold-lite)}
+.network-bar>div{display:flex;height:31px;justify-self:center}
+.network-bar a{display:flex;align-items:center;gap:7px;padding:0 18px;
+  border-inline:1px solid rgba(255,255,255,.07);color:inherit;cursor:pointer;
+  transition:background .2s var(--ease),color .2s var(--ease)}
+.network-bar a i{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;
+  background:rgba(255,255,255,.14);font:inherit;font-size:7px;font-style:normal;
+  letter-spacing:0;transform:rotate(-7deg)}
+.network-bar a b{font-size:8px;letter-spacing:.16em}
+.network-bar a.active,.network-bar a:hover{background:var(--gold);color:var(--navy)}
+.network-bar a.active i{background:#fff;color:var(--gold)}
+.network-bar small{justify-self:end;opacity:.55;font-size:7px}
+@media(max-width:780px){
+  .network-bar{grid-template-columns:auto 1fr;padding:0}
+  .network-bar>span{padding-left:14px}
+  .network-bar>div{justify-self:end}
+  .network-bar a{padding:0 11px}
+  .network-bar a b{font-size:7px}
+  .network-bar small{display:none}
+}
+
+/* ---------- ticker eveniment ---------- */
+.ticker{background:linear-gradient(90deg,var(--sapphire),var(--sapphire-2) 55%,var(--sapphire));
+  color:var(--cream);overflow:hidden;position:relative}
+.ticker[hidden]{display:none}
+.ticker a{display:block;padding:9px 0}
+.tk-track{display:flex;width:max-content;animation:tk 38s linear infinite}
+.ticker:hover .tk-track{animation-play-state:paused}
+@keyframes tk{to{transform:translateX(-50%)}}
+.tk-grp{display:flex;align-items:center;gap:26px;padding-right:26px;
+  font:600 11.5px/1 var(--sans);letter-spacing:.19em;text-transform:uppercase;white-space:nowrap}
+.tk-grp span{opacity:.9}.tk-grp em{font-style:normal;color:var(--gold-lite)}
+.tk-d{color:var(--gold);font-size:8px}
+
+/* ---------- header ---------- */
+.hdr{position:sticky;top:0;z-index:60;background:rgba(7,28,44,.96);
+  backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid rgba(201,154,74,.18);
+  color:var(--cream);transition:box-shadow .3s var(--ease)}
+.hdr.stuck{box-shadow:0 18px 40px -30px rgba(0,0,0,.9)}
+.hdr .wrap{display:flex;align-items:center;gap:clamp(12px,2.2vw,34px);height:var(--hdr-h)}
+.brand{display:flex;align-items:center;gap:12px;flex:none;margin-right:auto}
+.brand img{width:auto;height:42px}
+.brand small{display:none}
+@media(min-width:1140px){.brand small{display:block;font:600 9.5px/1.5 var(--sans);
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(226,193,124,.7);
+  border-left:1px solid rgba(201,154,74,.3);padding-left:12px}}
+.nav{display:none;gap:clamp(14px,1.8vw,26px);font:500 13.5px/1 var(--sans);color:rgba(245,240,231,.8)}
+@media(min-width:1000px){.nav{display:flex}}
+.nav a{position:relative;padding:8px 0;transition:color .2s var(--ease)}
+.nav a::after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:1px;
+  background:var(--gold);transition:right .35s var(--ease)}
+.nav a:hover{color:var(--cream)}.nav a:hover::after{right:0}
+.hdr-tel{display:none;align-items:center;gap:10px;flex:none}
+@media(min-width:820px){.hdr-tel{display:flex}}
+.hdr-tel .t-ic{width:34px;height:34px;border-radius:50%;border:1px solid rgba(201,154,74,.4);
+  display:grid;place-items:center;color:var(--gold-lite);flex:none}
+.hdr-tel b{display:block;font:700 14.5px/1.25 var(--sans);color:var(--cream);letter-spacing:.01em}
+.hdr-tel span{font:600 9px/1 var(--sans);letter-spacing:.19em;text-transform:uppercase;color:rgba(226,193,124,.75)}
+.cart-btn{position:relative;width:42px;height:42px;border-radius:50%;background:var(--gold);
+  color:var(--navy);display:grid;place-items:center;flex:none;transition:transform .25s var(--ease),background .25s}
+.cart-btn:hover{background:var(--gold-lite);transform:scale(1.06)}
+.cart-btn.bump{animation:bump .5s var(--ease)}
+@keyframes bump{40%{transform:scale(1.22)}70%{transform:scale(.94)}100%{transform:scale(1)}}
+.cart-btn .cc{position:absolute;top:-3px;right:-3px;min-width:20px;height:20px;padding:0 5px;
+  border-radius:999px;background:var(--crimson);color:#fff;font:700 11px/20px var(--sans);
+  text-align:center;border:2px solid var(--navy);transform:scale(0);transition:transform .3s var(--ease)}
+.cart-btn .cc.on{transform:scale(1)}
+.burger{width:42px;height:42px;border-radius:50%;border:1px solid rgba(201,154,74,.34);
+  display:grid;place-items:center;color:var(--cream);flex:none}
+@media(min-width:1000px){.burger{display:none}}
+.burger i{display:block;width:16px;height:1.5px;background:currentColor;position:relative;transition:.3s var(--ease)}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;width:16px;height:1.5px;background:currentColor;transition:.3s var(--ease)}
+.burger i::before{top:-5px}.burger i::after{top:5px}
+.burger.on i{background:transparent}
+.burger.on i::before{transform:translateY(5px) rotate(45deg)}
+.burger.on i::after{transform:translateY(-5px) rotate(-45deg)}
+
+/* meniu mobil */
+.mnav{position:fixed;inset:0;z-index:55;background:var(--navy);padding:calc(var(--hdr-h) + 30px) var(--pad) 40px;
+  display:flex;flex-direction:column;gap:2px;transform:translateY(-101%);transition:transform .5s var(--ease);
+  overflow-y:auto}
+.mnav.on{transform:none}
+.mnav a{font-family:var(--serif);font-size:clamp(27px,7vw,38px);font-weight:600;color:var(--cream);
+  padding:11px 0;border-bottom:1px solid rgba(201,154,74,.16)}
+.mnav a .n{font:600 11px/1 var(--sans);color:var(--gold);letter-spacing:.2em;margin-right:14px;vertical-align:middle}
+.mnav .m-foot{margin-top:auto;padding-top:26px;display:flex;flex-direction:column;gap:12px}
+
+/* ---------- hero ---------- */
+.hero{background:var(--navy);color:var(--cream);position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr;align-items:stretch}
+@media(min-width:960px){.hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.02fr)}}
+/* între 960 și 1200 coloana de text e strâmtă: îi dăm mai mult loc, altfel
+   titlul se rupe pe alt rând la fiecare schimbare de cuvânt. */
+@media(min-width:960px) and (max-width:1199px){.hero-grid{grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr)}}
+.hero-copy{padding:clamp(42px,6vw,90px) var(--pad) clamp(38px,5vw,74px);
+  max-width:calc(var(--maxw)/2 + var(--pad));margin-left:auto;width:100%;
+  display:flex;flex-direction:column;justify-content:center;gap:clamp(20px,2.6vw,30px);position:relative;z-index:2}
+.hero h1{font-size:clamp(42px,5.9vw,88px);line-height:.98}
+@media(max-width:959px){.hero h1{font-size:clamp(42px,9vw,72px)}}
+.hero h1 .l2{display:block}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px 20px;font:600 10.5px/1 var(--sans);
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(226,193,124,.78)}
+.hero-tags i{font-style:normal;color:var(--gold);margin-right:8px;font-size:8px;vertical-align:middle}
+.hero-proof{display:flex;align-items:center;gap:16px;padding-top:clamp(14px,2vw,22px);
+  border-top:1px solid rgba(201,154,74,.22)}
+.hero-proof b{font-family:var(--serif);font-size:40px;font-weight:800;color:var(--gold);line-height:1}
+.stars{display:flex;gap:2px;color:var(--gold)}
+.stars svg{width:14px;height:14px}
+.hero-proof p{font-size:13px;color:rgba(245,240,231,.68);line-height:1.45}
+/* overflow:hidden e OBLIGATORIU oriunde imaginea respiră pe scroll:
+   fără el, poza mărită iese din cadru, iar degradeul rămâne în urmă —
+   se vede o dungă din poză, nedarkuită, peste bleumarinul paginii. */
+.hero-media{position:relative;min-height:clamp(300px,52vw,640px);overflow:hidden}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-media::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--navy) 0%,rgba(7,28,44,.55) 26%,rgba(7,28,44,0) 62%)}
+@media(max-width:959px){.hero-media{min-height:280px;order:-1}
+  /* ultimii pixeli trebuie să fie bleumarin PLIN, nu 99% —
+     altfel rămâne o dungă de poză la trecerea spre text */
+  .hero-media::after{background:linear-gradient(180deg,rgba(7,28,44,.5),rgba(7,28,44,.1) 40%,var(--navy) 96%)}}
+
+/* ---------- 3 intentii ---------- */
+.intents{background:var(--cream);border-block:1px solid var(--line-2)}
+.intent-grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+@media(min-width:820px){.intent-grid{grid-template-columns:repeat(3,1fr)}}
+.intent{background:var(--paper);padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;gap:12px;
+  position:relative;transition:background .3s var(--ease);min-height:200px;text-align:left}
+.intent:hover{background:var(--white)}
+.intent .num{font:700 11px/1 var(--sans);letter-spacing:.2em;color:var(--gold-deep)}
+.intent h3{font-size:clamp(21px,2vw,26px)}
+.intent p{font-size:14.5px;color:var(--muted);line-height:1.55;max-width:34ch}
+.intent .go{margin-top:auto;display:inline-flex;align-items:center;gap:9px;font:600 12px/1 var(--sans);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--navy);padding-top:14px}
+.intent .go .ar{transition:transform .3s var(--ease)}
+.intent:hover .go .ar{transform:translateX(5px)}
+
+/* ---------- bara de informatii ---------- */
+.info-strip{background:var(--navy);color:var(--cream)}
+.info-grid{display:grid;gap:1px;background:rgba(201,154,74,.2)}
+@media(min-width:720px){.info-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1040px){.info-grid{grid-template-columns:repeat(4,1fr)}}
+.info-cell{background:var(--navy);padding:clamp(24px,2.6vw,34px) clamp(20px,2.4vw,32px);display:flex;flex-direction:column;gap:9px}
+.info-cell .eyebrow{color:rgba(226,193,124,.72)}
+.info-cell b{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--cream)}
+.info-cell span{font-size:13.5px;color:rgba(245,240,231,.6);line-height:1.5}
+.info-cell a.line{color:var(--gold-lite);border-bottom:1px solid rgba(201,154,74,.35);align-self:flex-start;font-size:13.5px}
+.open-now{display:inline-flex;align-items:center;gap:8px;font:600 12.5px/1 var(--sans);color:var(--cream)}
+.open-dot{width:8px;height:8px;border-radius:50%;background:#49b37a;box-shadow:0 0 0 4px rgba(73,179,122,.18);flex:none}
+.open-now.shut .open-dot{background:#c2603f;box-shadow:0 0 0 4px rgba(194,96,63,.18)}
+.hours-row{display:flex;justify-content:space-between;gap:16px;font-size:13.5px;
+  color:rgba(245,240,231,.72);padding:5px 0;border-bottom:1px solid rgba(201,154,74,.12)}
+.hours-row:last-child{border:0}
+.hours-row.today{color:var(--gold-lite);font-weight:600}
+.demo-bar{background:#14212a;color:rgba(245,240,231,.72);
+  font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
+  text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
+</style>
+<style>
+/* ---------- MENIU ---------- */
+.menu-sect{background:var(--paper)}
+.menu-top{display:grid;gap:clamp(22px,3vw,40px);align-items:end;margin-bottom:26px}
+@media(min-width:900px){.menu-top{grid-template-columns:minmax(0,1fr) minmax(300px,420px)}}
+.menu-tools{display:flex;flex-direction:column;gap:12px}
+.search{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--line);
+  border-radius:999px;padding:13px 20px;transition:border-color .25s var(--ease),box-shadow .25s var(--ease)}
+.search:focus-within{border-color:var(--navy);box-shadow:0 0 0 4px rgba(7,28,44,.06)}
+.search input{flex:1;border:0;outline:0;background:none;font-size:15px;min-width:0}
+.search input::placeholder{color:var(--muted)}
+.search .clr{color:var(--muted);font-size:20px;line-height:1;padding:0 2px;display:none}
+.search .clr.on{display:block}
+.seg{display:inline-flex;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:4px;gap:2px;align-self:flex-start}
+.seg button{padding:9px 20px;border-radius:999px;font:600 12.5px/1 var(--sans);letter-spacing:.06em;
+  color:var(--muted);transition:.25s var(--ease)}
+.seg button.on{background:var(--navy);color:var(--cream)}
+.cat-rail{display:flex;gap:8px;overflow-x:auto;padding-block:4px 14px;scrollbar-width:none;
+  position:sticky;top:var(--hdr-h);z-index:20;background:var(--paper);
+  margin-inline:calc(var(--pad) * -1);padding-inline:var(--pad);
+  border-bottom:1px solid var(--line-2)}
+.cat-rail::-webkit-scrollbar{display:none}
+/* Marginea care se stinge = semnul că lista continuă dincolo de ecran.
+   Se pune doar pe partea în care chiar mai e ceva de văzut. */
+.cat-rail.fade-r{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 46px),transparent 100%);
+  mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 46px),transparent 100%)}
+.cat-rail.fade-l{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 34px);
+  mask-image:linear-gradient(90deg,transparent 0,#000 34px)}
+.cat-rail.fade-l.fade-r{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 46px),transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 46px),transparent 100%)}
+.chip{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--white);
+  font:600 12.5px/1 var(--sans);color:var(--ink-2);white-space:nowrap;transition:.25s var(--ease)}
+.chip:hover{border-color:var(--navy)}
+.chip.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.cat-block{padding-top:clamp(30px,4vw,52px)}
+.cat-h{display:flex;align-items:baseline;gap:16px;margin-bottom:18px}
+.cat-h h3{font-size:clamp(23px,2.4vw,32px)}
+.cat-h .rule{flex:1;height:1px;background:var(--line)}
+.cat-h .cnt{font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+/* ---------- lista de secțiuni („Toate") ---------- */
+.picker-head{margin-bottom:20px;display:flex;flex-direction:column;gap:7px}
+.picker-head p{font-size:14.5px;color:var(--muted);max-width:54ch}
+.cat-picker{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:700px){.cat-picker{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(min-width:1100px){.cat-picker{grid-template-columns:repeat(4,1fr)}}
+.cat-tile{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--r-lg);
+  aspect-ratio:5/4;display:flex;flex-direction:column;justify-content:flex-end;
+  padding:15px;text-align:left;color:var(--cream);background:var(--navy);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.cat-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.cat-tile img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;
+  transition:transform .7s var(--ease)}
+.cat-tile:hover img{transform:scale(1.06)}
+.cat-tile .mono{position:absolute;inset:0;z-index:-2;display:grid;place-items:center;
+  font-family:var(--serif);font-weight:800;font-size:46px;color:rgba(226,193,124,.26);
+  background:radial-gradient(120% 90% at 50% 0%,var(--navy-2),var(--navy) 70%)}
+.cat-tile::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(7,28,44,.1) 0,rgba(7,28,44,.55) 52%,rgba(7,28,44,.9) 100%)}
+.cat-tile .n{font-family:var(--serif);font-size:clamp(16px,1.5vw,19px);font-weight:700;line-height:1.16}
+.cat-tile .c{font:600 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--gold-lite);margin-top:7px}
+
+/* întoarcerea la lista de secțiuni */
+.cat-back{display:inline-flex;align-items:center;gap:7px;flex:none;
+  font:600 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  padding:8px 12px 8px 8px;border:1px solid var(--line);border-radius:999px;background:var(--white);
+  transition:.25s var(--ease)}
+.cat-back:hover{border-color:var(--navy);color:var(--navy)}
+@media(max-width:559px){.cat-h{flex-wrap:wrap;gap:10px}.cat-back{order:-1}}
+
+/* ---------- cardurile de preparat ----------
+   Tipar preluat de la Glovo/Wolt/Uber Eats (rând cu poză pe telefon,
+   grilă de carduri pe ecran mare), dar în lumea vizuală Baffi.
+   Poza e primul lucru: pe platformele de livrare, trecerea de la meniu
+   text la meniu cu poze crește comenzile cu 25–35%. */
+.dishes{display:grid;gap:12px}
+@media(min-width:560px){.dishes{grid-template-columns:repeat(2,1fr);gap:16px}}
+@media(min-width:1000px){.dishes{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1320px){.dishes{grid-template-columns:repeat(4,1fr)}}
+
+.dish{position:relative;display:flex;flex-direction:column;background:var(--white);
+  border:1px solid var(--line-2);border-radius:var(--r-lg);overflow:hidden;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
+.dish:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--line)}
+
+.dish-photo{position:relative;display:block;width:100%;aspect-ratio:4/3;overflow:hidden;
+  background:var(--cream);border:0;padding:0;text-align:left;flex:none}
+.dish-photo img{width:100%;height:100%;object-fit:cover;
+  transform:scale(var(--hz,1));transition:transform .7s var(--ease)}
+.dish:hover .dish-photo img{--hz:1.05}
+
+/* Locul pozei care încă nu există. Nu punem poza altui preparat: omul
+   comandă ce vede. Până vin pozele reale, ținem locul cu monograma casei. */
+.dish-ph{position:absolute;inset:0;display:grid;place-items:center;gap:8px;
+  background:radial-gradient(120% 90% at 50% 0%,var(--navy-2),var(--navy) 70%)}
+.dish-ph i{font-family:var(--serif);font-style:normal;font-weight:800;font-size:30px;
+  color:rgba(226,193,124,.5);line-height:1}
+.dish-ph span{position:absolute;bottom:10px;left:0;right:0;text-align:center;
+  font:600 8.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(245,240,231,.34)}
+
+.dish-badge{position:absolute;top:10px;left:10px;z-index:2;background:var(--gold);color:var(--navy);
+  font:700 9px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:6px 10px;border-radius:999px;
+  box-shadow:0 6px 16px -8px rgba(7,28,44,.7)}
+
+.dish-body{display:flex;flex-direction:column;gap:5px;padding:14px 15px 0;flex:1;text-align:left}
+.dish-meta{font:600 9.5px/1 var(--sans);letter-spacing:.17em;text-transform:uppercase;color:var(--gold-deep)}
+.dish-name{font-family:var(--serif);font-size:17px;font-weight:700;line-height:1.22;color:var(--ink);
+  letter-spacing:-.01em}
+.dish-desc{font-size:12.8px;line-height:1.5;color:var(--muted);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dish-foot{display:flex;align-items:center;gap:10px;padding:12px 15px 14px;margin-top:auto}
+.dish-price{font:700 16px/1 var(--sans);color:var(--navy);white-space:nowrap}
+.dish-see{font:600 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  transition:color .2s var(--ease)}
+.dish:hover .dish-see{color:var(--navy)}
+
+.add{width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--cream);
+  display:grid;place-items:center;flex:none;margin-left:auto;
+  transition:.25s var(--ease);box-shadow:0 8px 20px -12px rgba(7,28,44,.9)}
+.add:hover{background:var(--gold);color:var(--navy);transform:scale(1.08)}
+.add.done{background:#2f7d52;color:#fff}
+
+/* Numele pe cel mult două rânduri: altfel „Piept de rață cu mere
+   caramelizate și orez cu parmezan" face cardul de două ori mai înalt
+   decât vecinii lui și grila se zdrențuiește. Numele întreg e în fișă. */
+.dish-name{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* Pe telefon cardul se culcă: text și preț la stânga, poză la dreapta —
+   tiparul cu care oamenii sunt deja obișnuiți din aplicațiile de livrare. */
+@media(max-width:559px){
+  .dish{display:grid;grid-template-columns:minmax(0,1fr) 108px;
+    grid-template-areas:"body photo" "foot photo";
+    align-items:start;column-gap:13px;padding:12px;border-radius:var(--r)}
+  .dish-photo{grid-area:photo;width:108px;aspect-ratio:1;align-self:center;margin:0;border-radius:12px}
+  .dish-body{grid-area:body;padding:0;gap:3px}
+  .dish-foot{grid-area:foot;padding:10px 0 0;margin-top:0;align-self:end}
+  .dish-name{font-size:15.5px}
+  .dish-desc{font-size:12.2px}
+  /* pe telefon insigna nu mai stă peste poză, ci intră în text —
+     altfel acoperă exact rândul cu gramajul */
+  .dish-badge{position:static;align-self:flex-start;font-size:8px;padding:5px 9px;
+    margin-bottom:2px;box-shadow:none}
+  /* insigna ține locul gramajului, ca toate cardurile să rămână la fel de
+     înalte; gramajul se vede oricum în fișa preparatului */
+  .dish-badge + .dish-meta{display:none}
+  .dish-see{display:none}
+  .dish-price{font-size:15px}
+  .add{width:36px;height:36px}
+  .dish:hover{transform:none}
+}
+
+/* ---------- fișa preparatului ---------- */
+.sheet-photo{position:relative;aspect-ratio:16/10;background:var(--cream);overflow:hidden}
+.sheet-photo img{width:100%;height:100%;object-fit:cover}
+.sheet-photo .dish-ph i{font-size:44px}
+.sheet-kicker{font:600 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep)}
+.sheet-name{font-family:var(--serif);font-size:clamp(24px,3.4vw,30px);font-weight:800;line-height:1.12;margin:8px 0 10px}
+.sheet-ing{font-size:14.5px;line-height:1.65;color:var(--ink-2)}
+.sheet-ing b{display:block;font:600 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-deep);margin-bottom:8px}
+.sheet-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px;
+  padding-top:18px;border-top:1px solid var(--line)}
+.sheet-row .qty{flex:none}
+.sheet-row .btn{flex:1;min-width:190px;width:auto}
+.sheet-note{font-size:11.8px;color:var(--muted);line-height:1.55;margin-top:14px}
+.sheet-x{position:absolute;top:14px;right:14px;z-index:4;width:38px;height:38px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;font-size:15px;background:rgba(7,28,44,.55);
+  backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.22);transition:.25s var(--ease)}
+.sheet-x:hover{background:var(--navy)}
+.menu-note{margin-top:34px;padding:18px 22px;border:1px dashed var(--line);border-radius:var(--r);
+  font-size:13.2px;color:var(--muted);line-height:1.6;background:var(--cream)}
+.no-res{padding:48px 0;text-align:center;color:var(--muted);font-size:15px}
+.no-res b{display:block;font-family:var(--serif);font-size:24px;color:var(--ink);margin-bottom:8px}
+.miss{border:1px dashed var(--line-gold);border-radius:var(--r);background:linear-gradient(180deg,rgba(201,154,74,.09),rgba(201,154,74,.03));
+  padding:clamp(20px,2.6vw,30px);display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.miss b{font-family:var(--serif);font-size:clamp(19px,2vw,23px);font-weight:700}
+.miss p{font-size:14.5px;color:var(--ink-2);line-height:1.6;max-width:60ch}
+.miss .btn{margin-top:6px}
+
+
+/* ---------- COS ---------- */
+.scrim{position:fixed;inset:0;z-index:70;background:rgba(7,28,44,.55);backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
+.scrim.on{opacity:1;pointer-events:auto}
+.cart{position:fixed;top:0;right:0;bottom:0;z-index:80;width:min(440px,100%);background:var(--paper);
+  display:flex;flex-direction:column;transform:translateX(101%);transition:transform .5s var(--ease);
+  box-shadow:var(--shadow-lg)}
+.cart.on{transform:none}
+.cart-h{display:flex;align-items:center;gap:14px;padding:22px var(--pad) 18px;background:var(--navy);color:var(--cream)}
+.cart-h h3{font-size:22px;color:var(--cream)}
+.cart-h .x{margin-left:auto;width:38px;height:38px;border-radius:50%;border:1px solid rgba(201,154,74,.35);
+  display:grid;place-items:center;color:var(--cream);transition:.25s var(--ease)}
+.cart-h .x:hover{background:rgba(201,154,74,.16)}
+.cart-body{flex:1;overflow-y:auto;padding:22px var(--pad)}
+.cart-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding:34px 0 26px}
+.cart-empty img{width:74px;height:auto;opacity:.5}
+.cart-empty b{font-family:var(--serif);font-size:22px}
+.cart-empty p{font-size:14px;color:var(--muted);max-width:30ch}
+.quick{margin-top:26px;display:flex;flex-direction:column;gap:8px}
+.quick .qh{font:600 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:4px}
+.quick button{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--white);transition:.25s var(--ease)}
+.quick button:hover{border-color:var(--navy);transform:translateX(3px)}
+.quick .qn{font-weight:600;font-size:14px}
+.quick .qc{font:600 9.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.quick .qp{margin-left:auto;font-weight:700;font-size:14px;color:var(--navy);white-space:nowrap}
+.ci{display:flex;gap:14px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--line-2)}
+.ci .cn{font-weight:600;font-size:14.4px;line-height:1.35}
+.ci .cp{font-size:12.6px;color:var(--muted);margin-top:3px}
+.ci .cr{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:9px;flex:none}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--white)}
+.qty button{width:30px;height:30px;display:grid;place-items:center;color:var(--navy);font-size:16px;line-height:1}
+.qty button:hover{color:var(--gold-deep)}
+.qty b{min-width:22px;text-align:center;font:700 13.5px/1 var(--sans)}
+.ci .ct{font-weight:700;font-size:14px;white-space:nowrap}
+.cart-foot{border-top:1px solid var(--line);padding:18px var(--pad) calc(18px + env(safe-area-inset-bottom));
+  background:var(--cream);display:flex;flex-direction:column;gap:12px}
+.prog{height:5px;border-radius:99px;background:rgba(7,28,44,.1);overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-lite));
+  transition:width .5s var(--ease)}
+.prog-txt{font-size:12.5px;color:var(--muted)}
+.prog-txt b{color:var(--navy)}
+.prog-txt.ok{color:#2f7d52;font-weight:600}
+.tot{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;color:var(--muted)}
+.tot b{font-family:var(--serif);font-size:26px;font-weight:800;color:var(--navy)}
+.cart-foot small{font-size:11.5px;color:var(--muted);text-align:center}
+
+/* ---------- MODAL (checkout / rezervare / ofertă / preparat) ---------- */
+.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:end center;padding:0;
+  opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+@media(min-width:760px){.modal{place-items:center;padding:28px}}
+.modal.on{opacity:1;pointer-events:auto}
+.modal-card{position:relative;width:min(560px,100%);max-height:92vh;overflow-y:auto;background:var(--paper);
+  border-radius:var(--r-lg) var(--r-lg) 0 0;transform:translateY(28px);transition:transform .45s var(--ease);
+  box-shadow:var(--shadow-lg)}
+@media(min-width:760px){.modal-card{border-radius:var(--r-lg)}}
+.modal.on .modal-card{transform:none}
+.modal-h{position:sticky;top:0;background:var(--navy);color:var(--cream);padding:20px var(--pad);
+  display:flex;align-items:center;gap:12px;z-index:2}
+.modal-h h3{font-size:21px}
+.modal-h .x{margin-left:auto;width:34px;height:34px;border-radius:50%;border:1px solid rgba(201,154,74,.35);
+  display:grid;place-items:center;color:var(--cream)}
+.modal-b{padding:24px var(--pad) calc(26px + env(safe-area-inset-bottom))}
+.f-row{display:flex;flex-direction:column;gap:7px;margin-bottom:15px}
+.f-row label{font:600 10.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep)}
+.f-row input,.f-row textarea,.f-row select{border:1px solid var(--line);border-radius:12px;padding:13px 15px;
+  background:var(--white);outline:0;transition:border-color .2s var(--ease),box-shadow .2s var(--ease);font-size:15px}
+.f-row input:focus,.f-row textarea:focus,.f-row select:focus{border-color:var(--navy);box-shadow:0 0 0 4px rgba(7,28,44,.06)}
+.f-row textarea{min-height:82px;resize:vertical}
+.f-2{display:grid;gap:15px}
+@media(min-width:520px){.f-2{grid-template-columns:1fr 1fr}}
+.pick{display:flex;gap:8px;flex-wrap:wrap}
+.pick button{padding:11px 17px;border-radius:999px;border:1px solid var(--line);background:var(--white);
+  font:600 13px/1 var(--sans);color:var(--ink-2);transition:.22s var(--ease)}
+.pick button.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+.sum{background:var(--cream);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
+.sum .sl{display:flex;justify-content:space-between;gap:14px;font-size:13.6px;padding:4px 0;color:var(--ink-2)}
+.sum .sl.big{border-top:1px solid var(--line);margin-top:8px;padding-top:12px;font-size:16px;font-weight:700;color:var(--navy)}
+.err{color:var(--crimson);font-size:12.6px;margin-top:-8px;margin-bottom:12px;display:none}
+.err.on{display:block}
+.modal-b .btn{width:100%}
+.fine{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.55}
+
+/* ---------- sectiuni editoriale ---------- */
+.split{display:grid;gap:clamp(28px,4vw,64px);align-items:center}
+@media(min-width:900px){.split{grid-template-columns:1fr 1fr}
+  .split.rev .s-media{order:2}}
+.s-media{position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--cream);aspect-ratio:4/3}
+.s-media img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
+.s-media:hover img{transform:scale(1.04)}
+.s-media .cap{position:absolute;left:16px;bottom:16px;right:16px;color:var(--cream);
+  font:600 10.5px/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;text-shadow:0 2px 14px rgba(7,28,44,.7)}
+.s-copy{display:flex;flex-direction:column;gap:20px}
+.ticks{display:flex;flex-direction:column;gap:2px;margin-top:4px}
+.tick{display:flex;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line-2)}
+.tick b{font:700 11px/1 var(--sans);color:var(--gold-deep);letter-spacing:.14em;flex:none}
+.tick span{font-size:15px;color:var(--ink-2)}
+.dark{background:var(--navy);color:var(--cream)}
+.dark h2,.dark h3{color:var(--cream)}
+.dark .tick{border-color:rgba(201,154,74,.16)}
+.dark .tick span{color:rgba(245,240,231,.78)}
+.dark .tick b{color:var(--gold)}
+
+/* ---------- carusel (merge singur, dar îl poți conduce) ---------- */
+.carou{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;background:var(--navy-2)}
+.carou-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch}
+.carou-track::-webkit-scrollbar{display:none}
+.carou figure{margin:0;flex:0 0 100%;height:100%;scroll-snap-align:center;position:relative}
+.carou figure img{width:100%;height:100%;object-fit:cover;display:block}
+.carou figure::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,28,44,.28) 0,rgba(7,28,44,0) 34%,rgba(7,28,44,.72) 100%)}
+.carou figcaption{position:absolute;left:18px;right:18px;bottom:46px;z-index:2;color:var(--cream)}
+.carou figcaption small{display:block;font:600 9.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold-lite);margin-bottom:6px}
+.carou figcaption strong{font-family:var(--serif);font-size:clamp(17px,2vw,21px);font-weight:600;
+  text-shadow:0 2px 18px rgba(7,28,44,.6)}
+.carou-nav{position:absolute;top:calc(50% - 12px);z-index:3;width:40px;height:40px;border-radius:50%;
+  display:grid;place-items:center;color:var(--cream);background:rgba(7,28,44,.5);
+  border:1px solid rgba(201,154,74,.32);backdrop-filter:blur(6px);
+  opacity:0;transform:translateY(-50%) scale(.92);transition:.3s var(--ease)}
+.carou:hover .carou-nav,.carou:focus-within .carou-nav{opacity:1;transform:translateY(-50%) scale(1)}
+.carou-nav:hover{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.carou-nav.prev{left:14px}.carou-nav.next{right:14px}
+@media(hover:none){.carou-nav{display:none}}
+.carou-dots{position:absolute;left:0;right:0;bottom:16px;z-index:3;display:flex;justify-content:center;gap:7px}
+.carou-dots button{width:7px;height:7px;border-radius:99px;background:rgba(245,240,231,.42);
+  transition:.35s var(--ease)}
+.carou-dots button.on{background:var(--gold-lite);width:24px}
+.carou-bar{position:absolute;left:0;bottom:0;height:2px;z-index:3;width:0;
+  background:linear-gradient(90deg,var(--gold),var(--gold-lite))}
+
+/* galerie orizontala */
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:14px;
+  margin-inline:calc(var(--pad) * -1);padding-inline:var(--pad);scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail figure{margin:0;flex:none;width:min(78vw,340px);scroll-snap-align:start}
+.rail img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);background:var(--cream)}
+.rail figcaption{margin-top:12px}
+.rail .fc-k{font:600 10px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep)}
+.rail .fc-t{font-family:var(--serif);font-size:18px;font-weight:600;margin-top:6px}
+.rail-hint{font:600 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:10px}
+
+/* eveniment */
+.ev-card{display:grid;gap:0;border-radius:var(--r-lg);overflow:hidden;background:var(--navy);color:var(--cream)}
+@media(min-width:880px){.ev-card{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}}
+.ev-poster{position:relative;min-height:280px;background:var(--navy-2);overflow:hidden}
+.ev-poster img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.ev-copy{padding:clamp(28px,3.6vw,52px);display:flex;flex-direction:column;gap:18px;justify-content:center}
+.ev-date{display:inline-flex;align-items:center;gap:10px;align-self:flex-start;
+  border:1px solid rgba(201,154,74,.4);border-radius:999px;padding:8px 16px;
+  font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--gold-lite)}
+.ev-cd{display:flex;gap:10px;flex-wrap:wrap}
+.ev-cd div{background:rgba(201,154,74,.1);border:1px solid rgba(201,154,74,.22);border-radius:10px;
+  padding:10px 14px;text-align:center;min-width:64px}
+.ev-cd b{display:block;font-family:var(--serif);font-size:24px;font-weight:800;color:var(--gold-lite);line-height:1.1}
+.ev-cd span{font:600 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,231,.55)}
+.ev-none{padding:clamp(28px,4vw,56px);text-align:center;border:1px dashed var(--line);border-radius:var(--r-lg);background:var(--cream)}
+
+/* recenzii */
+.rev-grid{display:grid;gap:16px}
+@media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
+.rev-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;
+  display:flex;flex-direction:column;gap:14px}
+.rev-card p{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.45;font-style:italic}
+.rev-card .who{margin-top:auto;font:600 10.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.rev-score{background:var(--navy);color:var(--cream);border-radius:var(--r-lg);padding:26px;
+  display:flex;flex-direction:column;justify-content:center;gap:10px;text-align:center}
+.rev-score b{font-family:var(--serif);font-size:56px;font-weight:800;color:var(--gold);line-height:1}
+.rev-score .stars{justify-content:center}
+.rev-score span{font-size:13px;color:rgba(245,240,231,.65)}
+
+/* locatii */
+.places{display:grid;gap:16px}
+@media(min-width:900px){.places{grid-template-columns:repeat(3,1fr)}}
+.place{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:330px;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:28px;color:var(--cream);
+  background:var(--navy);isolation:isolate;transition:transform .4s var(--ease)}
+.place:hover{transform:translateY(-5px)}
+.place.p-cafe{background:linear-gradient(165deg,var(--navy),var(--sapphire))}
+.place.p-kids{background:linear-gradient(165deg,#123c5a,#1e7ba6)}
+.place.p-oasis{background:linear-gradient(165deg,#0d4f5c,#17a2b8)}
+.place .tag{position:absolute;top:22px;left:28px;font:600 10px/1 var(--sans);letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(245,240,231,.6)}
+.place .badge{position:absolute;top:18px;right:22px;font:600 9.5px/1 var(--sans);letter-spacing:.16em;
+  text-transform:uppercase;background:var(--gold);color:var(--navy);padding:7px 11px;border-radius:999px}
+.place h3{font-size:clamp(28px,3vw,38px);margin-bottom:8px}
+.place .k{font:600 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-lite);margin-bottom:14px}
+.place p{font-size:14px;color:rgba(245,240,231,.72);line-height:1.55;margin-bottom:18px}
+.place .go{display:inline-flex;align-items:center;gap:9px;font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.place::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(120% 80% at 80% 0%,rgba(255,255,255,.14),transparent 60%)}
+
+/* contact + footer */
+.contact{background:var(--navy);color:var(--cream)}
+.c-grid{display:grid;gap:clamp(26px,3.4vw,48px)}
+@media(min-width:900px){.c-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.c-list{display:flex;flex-direction:column;gap:22px}
+.c-item{display:flex;flex-direction:column;gap:6px;padding-bottom:20px;border-bottom:1px solid rgba(201,154,74,.16)}
+.c-item b{font-family:var(--serif);font-size:20px;font-weight:600}
+.c-item span{font-size:14px;color:rgba(245,240,231,.66);line-height:1.55}
+.map-card{border-radius:var(--r-lg);overflow:hidden;position:relative;min-height:260px;background:var(--navy-2)}
+.map-card img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.85}
+.map-card .mc-b{position:absolute;left:20px;right:20px;bottom:20px;background:rgba(7,28,44,.86);
+  backdrop-filter:blur(6px);border:1px solid rgba(201,154,74,.24);border-radius:var(--r);padding:16px 18px}
+.map-card .mc-b b{display:block;font-family:var(--serif);font-size:18px;margin-bottom:4px}
+.map-card .mc-b span{font-size:13px;color:rgba(245,240,231,.66)}
+.foot{background:var(--navy);color:rgba(245,240,231,.5);border-top:1px solid rgba(201,154,74,.16);
+  padding:30px 0 calc(96px + env(safe-area-inset-bottom));font-size:12.5px}
+@media(min-width:760px){.foot{padding-bottom:34px}}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:16px 26px;align-items:center}
+.foot img{height:34px;width:auto}
+.foot .fr{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
+.foot a:hover{color:var(--gold-lite)}
+
+/* bara mobila */
+.mobar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(7,28,44,.97);
+  backdrop-filter:blur(10px);border-top:1px solid rgba(201,154,74,.2);
+  padding:10px var(--pad) calc(10px + env(safe-area-inset-bottom));display:flex;gap:9px;
+  transform:translateY(120%);transition:transform .45s var(--ease)}
+.mobar.on{transform:none}
+@media(min-width:760px){.mobar{display:none}}
+.mobar .btn{flex:1;padding:14px 10px;font-size:13.5px}
+.mobar .btn.ico{flex:0 0 50px;padding:14px 0}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,20px);
+  z-index:95;background:var(--navy);color:var(--cream);border:1px solid rgba(201,154,74,.3);
+  border-radius:999px;padding:12px 22px;font:600 13.5px/1 var(--sans);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:.4s var(--ease);box-shadow:var(--shadow-lg)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(min-width:760px){.toast{bottom:32px}}
+
+.top{position:fixed;right:18px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:45;
+  width:44px;height:44px;border-radius:50%;background:var(--navy);color:var(--gold-lite);
+  border:1px solid rgba(201,154,74,.3);display:grid;place-items:center;
+  opacity:0;pointer-events:none;transition:.35s var(--ease)}
+.top.on{opacity:1;pointer-events:auto}
+.top:hover{background:var(--navy-2)}
+@media(min-width:760px){.top{bottom:28px;right:28px}}
+
+/* ============================================================
+   MIȘCARE — efectele preluate din conceptul ChatGPT, rescrise
+   fără framework. Toate se opresc la prefers-reduced-motion
+   (regula globală din primul <style>) și la .no-motion.
+   ============================================================ */
+
+/* 1. Imaginile respiră: se apropie cât intră în ecran, se retrag când ies.
+      --iz e scris din JS la fiecare cadru; --hz e zoom-ul de hover. */
+.s-media img,.rail img,.hero-media img,.ev-poster img,.map-card img,.place-img{
+  transform:scale(calc(var(--iz,1) * var(--hz,1)));transform-origin:50% 50%;will-change:transform}
+.s-media:hover img{--hz:1.04;transform:scale(calc(var(--iz,1) * var(--hz,1)))}
+@media (prefers-reduced-motion:reduce){
+  .s-media img,.rail img,.hero-media img,.ev-poster img,.map-card img{transform:none!important}}
+
+/* 2. Cuvântul care se schimbă în titlu. min-width ține rândul locului,
+      ca titlul să nu salte la fiecare schimbare de cuvânt. */
+#heroWord{display:inline-block;text-align:left}
+/* 3,6em = lățimea celui mai lung cuvânt din listă („generos."). Ține rândul
+   locului doar acolo unde coloana e sigur destul de largă. */
+@media(min-width:1200px){#heroWord{min-width:3.6em}}
+.hero-word{display:inline-block;animation:word-in .44s cubic-bezier(.22,.8,.25,1) both}
+@keyframes word-in{from{filter:blur(4px);opacity:0;transform:translateY(10px)}
+  to{filter:blur(0);opacity:1;transform:none}}
+
+/* 3. Traseul de lumină care înconjoară butoanele din hero */
+@property --ta{syntax:'<angle>';inherits:false;initial-value:0deg}
+.btn-trace{position:relative;isolation:isolate}
+.btn-trace::before{content:"";position:absolute;inset:-1.5px;border-radius:inherit;padding:1.5px;
+  background:conic-gradient(from var(--ta),transparent 0 .70turn,rgba(226,193,124,.65) .84turn,
+    #fff7e2 .92turn,rgba(226,193,124,.65) .96turn,transparent 1turn);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  mask-composite:exclude;opacity:0;pointer-events:none}
+.hero-cta.live .btn-trace::before{animation:trace 2.6s cubic-bezier(.45,.05,.35,1) infinite}
+.hero-cta.live .btn-trace:last-of-type::before{animation-delay:1.3s}
+@keyframes trace{0%{--ta:0deg;opacity:0}7%{opacity:.95}62%{opacity:.95}76%,100%{--ta:360deg;opacity:0}}
+
+/* 4. Nota 4,5 tresare și scapă stele */
+.score{position:relative;display:inline-block;flex:none}
+.spark{position:absolute;left:50%;top:50%;width:1px;height:1px;pointer-events:none}
+.spark i{position:absolute;left:0;top:0;font-style:normal;font-size:11px;color:var(--gold);opacity:0;
+  text-shadow:0 0 8px rgba(226,193,124,.7)}
+.hero-proof.pop .spark i{animation:spark 1s cubic-bezier(.18,.7,.22,1) both}
+.hero-proof.pop .spark i:nth-child(2),.hero-proof.pop .spark i:nth-child(5){animation-delay:.05s}
+.hero-proof.pop .spark i:nth-child(3),.hero-proof.pop .spark i:nth-child(6){animation-delay:.09s}
+.hero-proof.pop b{animation:wobble .9s var(--ease)}
+@keyframes spark{0%{opacity:0;transform:translate(-50%,-50%) rotate(0) scale(.35)}
+  24%{opacity:.95}
+  100%{opacity:0;transform:translate(calc(-50% + var(--sx)),calc(-50% + var(--sy))) rotate(var(--sr)) scale(.78)}}
+@keyframes wobble{0%,100%{transform:none}18%{transform:translateX(-2px) rotate(-1.4deg)}
+  36%{transform:translateX(2px) rotate(1.6deg)}54%{transform:translateX(-1px) rotate(-.7deg)}
+  72%{transform:translateX(1px) rotate(.5deg)}}
+
+/* 5. Confetti la adăugarea în coș */
+.confetti{position:fixed;z-index:96;width:1px;height:1px;pointer-events:none}
+.confetti i{position:absolute;left:-2px;top:-4px;width:4px;height:9px;border-radius:1px;
+  background:linear-gradient(135deg,#fff0b9,#c99743 52%,#f3cf76);
+  box-shadow:0 0 7px rgba(226,193,124,.55);
+  animation:conf .9s cubic-bezier(.15,.68,.22,1) var(--cd,0s) both}
+.confetti i:nth-child(3n){width:5px;height:5px;border-radius:50%}
+.confetti i:nth-child(4n){width:8px;height:3px}
+@keyframes conf{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.45)}
+  12%{opacity:1}72%{opacity:1}
+  100%{opacity:0;transform:translate(var(--cx),var(--cy)) rotate(var(--cr)) scale(.8)}}
+
+/* 6. Galeriile se trag cu mâna */
+.rail{cursor:grab}
+.rail.is-drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.rail.is-drag img,.rail.is-drag figcaption{pointer-events:none}
+.rail-nav{display:flex;align-items:center;gap:10px;margin-top:10px}
+.rail-nav .dots{display:flex;gap:6px;margin-left:auto}
+.rail-nav .dots button{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.26;
+  transition:.3s var(--ease)}
+.rail-nav .dots button.on{opacity:1;width:20px;border-radius:99px}
+
+/* ---------- pizza pe comandă (evenimente) ---------- */
+.pizza-note{margin-top:clamp(30px,4vw,48px);display:flex;gap:clamp(16px,2.4vw,26px);align-items:center;
+  flex-wrap:wrap;padding:clamp(20px,2.6vw,30px);border-radius:var(--r-lg);
+  border:1px solid rgba(201,154,74,.3);
+  background:linear-gradient(120deg,rgba(201,154,74,.13),rgba(201,154,74,.03) 62%)}
+.pizza-note .pz-ic{width:52px;height:52px;border-radius:50%;flex:none;display:grid;place-items:center;
+  color:var(--gold-lite);border:1px solid rgba(201,154,74,.36);background:rgba(7,28,44,.35)}
+.pizza-note .pz-ic svg{width:26px;height:26px}
+.pizza-note .pz-copy{flex:1 1 300px;display:flex;flex-direction:column;gap:7px}
+.pizza-note .pz-copy b{font-family:var(--serif);font-size:clamp(19px,2.1vw,24px);font-weight:700;color:var(--cream)}
+.pizza-note .pz-copy p{font-size:14.5px;line-height:1.6;color:rgba(245,240,231,.74);max-width:62ch}
+.pizza-note .pz-btn{flex:none}
+
+/* ---------- invitație la recenzie ---------- */
+.rev-ask{margin-top:clamp(26px,3vw,40px);display:flex;gap:16px 24px;align-items:center;flex-wrap:wrap;
+  padding:clamp(18px,2.2vw,26px) clamp(20px,2.6vw,30px);border-radius:var(--r-lg);
+  border:1px dashed var(--line);background:var(--cream)}
+.rev-ask b{font-family:var(--serif);font-size:clamp(18px,2vw,22px);font-weight:700;display:block;margin-bottom:5px}
+.rev-ask p{font-size:14px;color:var(--muted);line-height:1.55;max-width:56ch}
+.rev-ask .btn{flex:none;margin-left:auto}
+</style>
+</head>
+<body>
+<div class="demo-bar">Machetă de prezentare &middot; Baffi Cafe &middot; nu este site-ul public</div>
+<!-- ══════════════ BARA LOCAȚIILOR ══════════════ -->
+<div class="network-bar" aria-label="Locațiile Baffi">
+  <span>BAFFI PLACES</span>
+  <div aria-label="Navigare între locațiile Baffi">
+    <a class="active" href="#acasa" aria-current="page"><i>B</i><b>CAFÉ</b></a>
+    <a data-net="kids"><i>B</i><b>KIDS</b></a>
+    <a data-net="oasis"><i>B</i><b>OASIS</b></a>
+  </div>
+  <small>BRAGADIRU · CRÂNGAȘI · BERCENI</small>
+</div>
+
+<!-- ══════════════ TICKER EVENIMENT (se stinge singur) ══════════════ -->
+<div class="ticker" id="ticker" hidden>
+  <a href="#evenimente"><div class="tk-track" id="tkTrack"></div></a>
+</div>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="hdr" id="hdr">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Baffi Cafe — acasă">
+      <img src="img/logo-gold.webp" alt="Baffi Cafe" width="760" height="235">
+      <small>Restaurant<br>Bragadiru</small>
+    </a>
+    <nav class="nav">
+      <a href="#meniu">Meniu</a>
+      <a href="#experienta">Experiența</a>
+      <a href="#evenimente">Evenimente</a>
+      <a href="#private">Petreceri</a>
+      <a href="#locatii">Locații</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="hdr-tel" href="tel:+40756021501">
+      <span class="t-ic" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+      </span>
+      <span style="display:block">
+        <span>Comenzi &amp; rezervări</span>
+        <b>0756 021 501</b>
+      </span>
+    </a>
+    <button class="cart-btn" id="cartBtn" aria-label="Coșul tău">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="cc" id="cartCount">0</span>
+    </button>
+    <button class="burger" id="burger" aria-label="Meniu" aria-expanded="false"><i></i></button>
+  </div>
+</header>
+
+<nav class="mnav" id="mnav">
+  <a href="#meniu"><span class="n">01</span>Meniu</a>
+  <a href="#experienta"><span class="n">02</span>Experiența</a>
+  <a href="#evenimente"><span class="n">03</span>Evenimente</a>
+  <a href="#private"><span class="n">04</span>Petreceri</a>
+  <a href="#locatii"><span class="n">05</span>Locații</a>
+  <a href="#contact"><span class="n">06</span>Contact</a>
+  <div class="m-foot">
+    <a class="btn btn-gold" href="tel:+40756021501">Sună: 0756 021 501</a>
+    <button class="btn btn-ghost-gold" data-open="rez">Rezervă o masă</button>
+  </div>
+</nav>
+
+<main id="top">
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow on-navy">Gust · Atmosferă · Oameni</span>
+      <h1>Tot la Baffi<span class="l2">e mai <span class="it" id="heroWord">bine.</span></span></h1>
+      <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate. Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei în Bragadiru.</p>
+      <div class="hero-cta" id="heroCta">
+        <a class="btn btn-gold btn-trace" href="#meniu">Comandă acum <span class="ar">→</span></a>
+        <button class="btn btn-ghost-gold btn-trace" data-open="rez">Rezervă o masă</button>
+      </div>
+      <div class="hero-tags">
+        <span><i>◆</i>Parcare vizavi</span>
+        <span><i>◆</i>Terasă</span>
+        <span><i>◆</i>Evenimente private</span>
+      </div>
+      <div class="hero-proof" id="heroProof">
+        <span class="score"><b data-cfg="nota">4,5</b><span class="spark" aria-hidden="true"></span></span>
+        <div>
+          <div class="stars" aria-hidden="true"></div>
+          <p>Peste <span data-cfg="recenzii">450</span> de recenzii pe Google<br>Locul 3 din 75 de restaurante din Bragadiru</p>
+        </div>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="img/baffi-entrance-premium-v6.webp" alt="Intrarea în Baffi Cafe din Bragadiru" width="1600" height="1499" fetchpriority="high" decoding="async">
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 3 INTENȚII ══════════════ -->
+<section class="intents">
+  <div class="wrap" style="padding-block:clamp(46px,5vw,72px)">
+    <div class="intent-grid rv">
+      <a class="intent" href="#meniu" data-mode="livrare">
+        <span class="num">01 · Vreau acasă</span>
+        <h3>Comandă cu livrare</h3>
+        <p>Meniul complet, fără cont și fără comision de aplicație. Gratuit de la 70 de lei.</p>
+        <span class="go">Deschide meniul <span class="ar">→</span></span>
+      </a>
+      <a class="intent" href="#meniu" data-mode="ridicare">
+        <span class="num">02 · Sunt pe drum</span>
+        <h3>Comandă pentru ridicare</h3>
+        <p>Alegi ora, noi pregătim. Ajungi, iei punga și pleci — fără așteptare.</p>
+        <span class="go">Comandă de ridicat <span class="ar">→</span></span>
+      </a>
+      <button class="intent" data-open="rez">
+        <span class="num">03 · Ies la Baffi</span>
+        <h3>Rezervă o masă</h3>
+        <p>Prânz, cină sau o seară lungă cu prietenii. Confirmăm rapid, prin telefon.</p>
+        <span class="go">Rezervă acum <span class="ar">→</span></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ BARA DE INFORMAȚII ══════════════ -->
+<section class="info-strip">
+  <div class="info-grid">
+    <div class="info-cell">
+      <span class="eyebrow">Acum</span>
+      <span class="open-now" id="openNow"><i class="open-dot"></i><span id="openTxt">Verificăm programul…</span></span>
+      <span id="openSub"></span>
+    </div>
+    <div class="info-cell">
+      <span class="eyebrow">Program</span>
+      <div id="hoursList" style="width:100%"></div>
+    </div>
+    <div class="info-cell">
+      <span class="eyebrow">Ne găsești aici</span>
+      <b>Str. Safirului 69R</b>
+      <span>Bragadiru, Ilfov · parcare chiar vizavi</span>
+      <a class="line" href="https://www.google.com/maps/search/?api=1&amp;query=Baffi+Cafe+Strada+Safirului+69R+Bragadiru" target="_blank" rel="noopener">Deschide harta →</a>
+    </div>
+    <div class="info-cell">
+      <span class="eyebrow">Comenzi &amp; rezervări</span>
+      <b><a href="tel:+40756021501">0756 021 501</a></b>
+      <span>Suntem la un apel distanță. Sau comanzi singur, din meniul de mai jos.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MENIU ══════════════ -->
+<section class="sect menu-sect" id="meniu">
+  <div class="wrap">
+    <div class="menu-top">
+      <div class="sect-head rv" style="margin:0">
+        <span class="eyebrow">Comandă direct de la Baffi</span>
+        <h2 class="h-lg">Pofta ta,<br>la câteva <span class="it">atingeri.</span></h2>
+        <p class="lead">Tot meniul casei — <b id="itemCount">161</b> de preparate și băuturi, cu gramaje și ingrediente. Adaugi în coș, alegi livrare sau ridicare, iar comanda ajunge direct la noi.</p>
+      </div>
+      <div class="menu-tools rv">
+        <div class="search">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="Caută: burger, ciorbă, pizza, vin…" aria-label="Caută în meniu" autocomplete="off">
+          <button class="clr" id="qClear" aria-label="Șterge căutarea">×</button>
+        </div>
+        <div class="seg" role="tablist" aria-label="Tip preparate">
+          <button class="on" data-kind="food" role="tab" aria-selected="true">Mâncare</button>
+          <button data-kind="drink" role="tab" aria-selected="false">Băuturi</button>
+        </div>
+      </div>
+    </div>
+    <div class="cat-rail" id="catRail"></div>
+    <div id="menuList"></div>
+    <p class="menu-note">Meniul respectă lista oficială Baffi Cafe. Gramajele sunt cele din bucătărie; disponibilitatea zilei, alergenii și valorile nutriționale se confirmă la telefon. Prețurile sunt în lei și includ TVA.</p>
+  </div>
+</section>
+
+<!-- ══════════════ EXPERIENȚA ══════════════ -->
+<section class="sect dark" id="experienta">
+  <div class="wrap">
+    <div class="split rv">
+      <!-- Caruselul merge singur, dar se lasă condus: săgeți, buline, glisare.
+           Bara subțire de jos arată cât mai stă pe poza curentă. -->
+      <div class="carou" id="carouExp" aria-roledescription="carusel" aria-label="Interiorul Baffi Cafe">
+        <div class="carou-track" id="carouTrack">
+          <figure><img src="img/baffi-bar-sapphire-uhd-v2.webp" alt="Barul din Baffi Cafe" loading="lazy" decoding="async" width="1200" height="900"><figcaption><small>Barul casei</small><strong>Cocktailuri, vinuri românești, bere la halbă</strong></figcaption></figure>
+          <figure><img src="img/baffi-interior-dining-01.webp" alt="Sala mare de mese din Baffi Cafe" loading="lazy" decoding="async" width="1000" height="667"><figcaption><small>Sala mare</small><strong>Mese pentru grupuri și seri lungi</strong></figcaption></figure>
+          <figure><img src="img/baffi-interior-dining-02.webp" alt="Colț de servire în interiorul Baffi Cafe" loading="lazy" decoding="async" width="1000" height="667"><figcaption><small>Colțul liniștit</small><strong>Pentru o cină în doi</strong></figcaption></figure>
+          <figure><img src="img/baffi-indoor-terrace-premium.webp" alt="Terasa interioară a restaurantului Baffi" loading="lazy" decoding="async" width="1200" height="900"><figcaption><small>Terasa interioară</small><strong>Lumină naturală, tot anul</strong></figcaption></figure>
+          <figure><img src="img/bcf-interior-event-setup-premium-v2.webp" alt="Interiorul Baffi amenajat pentru un eveniment" loading="lazy" decoding="async" width="1200" height="900"><figcaption><small>Amenajare pentru eveniment</small><strong>Spațiul se pregătește în jurul mesei tale</strong></figcaption></figure>
+          <figure><img src="img/bcf-serving-mains.webp" alt="Preparate servite la masă în Baffi Cafe" loading="lazy" decoding="async" width="960" height="720"><figcaption><small>Servire</small><strong>Ritm bun pentru fiecare invitat</strong></figcaption></figure>
+        </div>
+        <button class="carou-nav prev" type="button" aria-label="Poza anterioară"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+        <button class="carou-nav next" type="button" aria-label="Poza următoare"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+        <div class="carou-dots" id="carouDots"></div>
+        <i class="carou-bar" id="carouBar" aria-hidden="true"></i>
+      </div>
+      <div class="s-copy">
+        <span class="eyebrow on-navy">Experiența Baffi</span>
+        <h2 class="h-lg">Mai mult decât<br>o masă <span class="it">în oraș.</span></h2>
+        <p class="lead on-navy">Vii pentru mâncare și rămâi pentru atmosferă. Un spațiu cald, cu personalitate, în care încap și prânzul de miercuri, și seara care se termină târziu.</p>
+        <div class="ticks">
+          <div class="tick"><b>01</b><span>Atmosferă industrial-caldă, lumină joasă seara</span></div>
+          <div class="tick"><b>02</b><span>Bar cu identitate — cocktailuri, vinuri românești, bere la halbă</span></div>
+          <div class="tick"><b>03</b><span>Seri tematice, muzică live și meciuri pe ecran</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Galeria de interior a fost mutată în caruselul de sus: aceleași poze
+         de două ori pe același ecran nu ajută pe nimeni. -->
+  </div>
+</section>
+
+<!-- ══════════════ TERASA ══════════════ -->
+<section class="sect">
+  <div class="wrap">
+    <div class="split rev rv">
+      <div class="s-media" style="aspect-ratio:3/4">
+        <img src="img/baffi-terrace-premium.webp" alt="Terasa Baffi Cafe" loading="lazy" decoding="async" width="1100" height="1467">
+        <span class="cap">Terasa din față</span>
+      </div>
+      <div class="s-copy">
+        <span class="eyebrow">Terasa Baffi</span>
+        <h2 class="h-lg">Și afară e<br>tot <span class="it">Baffi.</span></h2>
+        <p class="lead">La prânz cu o cafea, după-amiaza cu o limonadă, seara cu prietenii și meciul pe ecran. Terasa de la intrare e locul unde nu se grăbește nimeni.</p>
+        <div class="ticks">
+          <div class="tick"><b>01</b><span>Mese la exterior, acces direct din stradă</span></div>
+          <div class="tick"><b>02</b><span>Parcare chiar vizavi de restaurant</span></div>
+          <div class="tick"><b>03</b><span>Aceeași bucătărie, același meniu, alt aer</span></div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-navy" data-open="rez">Rezervă pe terasă</button>
+          <a class="btn btn-ghost" href="#meniu">Vezi meniul <span class="ar">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ EVENIMENT ══════════════ -->
+<section class="sect" id="evenimente" style="background:var(--cream)">
+  <div class="wrap">
+    <div class="sect-head rv">
+      <span class="eyebrow">Ce urmează la Baffi</span>
+      <h2 class="h-lg">Seri care se <span class="it">țin minte.</span></h2>
+      <hr class="hr-gold">
+    </div>
+    <div id="evWrap" class="rv"></div>
+  </div>
+</section>
+
+<!-- ══════════════ EVENIMENTE PRIVATE ══════════════ -->
+<section class="sect dark" id="private">
+  <div class="wrap">
+    <div class="split rv">
+      <div class="s-copy">
+        <span class="eyebrow on-navy">Evenimente private</span>
+        <h2 class="h-lg">Tu aduci oamenii.<br>Noi avem grijă <span class="it">de rest.</span></h2>
+        <p class="lead on-navy">Aniversări, botezuri, cumetrii, petreceri restrânse sau întâlniri de firmă. Pregătim spațiul, meniul și atmosfera în jurul momentului tău — cu un singur telefon.</p>
+        <div class="ticks">
+          <div class="tick"><b>01</b><span>Meniu personalizat, în funcție de buget și număr de invitați</span></div>
+          <div class="tick"><b>02</b><span>Decor adaptabil și spațiu rezervat doar pentru voi</span></div>
+          <div class="tick"><b>03</b><span>Organizare fără stres — vă spunem din prima ce se poate</span></div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-gold" data-open="oferta">Cere o ofertă <span class="ar">→</span></button>
+          <a class="btn btn-ghost-gold" href="tel:+40756021501">Sună acum</a>
+        </div>
+      </div>
+      <div class="s-media">
+        <img src="img/bcf-interior-event-setup-premium-v2.webp" alt="Amenajare pentru eveniment privat la Baffi" loading="lazy" decoding="async" width="1200" height="900">
+        <span class="cap">Exemplu de setup pentru eveniment</span>
+      </div>
+    </div>
+    <!-- Pizza: nu se face zilnic, doar pe comandă pentru mese mari.
+         Cuptorul rămâne parte din brand, dar promisiunea e cea adevărată. -->
+    <div class="pizza-note rv">
+      <div class="pz-ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3c4.5 0 8.2 2.6 9 4L12 21 3 7c.8-1.4 4.5-4 9-4Z"/><circle cx="10" cy="9" r="1.1"/><circle cx="14.4" cy="11.4" r="1.1"/><circle cx="11.4" cy="14" r="1.1"/>
+        </svg>
+      </div>
+      <div class="pz-copy">
+        <span class="eyebrow on-navy">Cuptorul de pizza</span>
+        <b>Pizza o facem pe comandă, pentru mese mari.</b>
+        <p>Nu o ținem în meniul zilnic — o pregătim pentru petreceri, botezuri și evenimente
+        private, anunțată cu o zi înainte. Intră pe aceeași ofertă cu restul mesei.</p>
+      </div>
+      <button class="btn btn-ghost-gold btn-sm pz-btn" data-open="oferta">Pune pizza pe ofertă <span class="ar">→</span></button>
+    </div>
+
+    <div style="margin-top:clamp(38px,5vw,72px)">
+      <div class="rail" id="railEvent">
+        <figure><img src="img/bcf-event-platter-cold.webp" alt="Platou rece pentru eveniment" loading="lazy" width="700" height="933"><figcaption><div class="fc-k">Starter</div><div class="fc-t">Platouri care deschid masa</div></figcaption></figure>
+        <figure><img src="img/bcf-event-buffet.webp" alt="Bufet pentru eveniment privat" loading="lazy" width="1000" height="587"><figcaption><div class="fc-k">De împărțit</div><div class="fc-t">Servire generoasă, prezentare atentă</div></figcaption></figure>
+        <figure><img src="img/bcf-event-seafood.webp" alt="Preparate din pește pentru eveniment" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Selecția mării</div><div class="fc-t">Farfurii care impresionează din prima</div></figcaption></figure>
+        <figure><img src="img/bcf-seafood-platter.webp" alt="Platou cu fructe de mare" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Platou</div><div class="fc-t">Pentru masa care stă mult</div></figcaption></figure>
+        <figure><img src="img/bcf-burger-baffi.webp" alt="Burger Baffi" loading="lazy" width="1000" height="753"><figcaption><div class="fc-k">Semnătura casei</div><div class="fc-t">Burger Baffi, 600 g</div></figcaption></figure>
+      </div>
+      <p class="rail-hint" style="color:rgba(245,240,231,.5)">Trage pentru a explora →</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ RECENZII ══════════════ -->
+<section class="sect">
+  <div class="wrap">
+    <div class="sect-head rv">
+      <span class="eyebrow">Recenzii Google</span>
+      <h2 class="h-lg">Ce spun <span class="it">oamenii.</span></h2>
+    </div>
+    <div class="rev-grid rv">
+      <div class="rev-score">
+        <b data-cfg="nota">4,5</b>
+        <div class="stars" aria-hidden="true"></div>
+        <span>Peste <span data-cfg="recenzii">450</span> de experiențe împărtășite pe Google</span>
+      </div>
+      <div class="rev-card">
+        <div class="stars" aria-hidden="true"></div>
+        <p>„Atmosferă plăcută, mâncare gustoasă, porții generoase și servire rapidă.”</p>
+        <span class="who">Oaspete Baffi</span>
+      </div>
+      <div class="rev-card">
+        <div class="stars" aria-hidden="true"></div>
+        <p>„Un loc primitor, cu oameni amabili și preparate la care revii cu drag.”</p>
+        <span class="who">Oaspete Baffi</span>
+      </div>
+    </div>
+
+    <!-- Recenziile noi contează mai mult decât media: un local cu recenzii
+         din săptămâna asta urcă în căutări peste unul cu nota mai mare și
+         ultima recenzie de acum un an. De asta cerem, nu așteptăm. -->
+    <div class="rev-ask rv">
+      <div>
+        <b>Ai mâncat la Baffi? Spune-ne în două rânduri.</b>
+        <p>Durează un minut și ne ajută mai mult decât orice reclamă — pe tine te găsesc alți oameni din Bragadiru exact prin ce ai scris tu.</p>
+      </div>
+      <a class="btn btn-navy" id="revBtn" target="_blank" rel="noopener">Lasă o recenzie <span class="ar">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ BAFFI PLACES ══════════════ -->
+<section class="sect" id="locatii" style="background:var(--cream)">
+  <div class="wrap">
+    <div class="sect-head rv">
+      <span class="eyebrow">Baffi Places</span>
+      <h2 class="h-lg">Trei locuri.<br>Trei <span class="it">stări.</span></h2>
+      <p class="lead">Același nume, trei experiențe cu personalitate proprie. Alegi starea și ajungi direct unde trebuie.</p>
+    </div>
+    <div class="places rv">
+      <div class="place p-cafe">
+        <span class="tag">Baffi Place 01</span><span class="badge">Ești aici</span>
+        <div class="k">Restaurant · Bragadiru</div>
+        <h3>Gust, foc<br>și seri lungi.</h3>
+        <p>Grătar, cuptor de pizza, terasă și evenimente private. Str. Safirului 69R.</p>
+        <a class="go" href="#meniu">Vezi meniul <span class="ar">→</span></a>
+      </div>
+      <div class="place p-kids">
+        <span class="tag">Baffi Place 02</span>
+        <div class="k">Crângași · Experiențe</div>
+        <h3>Joacă mare.<br>Griji mici.</h3>
+        <p>Loc de joacă, petreceri pentru copii, cursuri de dans și teatru. Calea Crângași 29, etaj 5.</p>
+        <a class="go" data-net="kids" target="_blank" rel="noopener">Descoperă Baffi Kids <span class="ar">↗</span></a>
+      </div>
+      <div class="place p-oasis">
+        <span class="tag">Baffi Place 03</span>
+        <div class="k">Berceni · Pool &amp; Summer Club</div>
+        <h3>Soare, apă<br>și zile lente.</h3>
+        <p>Piscină de 200 de locuri, restaurant și bar. Bd. Metalurgiei 132, Cartier Solar. Sezonier.</p>
+        <a class="go" data-net="oasis" target="_blank" rel="noopener">Descoperă Baffi Oasis <span class="ar">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CONTACT ══════════════ -->
+<section class="sect contact" id="contact">
+  <div class="wrap">
+    <div class="sect-head rv">
+      <span class="eyebrow on-navy">Te așteptăm la Baffi</span>
+      <h2 class="h-lg">Ne vedem<br>la <span class="it">masă?</span></h2>
+    </div>
+    <div class="c-grid rv">
+      <div class="c-list">
+        <div class="c-item">
+          <span class="eyebrow on-navy">Adresă</span>
+          <b>Strada Safirului 69R</b>
+          <span>Bragadiru, Ilfov · parcare chiar vizavi de restaurant</span>
+        </div>
+        <div class="c-item">
+          <span class="eyebrow on-navy">Telefon</span>
+          <b><a href="tel:+40756021501">0756 021 501</a></b>
+          <span>Comenzi, rezervări și evenimente private</span>
+        </div>
+        <div class="c-item" style="border:0">
+          <span class="eyebrow on-navy">Program</span>
+          <div id="hoursList2" style="width:100%;max-width:360px"></div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn btn-gold" href="tel:+40756021501">Sună acum</a>
+          <a class="btn btn-ghost-gold" href="https://www.google.com/maps/search/?api=1&amp;query=Baffi+Cafe+Strada+Safirului+69R+Bragadiru" target="_blank" rel="noopener">Deschide harta <span class="ar">↗</span></a>
+        </div>
+      </div>
+      <div class="map-card">
+        <img src="img/baffi-parking-premium-v2.webp" alt="Parcarea de vizavi de Baffi Cafe" loading="lazy" width="1100" height="619">
+        <div class="mc-b">
+          <b>Parcare vizavi</b>
+          <span>Ajungi ușor și parchezi aproape — chiar peste drum de intrare.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <img src="img/logo-gold.webp" alt="Baffi Cafe" width="760" height="235" loading="lazy">
+    <span>Tot la Baffi e mai bine! · © <span id="yr">2026</span> Baffi Cafe</span>
+    <div class="fr">
+      <a href="#meniu">Meniu</a>
+      <a href="#evenimente">Evenimente</a>
+      <a href="#locatii">Locații</a>
+      <a href="tel:+40756021501">0756 021 501</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ COȘ ══════════════ -->
+<div class="scrim" id="scrim"></div>
+<aside class="cart" id="cart" aria-label="Coșul tău">
+  <div class="cart-h">
+    <h3>Comanda ta</h3>
+    <button class="x" id="cartClose" aria-label="Închide coșul">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-foot" id="cartFoot" hidden>
+    <div class="prog"><i id="progBar"></i></div>
+    <div class="prog-txt" id="progTxt"></div>
+    <div class="tot"><span>Subtotal</span><b id="cartTotal">0 lei</b></div>
+    <button class="btn btn-gold" id="toCheckout">Continuă comanda <span class="ar">→</span></button>
+    <small>Fără cont · confirmare prin telefon · plată la livrare sau cu cardul</small>
+  </div>
+</aside>
+
+<!-- ══════════════ MODAL COMANDĂ ══════════════ -->
+<div class="modal" id="mCheckout">
+  <div class="modal-card">
+    <div class="modal-h"><h3>Trimite comanda</h3><button class="x" data-close aria-label="Închide">✕</button></div>
+    <div class="modal-b">
+      <div class="f-row">
+        <label>Cum o vrei?</label>
+        <div class="pick" id="pickMode">
+          <button class="on" data-mode="livrare">Livrare</button>
+          <button data-mode="ridicare">Ridicare de la restaurant</button>
+        </div>
+      </div>
+      <div class="f-2">
+        <div class="f-row"><label>Numele tău</label><input id="fName" placeholder="Andrei Popescu" autocomplete="name"></div>
+        <div class="f-row"><label>Telefon</label><input id="fPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
+      </div>
+      <div class="f-row" id="rowAddr"><label>Adresa de livrare</label><input id="fAddr" placeholder="Strada, număr, bloc, apartament, reper" autocomplete="street-address"></div>
+      <div class="f-row">
+        <label id="lblTime">Când?</label>
+        <div class="pick" id="pickTime">
+          <button class="on" data-t="asap">Cât de repede se poate</button>
+          <button data-t="ora">La o oră anume</button>
+        </div>
+      </div>
+      <div class="f-row" id="rowHour" hidden><label>Ora</label><input id="fHour" type="time"></div>
+      <div class="f-row">
+        <label>Plata</label>
+        <div class="pick" id="pickPay">
+          <button class="on" data-p="cash">Cash</button>
+          <button data-p="card">Card la livrare</button>
+        </div>
+      </div>
+      <div class="f-row"><label>Mențiuni (opțional)</label><textarea id="fNote" placeholder="Fără ceapă, sunați la poartă, tacâmuri pentru 3…"></textarea></div>
+      <div class="sum" id="sumBox"></div>
+      <div class="err" id="errCk"></div>
+      <button class="btn btn-gold" id="sendWa">Trimite comanda pe WhatsApp <span class="ar">→</span></button>
+      <div style="height:10px"></div>
+      <a class="btn btn-ghost" href="tel:+40756021501">Sau sună: 0756 021 501</a>
+      <p class="fine">Comanda ta pleacă direct spre restaurant, cu tot ce ai ales. Confirmăm timpul de livrare printr-un apel scurt. Comandă minimă pentru livrare: 70 de lei.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ FIȘA PREPARATULUI ══════════════ -->
+<div class="modal" id="mDish" role="dialog" aria-modal="true" aria-labelledby="dishName">
+  <div class="modal-card">
+    <div class="sheet-photo" id="dishPhoto"></div>
+    <button class="sheet-x" data-close type="button" aria-label="Închide">✕</button>
+    <div class="modal-b">
+      <span class="sheet-kicker" id="dishKicker"></span>
+      <h3 class="sheet-name" id="dishName"></h3>
+      <div class="sheet-ing" id="dishIng"></div>
+      <div class="sheet-row">
+        <span class="qty"><button type="button" id="dishMinus" aria-label="Mai puțin">−</button>
+          <b id="dishQty">1</b><button type="button" id="dishPlus" aria-label="Mai mult">+</button></span>
+        <button class="btn btn-gold" id="dishAdd">Adaugă în coș</button>
+      </div>
+      <p class="sheet-note">Gramajul e cel din bucătărie. Pentru alergeni sau modificări la preparat, scrie-ne la „Mențiuni” în coș ori sună-ne — îți spunem din prima ce se poate.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MODAL REZERVARE ══════════════ -->
+<div class="modal" id="mRez">
+  <div class="modal-card">
+    <div class="modal-h"><h3>Rezervă o masă</h3><button class="x" data-close aria-label="Închide">✕</button></div>
+    <div class="modal-b">
+      <div class="f-2">
+        <div class="f-row"><label>Numele tău</label><input id="rName" placeholder="Andrei Popescu" autocomplete="name"></div>
+        <div class="f-row"><label>Telefon</label><input id="rPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
+      </div>
+      <div class="f-2">
+        <div class="f-row"><label>Ziua</label><input id="rDate" type="date"></div>
+        <div class="f-row"><label>Ora</label><input id="rHour" type="time" value="19:30"></div>
+      </div>
+      <div class="f-row">
+        <label>Câți sunteți?</label>
+        <div class="pick" id="pickPax">
+          <button data-n="2">2</button><button class="on" data-n="4">4</button>
+          <button data-n="6">6</button><button data-n="8">8</button><button data-n="10+">10+</button>
+        </div>
+      </div>
+      <div class="f-row">
+        <label>Unde preferați?</label>
+        <div class="pick" id="pickZone">
+          <button class="on" data-z="oriunde">Oriunde e bine</button>
+          <button data-z="terasa">Terasă</button>
+          <button data-z="interior">Interior</button>
+        </div>
+      </div>
+      <div class="f-row"><label>Ocazie sau mențiuni (opțional)</label><textarea id="rNote" placeholder="Aniversare, tort adus de noi, scaun pentru copil…"></textarea></div>
+      <div class="err" id="errRez"></div>
+      <button class="btn btn-gold" id="sendRez">Trimite rezervarea <span class="ar">→</span></button>
+      <div style="height:10px"></div>
+      <a class="btn btn-ghost" href="tel:+40756021501">Sau sună: 0756 021 501</a>
+      <p class="fine">Îți răspundem cu o confirmare scurtă. Pentru grupuri de peste 10 persoane, un telefon e mai rapid.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ MODAL OFERTĂ EVENIMENT ══════════════ -->
+<div class="modal" id="mOferta">
+  <div class="modal-card">
+    <div class="modal-h"><h3>Cere o ofertă</h3><button class="x" data-close aria-label="Închide">✕</button></div>
+    <div class="modal-b">
+      <div class="f-2">
+        <div class="f-row"><label>Numele tău</label><input id="oName" placeholder="Andrei Popescu" autocomplete="name"></div>
+        <div class="f-row"><label>Telefon</label><input id="oPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
+      </div>
+      <div class="f-row">
+        <label>Ce sărbătorim?</label>
+        <div class="pick" id="pickEv">
+          <button class="on" data-e="aniversare">Aniversare</button>
+          <button data-e="botez">Botez / cumetrie</button>
+          <button data-e="firma">Eveniment de firmă</button>
+          <button data-e="altceva">Altceva</button>
+        </div>
+      </div>
+      <div class="f-2">
+        <div class="f-row"><label>Data (aproximativ)</label><input id="oDate" type="date"></div>
+        <div class="f-row"><label>Câți invitați?</label><input id="oPax" type="number" min="5" step="1" placeholder="40"></div>
+      </div>
+      <div class="f-row"><label>Ce ai vrea să știm?</label><textarea id="oNote" placeholder="Buget aproximativ per persoană, meniu dorit, muzică, tort…"></textarea></div>
+      <div class="err" id="errOf"></div>
+      <button class="btn btn-gold" id="sendOf">Trimite cererea <span class="ar">→</span></button>
+      <div style="height:10px"></div>
+      <a class="btn btn-ghost" href="tel:+40756021501">Sau sună: 0756 021 501</a>
+      <p class="fine">Revenim cu variante de meniu și un preț orientativ per persoană.</p>
+    </div>
+  </div>
+</div>
+
+<div class="mobar" id="mobar">
+  <a class="btn btn-gold" href="#meniu">Comandă</a>
+  <button class="btn btn-ghost-gold" data-open="rez">Rezervă</button>
+  <a class="btn btn-ghost-gold ico" href="tel:+40756021501" aria-label="Sună la Baffi">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+  </a>
+</div>
+
+<button class="top" id="toTop" aria-label="Sus">↑</button>
+<div class="toast" id="toast"></div>
+<script>
+/* ============================================================
+   BAFFI v4 — logica paginii. Fără framework, fără build.
+   Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
+   ============================================================ */
+
+/* ┌──────────────────────────────────────────────────────────┐
+   │  PANOUL DE EDITARE — tot ce se schimbă, se schimbă AICI. │
+   │  Nu e nevoie de programator pentru niciuna dintre ele.   │
+   └──────────────────────────────────────────────────────────┘ */
+const CFG = {
+  tel:       '+40756021501',   // numărul afișat și apelat peste tot
+  wa:        '40756021501',    // același număr, format WhatsApp (fără + și fără 0)
+  minLivrare: 70,              // comanda minimă pentru livrare, în lei
+
+  // Nota Google — verificată 15.09.2026: 4,5 din 458–477 recenzii.
+  // Când se schimbă pe Google, schimbi aici și se actualizează în toate
+  // cele 3 locuri din pagină + în datele pentru Google (schema.org).
+  nota:       '4,5',
+  recenzii:   450,             // se afișează ca „peste 450"
+
+  // Adresele celorlalte două locații Baffi. Când se mută pe domeniul lor,
+  // se schimbă AICI, o singură dată, și se actualizează peste tot în pagină.
+  linkKids:  'https://shultzstakes-ui.github.io/baffi-demo/kids/',
+  linkOasis: 'https://shultzstakes-ui.github.io/baffi-demo/oasis/',
+
+  // Secțiunea deschisă când omul ajunge prima dată la meniu.
+  // 'toate' = îi arătăm lista de secțiuni; sau numele exact al unei secțiuni.
+  categorieStart: 'Burgeri',
+
+  // Pizza: cuptorul merge, dar NU se face zilnic — doar pe comandă,
+  // pentru mese mari și evenimente. De aceea nu apare în meniul de comandă.
+  // Dacă revine în meniul zilnic: pune true și adaugă categoria în MENU.
+  pizzaZilnic: false
+};
+const TEL=CFG.tel, WA=CFG.wa;
+
+/* Linkul de recenzie. Deocamdată trimite la fișa Google a restaurantului.
+   ÎNLOCUIEȘTE-L cu linkul scurt din Google Business Profile → „Cere recenzii"
+   (arată ca https://g.page/r/XXXXXXXX/review) — acela deschide direct
+   fereastra de scris, fără pași intermediari, și dublează rata de răspuns. */
+const REVIEW_URL='https://www.google.com/maps/search/?api=1&query=Baffi+Cafe+Strada+Safirului+69R+Bragadiru';
+const MENU = [
+ {c:'Mic dejun', img:null, i:[
+  ['Omletă Baffi (400g)',36,'2 ouă, șuncă 50g, telemea 50g, legume 30g, cartofi prăjiți 250g'],
+  ['Ouă ochiuri (150g)',15,'2 ouă, sare, piper, ulei'],
+  ['Omletă cu șuncă și cașcaval (350g)',29,'2 ouă, șuncă 50g, cașcaval, sare, piper'],
+  ['Ouă benedict cu somon (250g)',42,'2 ouă, sos cedar, somon afumat, unt, chiflă burger, guacamole'],
+  ['Ouă benedict cu creveți (250g)',45,'2 ouă, sos cedar, creveți, unt, chiflă burger, guacamole'],
+  ['Ouă cu spanac & quattro formaggi (350g)',48,'2 ouă, spanac 200g, brânzeturi 50g, unt']]},
+ {c:'Starter', img:null, i:[
+  ['Bruschete cu roșii (200g)',22,'pâine toast, roșii, usturoi, busuioc, oregano, ulei de măsline'],
+  ['Bruschete cu prosciutto crudo (200g)',30,'pâine toast, prosciutto crudo, unt'],
+  ['Hummus libanez (250g)',28,'năut, pastă de susan, usturoi, ulei de măsline'],
+  ['Salată de vinete (200g)',25,'vinete, maioneză, ceapă'],
+  ['Fasole bătută (200g)',25,'fasole, ceapă, sare, piper, ulei']]},
+ {c:'Antreuri', img:null, i:[
+  ['Măsline pane (200g)',25,'măsline, ou, făină, pesmet'],
+  ['Mozzarella sticks cu smântână și cartofi prăjiți (250g)',32,'mozzarella, ou, făină, pesmet, smântână, cartofi'],
+  ['Ficăței lionezi cu piure de cartofi (400g)',39,'ficăței de pui, cartofi, usturoi, ceapă, unt']]},
+ {c:'Ciorbe și supe', img:null, i:[
+  ['Ciorbă de burtă (350g)',28,'burtă de vită, smântână, usturoi, oțet, ouă'],
+  ['Ciorbă de perișoare (350g)',22,'carne tocată de porc, morcovi, țelină, ceapă, ardei, borș'],
+  ['Ciorbă de văcuță (350g)',22,'carne de vită, morcovi, țelină, ceapă, ardei, borș'],
+  ['Ciorbă de legume (300g)',20,'morcovi, țelină, ceapă, ardei, fasole verde, mazăre, borș'],
+  ['Supă cremă de roșii cu crutoane (300g)',20,'roșii, smântână, pâine']]},
+ {c:'Salate', img:null, i:[
+  ['Salată Baffi (400g)',65,'mix salată, mușchi de vită 150g, roșii cherry, cipollini, parmezan, cremă aceto, toast'],
+  ['Salată Caesar (400g)',45,'iceberg, piept de pui 150g, parmezan, sos caesar, crutoane'],
+  ['Salată de ton (400g)',45,'mix salată, ton 200g, ceapă, porumb, roșii, castraveți, măsline, toast'],
+  ['Salată grecească (400g)',42,'mix salată, roșii, castraveți, ardei, măsline, feta, oregano, ulei de măsline'],
+  ['Salată burrata (400g)',45,'burrata, roșii, mix salată, sos pesto'],
+  ['Salată cu creveți (350g)',49,'mix salată, roșii cherry, creveți, feta, avocado, porumb, lămâie']]},
+ {c:'Preparatele casei', img:null, i:[
+  ['Carcalete Baffi (450g)',45,'ceafă de porc, cârnați afumați, cartofi prăjiți, brânză, 3 ouă, unt'],
+  ['Ciolan de porc stînco cu fasole (650g)',68,'fasole, ciolan afumat, ardei, sos de roșii, ceapă, cimbru'],
+  ['Ciolan de porc stînco cu cartofi (650g)',63,'cartofi, ciolan afumat de porc, usturoi, pătrunjel'],
+  ['Cocoșel de munte și cartofi aromatizați (900g)',65,'cocoș de munte, cartofi aromați, mujdei'],
+  ['Ciolan de miel stînco și piure cu sos de trufe (650g)',139,'ciolan de miel, cartofi, sos de trufe'],
+  ['Pulpă de iepure cu piure (500g)',65,'pulpă de iepure, ierburi aromatice, cartofi'],
+  ['Pui gorgonzola în foietaj (700g)',85,'piept de pui, foietaj, roșii cherry, gorgonzola, unt, usturoi'],
+  ['Pulpă de rață confiată cu varză călită (500g)',59,'pulpă de rață confiată, varză'],
+  ['Piept de rață cu portocală și orez cu parmezan (500g)',69,'piept de rață, sos de portocală, orez, unt, parmezan'],
+  ['Piept de rață cu mere caramelizate și orez cu parmezan (500g)',69,'piept de rață, mere caramelizate, sos de măr, orez, parmezan']]},
+ {c:'Burgeri', img:null, i:[
+  ['Burger Baffi (800g)',75,'carne de vită 440g, cheddar, bacon, ou, roșii, ceapă caramelizată, murături, cartofi prăjiți'],
+  ['Burger clasic (420g)',43,'carne de vită 220g, roșii, ceapă caramelizată, murături, salată, cartofi prăjiți'],
+  ['Cheeseburger (420g)',49,'carne de vită 220g, cheddar, roșii, ceapă caramelizată, murături, cartofi prăjiți'],
+  ['Crispy burger (450g)',45,'șnițel de pui, cheddar, sos, cartofi prăjiți'],
+  ['Cheesy burger (420g)',45,'carne de vită 220g, mozzarella, cheddar, roșii, ceapă caramelizată, cartofi prăjiți'],
+  ['Burger vegetarian (450g)',49,'halloumi, roșii, sos pesto, castraveți']]},
+ /* Pizza NU e aici intenționat: nu se face zilnic, doar pe comandă pentru
+    mese mari și evenimente. Vezi secțiunea „Evenimente private" și CFG.pizzaZilnic. */
+ {c:'Preparate din pui', img:null, i:[
+  ['Piept de pui la grătar cu cartofi prăjiți (450g)',42,'piept de pui 250g, cartofi prăjiți'],
+  ['Pulpă dezosată de pui la grătar cu piure (500g)',42,'pulpă dezosată 300g, piure de cartofi, unt'],
+  ['Șnițel de pui cu cartofi prăjiți (500g)',43,'carne de pui 200g, cartofi prăjiți, ou, făină, pesmet'],
+  ['Pui Shanghai cu cartofi prăjiți (450g)',43,'carne de pui 200g, cartofi prăjiți, ou, făină'],
+  ['Pui cu smântână și ciuperci, piure de cartofi (500g)',45,'carne de pui, ciuperci, smântână, piure de cartofi'],
+  ['Piept de pui cu gorgonzola și piure cu sos de trufe (500g)',54,'piept de pui, gorgonzola, smântână, piure, trufe'],
+  ['Pui la ceaun cu mămăligă și usturoi (800g)',43,'jumătate de pui, mămăligă, mujdei, murături']]},
+ {c:'Preparate din porc', img:null, i:[
+  ['Ceafă de porc la grătar cu cartofi prăjiți (500g)',42,'ceafă de porc 250g, cartofi prăjiți'],
+  ['Coaste de porc cu cartofi aromați și sos BBQ (750g)',75,'coaste de porc 500g, cartofi aromatizați, sos barbecue'],
+  ['Mici la grătar cu cartofi prăjiți (530g)',39,'3 mici de porc, cartofi prăjiți, muștar']]},
+ {c:'Preparate din vită', img:null, i:[
+  ['Mușchi de vită la grătar cu piure (450g)',119,'mușchi de vită 250g, piure de cartofi, unt'],
+  ['Mușchi de vită cu sos gorgonzola și piure (500g)',150,'mușchi de vită 250g, gorgonzola, grancucina, piure'],
+  ['T-Bone de vită cu piure, servit pe plită încinsă (750g)',195,'T-bone, cartofi, unt'],
+  ['Tomahawk de vită cu legume la grătar, pe plită încinsă (750g)',195,'tomahawk, legume la grătar, unt']]},
+ {c:'Preparate din oaie', img:null, i:[
+  ['Pastramă de berbecuț cu mămăligă (500g)',65,'pastramă de berbecuț, mămăligă, unt'],
+  ['Cotlete de berbecuț cu cartofi aromatizați (600g)',83,'cotlete de berbecuț, cartofi aromatizați']]},
+ {c:'Platouri', img:null, i:[
+  ['Platou de brânzeturi (2 pers., 700g)',170,'brie, gorgonzola, parmezan, nucă, brânză maturată, cașcaval, crackers, miere, fructe'],
+  ['Platou cald (2 pers., 1500g)',170,'ceafă, piept de pui, mici, cârnați, pastramă, mămăligă, cartofi, murături, sosuri'],
+  ['Platou cald (4 pers., 3000g)',320,'ceafă, piept de pui, mici, cârnați, pastramă, mămăligă, cartofi, murături, sosuri']]},
+ {c:'Pește și fructe de mare', img:null, i:[
+  ['Tigaie Saganaki (400g)',68,'creveți, feta, sos de roșii, ceapă roșie, peperoncino, mozzarella, parmezan'],
+  ['Dorada cu legume la grătar (600g)',58,'dorada, legume la grătar'],
+  ['Somon la grătar cu sparanghel (450g)',65,'file de somon, sparanghel'],
+  ['Crap prăjit cu mămăliguță și mujdei (500g)',48,'crap, mălai, usturoi'],
+  ['Saramură de crap cu mămăliguță (550g)',58,'crap, ardei, roșii, ceapă, ardei iute, mălai, usturoi'],
+  ['Grigliata frutti di mare (1200g)',160,'4 creveți tiger, calamar tub, 4 tentacule, dorada, lămâie, sos calypso'],
+  ['Creveți crocanți cu salată și sos calypso (300g)',49,'8 creveți pane, mix salată, sos calypso'],
+  ['Scoici în sos de vin alb (500g)',49,'scoici, vin alb, usturoi, ardei iute, pătrunjel, roșii cherry'],
+  ['Scoici în sos roșu (500g)',49,'scoici, sos de roșii, roșii cherry, usturoi, ardei iute, pătrunjel'],
+  ['Inele de calamar pane și sos calypso (250g)',45,'calamar, făină, ou'],
+  ['Caracatiță la tigaie cu roșii cherry și usturoi (400g)',150,'caracatiță, usturoi, roșii cherry, ardei iute, unt'],
+  ['Caracatiță la grătar cu salată (200g)',120,'caracatiță, mix salată'],
+  ['Tentacule de calamar cu roșii și usturoi (300g)',75,'tentacule de calamar, usturoi, roșii cherry, ardei iute, unt'],
+  ['Platou fructe de mare pane (4–6 pers.)',295,'creveți pane, calamar pane, tentacule, creveți cu cartofi, scoici pane, cartofi, sosuri'],
+  ['Platou Baffi cu fructe de mare la grill (4–6 pers.)',495,'creveți tiger, tentacule, calamar tub, creveți la tigaie, scoici în sos de vin, orez cu legume']]},
+ {c:'Paste', img:null, i:[
+  ['Baffi cu fructe de mare (350g)',55,'paste, mix fructe de mare, usturoi, sos de roșii, ardei iute, ulei de măsline'],
+  ['Bologneze (350g)',43,'paste, sos ragu, carne tocată'],
+  ['Tagliatelle vitello (400g)',68,'paste, vită, ciuperci porcini, sos de trufe, parmezan'],
+  ['Carbonara (350g)',40,'paste, bacon, grancucina, parmezan, ou'],
+  ['Siciliene al forno (500g)',48,'paste, piept de pui, ciuperci, bacon, mozzarella, parmezan, sos de roșii'],
+  ['Arrabbiata (400g)',35,'paste, sos de roșii, peperoncino, ulei de măsline, busuioc'],
+  ['Quattro formaggi (400g)',45,'paste, brie, gorgonzola, parmezan, grancucina']]},
+ {c:'Garnituri', img:null, i:[
+  ['Cartofi aromați cu usturoi și verdeață (200g)',15,''],
+  ['Cartofi prăjiți (200g)',12,''],
+  ['Piure de cartofi (200g)',15,''],
+  ['Orez cu legume (200g)',15,''],
+  ['Legume la grătar (200g)',12,''],
+  ['Mămăliguță (250g)',9,''],
+  ['Varză călită (250g)',12,''],
+  ['Pâine pe vatră (125g)',5,'']]},
+ {c:'Salate însoțitoare', img:null, i:[
+  ['Salată de vară (250g)',15,''],['Salată de varză albă (250g)',15,''],
+  ['Salată asortată de murături (250g)',15,''],['Salată verde cu lămâie (150g)',15,''],
+  ['Salată de ceapă roșie (150g)',15,''],['Salată de ardei kapia (200g)',15,'']]},
+ {c:'Desert', img:null, i:[
+  ['Clătite cu dulceață sau ciocolată (250g)',24,''],
+  ['Clătite brașovene (300g)',30,''],
+  ['Papanași cu dulceață și smântână (400g)',35,''],
+  ['Înghețată de cocos și rafaello în fruct (150g)',30,''],
+  ['Lava cake cu înghețată (200g)',30,''],
+  ['Tort de mere și caramel',30,''],
+  ['Cheesecake cu mango și fructul pasiunii',30,''],
+  ['White cake cu nuci pecan',30,'']]},
+ {c:'Cafea', img:null, drink:true, i:[
+  ['Espresso scurt (40ml)',12,''],['Espresso lung (80ml)',14,''],['Espresso dublu (60ml)',18,''],
+  ['Espresso decofeinizat (40ml)',16,''],['Cappuccino (150ml)',16,''],['Café latte (300ml)',17,'']]},
+ {c:'Băuturi calde', img:null, drink:true, i:[
+  ['Ceai (200ml)',17,''],['Ciocolată caldă (200ml)',22,'']]},
+ {c:'Frappe și iced coffee', img:null, drink:true, i:[
+  ['Ness frappe (330ml)',25,'ness, lapte, sirop de zahăr, topping de ciocolată, frișcă'],
+  ['Cafe frappe (330ml)',25,'espresso, lapte, sirop de zahăr, topping de ciocolată, frișcă'],
+  ['Baffi Oreo / Snickers frappe (330ml)',30,'espresso, lapte, sirop de alune, oreo sau snickers, frișcă'],
+  ['Ness Oreo / Snickers frappe (330ml)',30,'ness, lapte, sirop de alune, oreo sau snickers, frișcă'],
+  ['Iced Baffi latte (200ml)',25,'espresso, lapte, gheață'],
+  ['Flavoured Baffi latte (200ml)',25,'espresso, lapte, cremă de lapte, sirop de caramel sau vanilie']]},
+ {c:'Limonade și shake-uri', img:null, drink:true, i:[
+  ['Baffi Lemon (330ml)',25,'lămâie, fructul pasiunii, piersică, mentă'],
+  ['Limonadă cu mentă și ghimbir (330ml)',25,'lămâie, mentă, ghimbir'],
+  ['Baffi exotic (330ml)',25,'lămâie, fructul pasiunii, portocale, piersici'],
+  ['Limonadă clasică (330ml)',25,'lămâie, sirop de zahăr sau miere'],
+  ['Limonadă cu fructul pasiunii (330ml)',25,''],
+  ['Limonadă cu piersică (330ml)',25,''],
+  ['Fresh de portocale (330ml)',25,''],
+  ['Oreo shake (450ml)',27,'sirop de vanilie, Oreo, lapte'],
+  ['Vanilla shake (450ml)',25,''],['Chocolate shake (450ml)',25,'']]},
+ {c:'Băuturi răcoritoare', img:null, drink:true, i:[
+  ['Coca-Cola (250ml)',13,''],['Coca-Cola Zero (250ml)',13,''],['Fanta (250ml)',13,''],
+  ['Sprite (250ml)',13,''],['Schweppes (250ml)',13,''],['Cappy portocale sau piersică (250ml)',15,''],
+  ['Dorna plată sau minerală (330ml)',12,''],['Dorna plată sau minerală (750ml)',20,''],
+  ['Burn (250ml)',15,''],['Red Bull (250ml)',20,'']]},
+ {c:'Bere și cidru', img:null, drink:true, i:[
+  ['Heineken (330ml)',15,''],['Heineken 0,0% (330ml)',14,''],['Birra Moretti (330ml)',14,''],
+  ['Birra Moretti 0,0% (330ml)',14,''],['Ciuc Premium (330ml)',13,''],['Ciuc Radler (330ml)',13,''],
+  ['Strongbow Red Berries (330ml)',13,''],['Strongbow Apple Cider (330ml)',13,''],['Corona Extra (350ml)',20,'']]},
+ {c:'Cocktailuri', img:null, drink:true, i:[
+  ['Pina Colada (250ml)',28,''],['Sex on the Beach (250ml)',28,''],['Mojito (250ml)',28,''],
+  ['Long Island Ice Tea (250ml)',28,''],['Screwdriver (250ml)',28,''],['Daiquiri (250ml)',28,''],
+  ['Cuba Libre (330ml)',28,''],['Campari Orange (250ml)',28,''],['Orgasm (250ml)',28,''],
+  ['Aperol Spritz (250ml)',28,''],['Hugo (250ml)',30,''],
+  ['Green Apple fără alcool (250ml)',25,''],['Baffi fără alcool (250ml)',25,''],['Fruit punch fără alcool (250ml)',25,'']]},
+ {c:'Whisky și coniac', img:null, drink:true, i:[
+  ['Johnnie Walker Red Label (40ml)',18,''],['Johnnie Walker Black Label (40ml)',25,''],
+  ['Johnnie Walker Gold (40ml)',35,''],['Jameson (40ml)',18,''],['J&B (40ml)',18,''],
+  ['Chivas Regal 12 ani (40ml)',30,''],["Jack Daniel's (40ml)",25,''],
+  ['Jidvei Vinars VSOP (50ml)',20,''],['Metaxa 7* (50ml)',25,''],
+  ['Brâncoveanu XO (50ml)',25,''],['Courvoisier (50ml)',20,'']]},
+ {c:'Spirtoase și digestive', img:null, drink:true, i:[
+  ['Țuică de Bran (50ml)',22,''],["Palincă Dom' Profesor (50ml)",25,''],['Grey Goose Vodka (50ml)',25,''],
+  ['Beefeater (50ml)',18,''],['Bacardi Space (50ml)',20,''],['Bumbu XO (50ml)',18,''],['Camino (50ml)',18,''],
+  ['Jägermeister (50ml)',20,''],['Amaretto Disaronno (50ml)',20,''],["Bailey's (50ml)",20,''],
+  ['Campari (50ml)',18,''],['Martini Bianco (50ml)',18,''],['Martini Rosso (50ml)',18,'']]},
+ {c:'Vin alb', img:null, drink:true, i:[
+  ['Domeniile Averești — Diamond Zghihară, sec (750ml)',120,''],
+  ['Domeniile Averești — Sole Chardonnay (750ml)',150,''],
+  ['Domeniile Averești — Nocturne Chardonnay (750ml)',110,''],
+  ['Domeniul Coroanei Segarcea — Principesa Margareta alb (750ml)',150,''],
+  ['Domeniul Coroanei Segarcea — Marama Fetească Albă (750ml)',95,''],
+  ['Domeniul Coroanei Segarcea — Marama Fetească Regală (750ml)',95,''],
+  ['Domeniul Coroanei Segarcea — Marama Tămâioasă Românească (750ml)',95,''],
+  ['Domeniul Coroanei Segarcea — Soiuri Rare Viognier (750ml)',110,''],
+  ['Domeniul Coroanei Segarcea — Prestige Chardonnay (750ml)',95,'']]},
+ {c:'Vin rosé și roșu', img:null, drink:true, i:[
+  ['Domeniile Averești — Diamond Busuioacă, sec (750ml)',120,''],
+  ['Recaș — Sole Chardonnay, sec (750ml)',150,''],
+  ['Segarcea — Marama Tămâioasă Roză, sec (750ml)',95,''],
+  ['Segarcea — Marama Fetească Neagră rosé (750ml)',95,''],
+  ['Segarcea — Soiuri Rare Tămâioasă Roză, demidulce (750ml)',110,''],
+  ['Domeniile Averești — Diamond Fetească Neagră, sec (750ml)',120,''],
+  ['Purcari — Rară Neagră (750ml)',110,''],
+  ['Segarcea — Principesa Margareta roșu (750ml)',150,''],
+  ['Segarcea — Marama Fetească Neagră (750ml)',95,''],
+  ['Segarcea — Soiuri Rare Marselan (750ml)',110,'']]},
+ {c:'Spumant și prosecco', img:null, drink:true, i:[
+  ['Purcari — Cuvée Alb Brut (750ml)',150,''],['Purcari — Cuvée Rosé Brut (750ml)',150,''],
+  ['Domeniul Coroanei — Clipa Chardonnay (750ml)',130,''],['Domeniul Coroanei — Clipa Rosé (750ml)',130,'']]}
+];
+
+/* ---------- PROGRAM (sursa unică a adevărului) ---------- */
+const HOURS={0:[11,22],1:[10,22],2:[10,22],3:[10,22],4:[10,22],5:[10,23],6:[10,23]};
+const ZI=['Duminică','Luni','Marți','Miercuri','Joi','Vineri','Sâmbătă'];
+const GRUPE=[['Luni — Joi',[1,2,3,4]],['Vineri — Sâmbătă',[5,6]],['Duminică',[0]]];
+
+function fmtH(h){return String(h).padStart(2,'0')+':00'}
+function openState(){
+  const n=new Date(), d=n.getDay(), m=n.getHours()*60+n.getMinutes();
+  const [o,c]=HOURS[d], open=m>=o*60 && m<c*60;
+  if(open){
+    const left=c*60-m;
+    return {open:true,txt:'Deschis acum',sub:left<=60?`Se închide în ${left} de minute`:`Astăzi până la ${fmtH(c)}`};
+  }
+  if(m<o*60) return {open:false,txt:'Închis acum',sub:`Deschidem astăzi la ${fmtH(o)}`};
+  const nd=(d+1)%7;
+  return {open:false,txt:'Închis acum',sub:`Deschidem ${nd===(new Date().getDay()+1)%7?'mâine':ZI[nd]} la ${fmtH(HOURS[nd][0])}`};
+}
+function paintHours(){
+  const s=openState(), el=document.getElementById('openNow');
+  el.classList.toggle('shut',!s.open);
+  document.getElementById('openTxt').textContent=s.txt;
+  document.getElementById('openSub').textContent=s.sub;
+  const today=new Date().getDay();
+  const html=GRUPE.map(([lab,days])=>{
+    const [o,c]=HOURS[days[0]];
+    return `<div class="hours-row${days.includes(today)?' today':''}"><span>${lab}</span><span>${fmtH(o)} — ${fmtH(c)}</span></div>`;
+  }).join('');
+  document.getElementById('hoursList').innerHTML=html;
+  document.getElementById('hoursList2').innerHTML=html;
+}
+
+/* ---------- EVENIMENTE (expiră singure) ----------
+   Adaugi un rând nou aici și pe site apare imediat.
+   Când data trece, dispare singur din ticker și din pagină. */
+const EVENTS=[
+  {t:'Seară grecească',sub:'Mihalis Greek Show · farfuriile le aducem noi',
+   start:'2026-09-18T19:30', poster:'img/baffi-greek-night-poster-2026.webp',
+   desc:'O seară pe ritm de bouzouki, cu Mihalis Greek Show și energia unei petreceri grecești autentice. Iar când vine momentul, farfuriile se sparg la propriu.',
+   tags:['Mihalis Greek Show','Farfuriile le aducem noi','Rezervare recomandată']}
+];
+const upcoming=()=>EVENTS.filter(e=>new Date(e.start).getTime()>Date.now()-3*3600e3)
+                        .sort((a,b)=>new Date(a.start)-new Date(b.start));
+const LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
+function evDate(iso){
+  const d=new Date(iso);
+  return `${ZI[d.getDay()]} · ${d.getDate()} ${LUNI[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+function paintEvents(){
+  const up=upcoming(), tk=document.getElementById('ticker');
+  if(up.length){
+    const e=up[0];
+    const grp=`<div class="tk-grp"><span class="tk-d">◆</span><span>Urmează la Baffi</span><span class="tk-d">◆</span><em>${e.t}</em><span class="tk-d">◆</span><span>${evDate(e.start).toUpperCase()}</span><span class="tk-d">◆</span><span>Vezi evenimentul →</span></div>`;
+    document.getElementById('tkTrack').innerHTML=grp.repeat(4);
+    tk.hidden=false;
+  } else tk.hidden=true;
+
+  const wrap=document.getElementById('evWrap');
+  if(!up.length){
+    wrap.innerHTML=`<div class="ev-none"><span class="eyebrow">Deocamdată</span>
+      <h3 class="h-md" style="margin:14px 0 12px">Nu avem un eveniment anunțat.</h3>
+      <p class="lead" style="margin:0 auto 22px">Bucătăria, terasa și barul merg ca de obicei — iar dacă vrei să organizezi tu ceva, ne ocupăm noi de rest.</p>
+      <button class="btn btn-navy" data-open="oferta">Organizează un eveniment</button></div>`;
+    bindOpeners(); return;
+  }
+  const e=up[0];
+  wrap.innerHTML=`<div class="ev-card">
+    <div class="ev-poster"><img src="${e.poster}" alt="${e.t} la Baffi Cafe" loading="lazy" width="900" height="1350"></div>
+    <div class="ev-copy">
+      <span class="ev-date">${evDate(e.start)}</span>
+      <h3 class="h-lg">${e.t}<br><span class="it">La Baffi Cafe.</span></h3>
+      <p class="lead on-navy">${e.desc}</p>
+      <div class="ev-cd" id="evCd"></div>
+      <div class="ticks">${e.tags.map((t,i)=>`<div class="tick"><b>0${i+1}</b><span>${t}</span></div>`).join('')}</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-gold" data-open="rez">Rezervă un loc <span class="ar">→</span></button>
+        <a class="btn btn-ghost-gold" href="tel:${TEL}">Sună pentru detalii</a>
+      </div>
+    </div></div>`;
+  bindOpeners();
+  const tick=()=>{
+    const box=document.getElementById('evCd'); if(!box) return;
+    let s=Math.max(0,(new Date(e.start)-Date.now())/1000);
+    const z=[['zile',Math.floor(s/86400)],['ore',Math.floor(s/3600)%24],['min',Math.floor(s/60)%60]];
+    box.innerHTML=z.map(([k,v])=>`<div><b>${v}</b><span>${k}</span></div>`).join('');
+  };
+  tick(); setInterval(tick,30000);
+}
+
+/* ---------- STELE ---------- */
+const STAR='<svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>';
+document.querySelectorAll('.stars').forEach(s=>s.innerHTML=STAR.repeat(5));
+
+/* ┌──────────────────────────────────────────────────────────┐
+   │  POZELE PREPARATELOR                                     │
+   │  Cheia = numele exact, fără gramaj. Pui un rând nou aici  │
+   │  și poza apare în meniu, în fișă și în coș.               │
+   │                                                          │
+   │  REGULA: o poză se pune DOAR pe preparatul pe care chiar  │
+   │  îl arată. Nu punem poza de burger clasic pe cheeseburger │
+   │  — omul comandă ce vede, și trebuie să primească aia.     │
+   │  Preparatele fără poză primesc monograma casei, nu un     │
+   │  substitut care înșală.                                   │
+   └──────────────────────────────────────────────────────────┘ */
+const POZE={
+  'Burger Baffi':'bcf-burger-baffi.webp',
+  'Burger clasic':'bcf-burger-classic.webp',
+  'Carbonara':'bcf-carbonara.webp',
+  'Baffi cu fructe de mare':'bcf-seafood-pasta.webp',
+  'Platou Baffi cu fructe de mare la grill':'bcf-seafood-grill.webp',
+  'Platou fructe de mare pane':'bcf-seafood-platter.webp',
+  'Platou de brânzeturi':'bcf-event-platter-cold.webp',
+  'Platou cald':'bcf-event-buffet.webp',
+  'Grigliata frutti di mare':'bcf-event-seafood.webp'
+};
+/* Insignele: puține și meritate, altfel nu mai înseamnă nimic. */
+const INSIGNE={
+  'Burger Baffi':'Semnătura casei',
+  'Platou Baffi cu fructe de mare la grill':'Pentru masa mare',
+  'T-Bone de vită cu piure, servit pe plită încinsă':'Pe plită încinsă'
+};
+
+/* ---------- MENIU ---------- */
+const money=v=>v+' lei';
+/* numele fără gramajul din paranteză: „Burger Baffi (800g)" → „Burger Baffi" */
+const curat=n=>n.replace(/\s*\([^)]*\)\s*$/,'').trim();
+/* gramajul din paranteză, pentru rândul de deasupra numelui */
+const gramaj=n=>{const m=n.match(/\(([^)]*)\)\s*$/);return m?m[1].replace(/,/g,' ·'):''};
+const foto=n=>POZE[curat(n)]||null;
+const insigna=n=>INSIGNE[curat(n)]||null;
+let kind='food', cat=CFG.categorieStart, query='';
+const flat=[];
+MENU.forEach((c,ci)=>c.i.forEach((it,ii)=>flat.push({ci,ii,cat:c.c,drink:!!c.drink,n:it[0],p:it[1],d:it[2]||''})));
+document.getElementById('itemCount').textContent=flat.length;
+
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[șş]/g,'s').replace(/[țţ]/g,'t');
+function visible(){
+  const q=norm(query.trim());
+  return flat.filter(x=>{
+    if(q){ return norm(x.n).includes(q)||norm(x.d).includes(q)||norm(x.cat).includes(q); }
+    if(x.drink!==(kind==='drink')) return false;
+    if(cat!=='toate' && x.cat!==cat) return false;
+    return true;
+  });
+}
+function paintRail(){
+  const cats=MENU.filter(c=>(!!c.drink)===(kind==='drink') && c.i.length).map(c=>c.c);
+  document.getElementById('catRail').innerHTML=
+    [`<button class="chip${cat==='toate'?' on':''}" data-cat="toate">Toate</button>`]
+    .concat(cats.map(c=>`<button class="chip${cat===c?' on':''}" data-cat="${c}">${c}</button>`)).join('');
+}
+/* Cine caută „pizza" în meniu nu trebuie lăsat fără răspuns: îi spunem
+   adevărul pe loc, în locul în care a căutat. */
+function pizzaBlock(){
+  return `<section class="cat-block">
+      <div class="cat-h"><h3>Pizza</h3><span class="rule"></span><span class="cnt">Doar pe comandă</span></div>
+      <div class="miss">
+        <b>Pizza o facem pentru mese mari, nu la bucată.</b>
+        <p>Cuptorul merge, dar nu ținem pizza în meniul zilnic. O pregătim pe comandă,
+        pentru petreceri, evenimente private și mese cu mulți invitați &mdash; cu o zi înainte.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px">
+          <button class="btn btn-navy btn-sm" data-open="oferta">Cere ofertă pentru eveniment</button>
+          <a class="btn btn-ghost btn-sm" href="tel:${TEL}">Sună la Baffi</a>
+        </div>
+      </div>
+    </section>`;
+}
+/* Pagina NU mai varsă toate cele 208 poziții într-un scroll interminabil.
+   Se deschide o singură secțiune, cea aleasă de om din banda de sus.
+   „Toate" nu înseamnă toate preparatele, ci lista de secțiuni. */
+function paintMenu(){
+  const host=document.getElementById('menuList'), q=norm(query.trim());
+
+  /* 1. căutare: rezultatele, grupate pe secțiuni */
+  if(q){
+    const list=visible(), groups=[];
+    MENU.forEach(c=>{const items=list.filter(x=>x.cat===c.c); if(items.length) groups.push({c:c.c,items})});
+    if(!CFG.pizzaZilnic && 'pizza'.includes(q) && q.length>=3) groups.unshift({c:'Pizza',pizza:true,items:[]});
+    if(!groups.length){
+      host.innerHTML=`<div class="no-res"><b>N-am găsit nimic pentru &bdquo;${query}&rdquo;.</b>
+        Încearcă &bdquo;burger&rdquo;, &bdquo;ciorbă&rdquo;, &bdquo;paste&rdquo; sau &bdquo;vin&rdquo; &mdash; sau sună-ne la 0756 021 501.</div>`;
+      return;
+    }
+    host.innerHTML=groups.map(g=>g.pizza?pizzaBlock():blocSectiune(g.c,g.items,true)).join('');
+    bindOpeners(); return;
+  }
+
+  /* 2. „Toate" → lista de secțiuni, nu lista de preparate */
+  if(cat==='toate'){ host.innerHTML=picker(); bindOpeners(); return }
+
+  /* 3. o singură secțiune, cea cerută */
+  const items=visible();
+  host.innerHTML=blocSectiune(cat,items,false);
+  bindOpeners();
+}
+
+function blocSectiune(nume,items,cuTitlu){
+  return `<section class="cat-block" data-cat="${nume}">
+    <div class="cat-h">
+      ${cuTitlu?`<h3>${nume}</h3>`:`<button class="cat-back" type="button" data-toate>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+        Toate secțiunile</button><h3>${nume}</h3>`}
+      <span class="rule"></span>
+      <span class="cnt">${items.length} ${items.length===1?'preparat':'poziții'}</span>
+    </div>
+    <div class="dishes">${items.map(x=>dishCard(x)).join('')}</div>
+  </section>`;
+}
+
+/* Lista de secțiuni: fiecare cu o poză din ea, dacă are vreuna. */
+function picker(){
+  const cats=MENU.filter(c=>(!!c.drink)===(kind==='drink') && c.i.length);
+  return `<div class="picker-head"><span class="eyebrow">Alege secțiunea</span>
+      <p>Deschidem o singură listă odată, ca să n-o iei la vale prin tot meniul.</p></div>
+    <div class="cat-picker">${cats.map(c=>{
+      const cuPoza=c.i.map(it=>foto(it[0])).find(Boolean);
+      return `<button class="cat-tile" type="button" data-go="${c.c}">
+        ${cuPoza?`<img src="img/${cuPoza}" alt="" loading="lazy" decoding="async">`
+                :`<span class="mono" aria-hidden="true">B</span>`}
+        <span class="n">${c.c}</span>
+        <span class="c">${c.i.length} ${c.i.length===1?'preparat':'poziții'}</span>
+      </button>`}).join('')}</div>`;
+}
+
+/* Un card de preparat. Poza e prima; unde nu există încă, ține locul
+   monograma casei — niciodată poza altui preparat. */
+function dishCard(x){
+  const img=foto(x.n), bdg=insigna(x.n), gram=gramaj(x.n);
+  return `<article class="dish" data-ci="${x.ci}" data-ii="${x.ii}">
+    <button class="dish-photo" type="button" data-open-dish aria-label="Vezi detalii pentru ${x.n}">
+      ${img?`<img src="img/${img}" alt="${x.n}" loading="lazy" decoding="async">`
+           :`<span class="dish-ph"><i>B</i><span>Baffi Cafe</span></span>`}
+    </button>
+    <button class="dish-body" type="button" data-open-dish aria-label="Vezi detalii pentru ${x.n}">
+      ${bdg?`<span class="dish-badge">${bdg}</span>`:''}
+      ${gram?`<span class="dish-meta">${gram}</span>`:''}
+      <span class="dish-name">${curat(x.n)}</span>
+      ${x.d?`<span class="dish-desc">${x.d}</span>`:''}
+    </button>
+    <div class="dish-foot">
+      <span class="dish-price">${money(x.p)}</span>
+      <span class="dish-see">Vezi detalii</span>
+      <button class="add" data-ci="${x.ci}" data-ii="${x.ii}" aria-label="Adaugă ${x.n} în coș">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+  </article>`;
+}
+/* O apăsare pe bandă = o secțiune deschisă. Nimic altceva. */
+function alegeCat(name,scroll){
+  if(query.trim()){qEl.value='';query='';qClear.classList.remove('on')}
+  cat=name; paintRail(); paintMenu();
+  const chip=[...railEl().querySelectorAll('.chip')].find(c=>c.dataset.cat===name);
+  if(chip) chipInView(chip);
+  if(scroll){
+    const y=document.getElementById('meniu').getBoundingClientRect().top+scrollY
+            -(document.querySelector('.hdr')?.offsetHeight||74)-10;
+    scrollTo({top:y,behavior:MOTION?'smooth':'auto'});
+  }
+}
+document.getElementById('catRail').addEventListener('click',e=>{
+  const b=e.target.closest('.chip'); if(!b||railTras) return;
+  alegeCat(b.dataset.cat,true);
+});
+document.getElementById('menuList').addEventListener('click',e=>{
+  const t=e.target.closest('[data-go]');
+  if(t){alegeCat(t.dataset.go,true);return}
+  if(e.target.closest('[data-toate]')) alegeCat('toate',true);
+});
+document.getElementById('catRail').addEventListener('scroll',()=>railFades(),{passive:true});
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.seg button').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-selected','false')});
+  b.classList.add('on'); b.setAttribute('aria-selected','true');
+  kind=b.dataset.kind;
+  /* la schimbarea între mâncare și băuturi arătăm lista de secțiuni:
+     e cea mai oneste stare de pornire pentru o listă pe care n-a văzut-o */
+  cat='toate'; paintRail(); paintMenu();
+}));
+const qEl=document.getElementById('q'), qClear=document.getElementById('qClear');
+qEl.addEventListener('input',()=>{
+  query=qEl.value; qClear.classList.toggle('on',!!query); paintMenu();
+});
+qClear.addEventListener('click',()=>{qEl.value='';query='';qClear.classList.remove('on');paintMenu();qEl.focus()});
+
+/* ---------- FIȘA PREPARATULUI ----------
+   Cardul arată puțin și curat; cine vrea tot (poză mare, ingrediente
+   complete, cantitate) deschide fișa. Pe telefon urcă de jos, ca în
+   aplicațiile de livrare. */
+let dishCur=null, dishN=1;
+function openDish(ci,ii){
+  const c=MENU[ci], it=c && c.i[ii]; if(!it) return;
+  dishCur={ci,ii,n:it[0],p:it[1],c:c.c}; dishN=1;
+  const img=foto(it[0]), g=gramaj(it[0]);
+  document.getElementById('dishPhoto').innerHTML = img
+    ? `<img src="img/${img}" alt="${curat(it[0])}">`
+    : `<span class="dish-ph"><i>B</i><span>Poza vine în curând</span></span>`;
+  document.getElementById('dishKicker').textContent = g ? `${c.c} · ${g}` : c.c;
+  document.getElementById('dishName').textContent = curat(it[0]);
+  const ing=it[2] ? it[2].charAt(0).toUpperCase()+it[2].slice(1)+'.'
+                  : 'Lista de ingrediente pentru acest preparat se confirmă la restaurant.';
+  document.getElementById('dishIng').innerHTML = `<b>Ce conține</b>${ing}`;
+  paintDishBtn();
+  closeAll();
+  document.getElementById('mDish').classList.add('on');
+  document.body.classList.add('locked');
+}
+function paintDishBtn(){
+  if(!dishCur) return;
+  document.getElementById('dishQty').textContent=dishN;
+  document.getElementById('dishAdd').textContent=`Adaugă în coș · ${money(dishCur.p*dishN)}`;
+}
+document.getElementById('dishMinus').addEventListener('click',()=>{dishN=Math.max(1,dishN-1);paintDishBtn()});
+document.getElementById('dishPlus').addEventListener('click',()=>{dishN=Math.min(20,dishN+1);paintDishBtn()});
+document.getElementById('dishAdd').addEventListener('click',e=>{
+  if(!dishCur) return;
+  for(let i=0;i<dishN;i++) addItem(dishCur.ci,dishCur.ii,true);
+  confettiFrom(e.currentTarget);
+  toast(`${curat(dishCur.n)} · ${dishN>1?dishN+' porții':'adăugat'} în coș`);
+  closeAll();
+});
+document.getElementById('menuList').addEventListener('click',e=>{
+  const d=e.target.closest('[data-open-dish]'); if(!d) return;
+  const art=d.closest('.dish'); if(!art) return;
+  openDish(+art.dataset.ci,+art.dataset.ii);
+});
+
+/* ---------- COȘ ---------- */
+const MIN=CFG.minLivrare;
+let cart=[];
+try{cart=JSON.parse(localStorage.getItem('baffi_cart')||'[]')}catch(e){cart=[]}
+const save=()=>{try{localStorage.setItem('baffi_cart',JSON.stringify(cart))}catch(e){}};
+const total=()=>cart.reduce((s,x)=>s+x.p*x.q,0);
+const count=()=>cart.reduce((s,x)=>s+x.q,0);
+
+function addItem(ci,ii,silent){
+  const c=MENU[ci], it=c.i[ii], key=ci+'-'+ii;
+  const ex=cart.find(x=>x.k===key);
+  if(ex) ex.q++; else cart.push({k:key,n:it[0],p:it[1],c:c.c,q:1});
+  save(); paintCart();
+  const btn=document.getElementById('cartBtn');
+  btn.classList.remove('bump'); void btn.offsetWidth; btn.classList.add('bump');
+  if(!silent) toast(it[0]+' · adăugat în coș');
+}
+function paintCart(){
+  const n=count(), cc=document.getElementById('cartCount');
+  cc.textContent=n; cc.classList.toggle('on',n>0);
+  const body=document.getElementById('cartBody'), foot=document.getElementById('cartFoot');
+  if(!n){
+    foot.hidden=true;
+    const picks=[['Burger Baffi',6],['Paste Baffi cu fructe de mare',14],['Pizza Baffi',7]];
+    const qs=[];
+    MENU.forEach((c,ci)=>c.i.forEach((it,ii)=>{
+      if(['Burger Baffi','Carbonara','Pizza quattro formaggi','Ceafă de porc la grătar (300g)'].some(t=>it[0].startsWith(t.split(' (')[0]))) qs.push({ci,ii,n:it[0],p:it[1],c:c.c});
+    }));
+    body.innerHTML=`<div class="cart-empty">
+        <img src="img/logo-navy.webp" alt="" width="760" height="235" loading="lazy">
+        <b>Coșul e gol.</b><p>Începe cu ceva bun — sau caută direct în meniu ce ai poftă.</p>
+      </div>
+      <div class="quick"><div class="qh">Selecții rapide</div>
+        ${qs.slice(0,4).map(x=>`<button data-ci="${x.ci}" data-ii="${x.ii}">
+          <span><span class="qn">${x.n}</span><span class="qc">${x.c}</span></span>
+          <span class="qp">+ ${money(x.p)}</span></button>`).join('')}
+      </div>`;
+    return;
+  }
+  foot.hidden=false;
+  body.innerHTML=cart.map(x=>`<div class="ci">
+      <div><div class="cn">${x.n}</div><div class="cp">${x.c} · ${money(x.p)}</div></div>
+      <div class="cr">
+        <span class="qty"><button data-m="-1" data-k="${x.k}" aria-label="Mai puțin">−</button>
+          <b>${x.q}</b><button data-m="1" data-k="${x.k}" aria-label="Mai mult">+</button></span>
+        <span class="ct">${money(x.p*x.q)}</span>
+      </div></div>`).join('');
+  const t=total();
+  document.getElementById('cartTotal').textContent=money(t);
+  const pct=Math.min(100,t/MIN*100);
+  document.getElementById('progBar').style.width=pct+'%';
+  const pt=document.getElementById('progTxt');
+  if(t>=MIN){pt.className='prog-txt ok';pt.textContent='Livrare gratuită — ai trecut de 70 de lei.';}
+  else{pt.className='prog-txt';pt.innerHTML=`Mai adaugă <b>${money(MIN-t)}</b> pentru livrare gratuită. Sub 70 de lei, comanda se poate doar ridica.`;}
+}
+document.getElementById('menuList').addEventListener('click',e=>{
+  const b=e.target.closest('.add'); if(!b) return;
+  addItem(+b.dataset.ci,+b.dataset.ii);
+  confettiFrom(b);
+  b.classList.add('done');
+  b.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>';
+  setTimeout(()=>{b.classList.remove('done');
+    b.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';},1100);
+});
+document.getElementById('cartBody').addEventListener('click',e=>{
+  const q=e.target.closest('[data-m]');
+  if(q){
+    const it=cart.find(x=>x.k===q.dataset.k); if(!it) return;
+    it.q+=+q.dataset.m;
+    if(it.q<1) cart=cart.filter(x=>x.k!==it.k);
+    save(); paintCart(); return;
+  }
+  const p=e.target.closest('[data-ci]');
+  if(p){ addItem(+p.dataset.ci,+p.dataset.ii); confettiFrom(p) }
+});
+
+/* ---------- SERTAR + MODALE ---------- */
+const scrim=document.getElementById('scrim'), cartEl=document.getElementById('cart');
+function openCart(){cartEl.classList.add('on');scrim.classList.add('on');document.body.classList.add('locked')}
+function closeAll(){
+  cartEl.classList.remove('on');scrim.classList.remove('on');
+  document.querySelectorAll('.modal').forEach(m=>m.classList.remove('on'));
+  document.body.classList.remove('locked');
+}
+document.getElementById('cartBtn').addEventListener('click',openCart);
+document.getElementById('cartClose').addEventListener('click',closeAll);
+scrim.addEventListener('click',closeAll);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeAll()}));
+
+const MODALS={rez:'mRez',oferta:'mOferta',checkout:'mCheckout'};
+function openModal(id){
+  closeAll();
+  document.getElementById(MODALS[id]).classList.add('on');
+  document.body.classList.add('locked');
+  if(id==='rez'){
+    const d=document.getElementById('rDate');
+    if(!d.value){const n=new Date();d.value=n.toISOString().slice(0,10);d.min=n.toISOString().slice(0,10)}
+  }
+  if(id==='checkout') paintSum();
+}
+function bindOpeners(){
+  document.querySelectorAll('[data-open]').forEach(b=>{
+    if(b._b) return; b._b=1;
+    b.addEventListener('click',()=>{closeMnav();openModal(b.dataset.open)});
+  });
+}
+bindOpeners();
+document.getElementById('toCheckout').addEventListener('click',()=>openModal('checkout'));
+
+/* alegeri (pick) */
+function pick(id,cb){
+  const box=document.getElementById(id);
+  box.addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); cb&&cb(b);
+  });
+}
+let mode='livrare',timeMode='asap',pay='cash',pax='4',zone='oriunde',evType='aniversare';
+pick('pickMode',b=>{mode=b.dataset.mode;
+  document.getElementById('rowAddr').hidden=(mode!=='livrare');
+  document.getElementById('lblTime').textContent=mode==='livrare'?'Când o vrei?':'Când o ridici?';
+  paintSum();});
+pick('pickTime',b=>{timeMode=b.dataset.t;document.getElementById('rowHour').hidden=(timeMode!=='ora')});
+pick('pickPay',b=>pay=b.dataset.p);
+pick('pickPax',b=>pax=b.dataset.n);
+pick('pickZone',b=>zone=b.dataset.z);
+pick('pickEv',b=>evType=b.dataset.e);
+
+function paintSum(){
+  const t=total();
+  const liv=mode==='livrare'?(t>=MIN?'gratuită':'sub minimul de 70 lei'):'ridicare de la restaurant';
+  document.getElementById('sumBox').innerHTML=
+    cart.map(x=>`<div class="sl"><span>${x.q} × ${x.n}</span><span>${money(x.p*x.q)}</span></div>`).join('')
+    +`<div class="sl"><span>Livrare</span><span>${liv}</span></div>`
+    +`<div class="sl big"><span>Total</span><span>${money(t)}</span></div>`;
+}
+
+/* ---------- TRIMITERE ---------- */
+const val=id=>document.getElementById(id).value.trim();
+const phoneOk=p=>/^(\+?4)?0?7\d{8}$/.test(p.replace(/[\s.-]/g,''));
+function err(id,msg){const e=document.getElementById(id);e.textContent=msg;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),6000)}
+function send(txt){
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(txt),'_blank','noopener');
+}
+document.getElementById('sendWa').addEventListener('click',()=>{
+  if(!cart.length) return err('errCk','Coșul e gol — alege întâi ceva din meniu.');
+  if(val('fName').length<3) return err('errCk','Scrie-ne numele tău, ca să știm cu cine vorbim.');
+  if(!phoneOk(val('fPhone'))) return err('errCk','Numărul de telefon nu pare corect. Exemplu: 0722 333 444.');
+  if(mode==='livrare'&&val('fAddr').length<8) return err('errCk','Avem nevoie de adresa completă, cu reper dacă se poate.');
+  if(mode==='livrare'&&total()<MIN) return err('errCk','Comanda minimă pentru livrare e 70 de lei. Poți ridica și de la restaurant.');
+  const when=timeMode==='asap'?'cât de repede se poate':('la ora '+(val('fHour')||'—'));
+  const t=['*Comandă nouă de pe site — Baffi Cafe*','',
+    `*${mode==='livrare'?'LIVRARE':'RIDICARE'}* · ${when}`,
+    `Nume: ${val('fName')}`,`Telefon: ${val('fPhone')}`,
+    mode==='livrare'?`Adresă: ${val('fAddr')}`:'Ridic de la restaurant',
+    `Plata: ${pay==='cash'?'cash':'card la livrare'}`,'','*Comanda:*',
+    ...cart.map(x=>`• ${x.q} × ${x.n} — ${money(x.p*x.q)}`),
+    '',`*Total: ${money(total())}*`,
+    val('fNote')?`\nMențiuni: ${val('fNote')}`:''].join('\n');
+  send(t); toast('Îți deschidem WhatsApp cu comanda scrisă.');
+});
+document.getElementById('sendRez').addEventListener('click',()=>{
+  if(val('rName').length<3) return err('errRez','Scrie-ne numele tău.');
+  if(!phoneOk(val('rPhone'))) return err('errRez','Numărul de telefon nu pare corect. Exemplu: 0722 333 444.');
+  if(!val('rDate')) return err('errRez','Alege ziua rezervării.');
+  const t=['*Rezervare de pe site — Baffi Cafe*','',
+    `Nume: ${val('rName')}`,`Telefon: ${val('rPhone')}`,
+    `Data: ${val('rDate')} · ora ${val('rHour')||'—'}`,
+    `Persoane: ${pax}`,`Preferință: ${zone==='oriunde'?'oriunde e bine':zone}`,
+    val('rNote')?`\nMențiuni: ${val('rNote')}`:''].join('\n');
+  send(t); toast('Îți deschidem WhatsApp cu rezervarea.');
+});
+document.getElementById('sendOf').addEventListener('click',()=>{
+  if(val('oName').length<3) return err('errOf','Scrie-ne numele tău.');
+  if(!phoneOk(val('oPhone'))) return err('errOf','Numărul de telefon nu pare corect.');
+  const t=['*Cerere ofertă eveniment — Baffi Cafe*','',
+    `Nume: ${val('oName')}`,`Telefon: ${val('oPhone')}`,
+    `Tip: ${evType}`,`Data: ${val('oDate')||'nedecisă'}`,`Invitați: ${val('oPax')||'—'}`,
+    val('oNote')?`\nDetalii: ${val('oNote')}`:''].join('\n');
+  send(t); toast('Îți deschidem WhatsApp cu cererea.');
+});
+
+/* ---------- NAVIGAȚIE / UI ---------- */
+const burger=document.getElementById('burger'), mnav=document.getElementById('mnav');
+function closeMnav(){burger.classList.remove('on');mnav.classList.remove('on');
+  burger.setAttribute('aria-expanded','false');document.body.classList.remove('locked')}
+burger.addEventListener('click',()=>{
+  const on=!mnav.classList.contains('on');
+  burger.classList.toggle('on',on);mnav.classList.toggle('on',on);
+  burger.setAttribute('aria-expanded',String(on));
+  document.body.classList.toggle('locked',on);
+});
+mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMnav));
+document.querySelectorAll('.intent[data-mode]').forEach(a=>a.addEventListener('click',()=>{
+  mode=a.dataset.mode;
+  document.querySelectorAll('#pickMode button').forEach(b=>b.classList.toggle('on',b.dataset.mode===mode));
+  document.getElementById('rowAddr').hidden=(mode!=='livrare');
+}));
+
+let tId;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  clearTimeout(tId); tId=setTimeout(()=>t.classList.remove('on'),2600);
+}
+const hdr=document.getElementById('hdr'), mobar=document.getElementById('mobar'), toTop=document.getElementById('toTop');
+addEventListener('scroll',()=>{
+  const y=scrollY;
+  hdr.classList.toggle('stuck',y>10);
+  mobar.classList.toggle('on',y>520);
+  toTop.classList.toggle('on',y>1400);
+},{passive:true});
+toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+const RV=[...document.querySelectorAll('.rv')];
+function reveal(){
+  const h=innerHeight||800;
+  for(let i=RV.length-1;i>=0;i--){
+    const el=RV[i], r=el.getBoundingClientRect();
+    if(r.top<h*0.94 && r.bottom>-40){el.classList.add('in');RV.splice(i,1)}
+  }
+}
+addEventListener('scroll',reveal,{passive:true});
+addEventListener('resize',reveal,{passive:true});
+addEventListener('load',reveal);
+setTimeout(reveal,80); setTimeout(reveal,600);
+reveal();
+
+/* ============================================================
+   MIȘCARE — partea de JS. Nimic nu pornește dacă utilizatorul
+   a cerut mai puțină animație din sistemul lui de operare.
+   ============================================================ */
+const MOTION=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- 1. imaginile respiră pe scroll ----------
+   Cât e vizibil elementul → smoothstep → zoom țintă (max +7,2%).
+   Valoarea curentă urmărește ținta cu lerp, ca să aibă inerție. */
+let zoomState=new Map(), zoomRaf=0;
+function collectZoom(){
+  /* Doar cadrele care taie ce iese din ele (overflow:hidden). Galeriile
+     orizontale nu respiră: acolo mișcarea o dă deja derularea laterală,
+     iar poza mărită ar ieși peste vecina ei. */
+  zoomState=new Map([...document.querySelectorAll('.s-media,.hero-media,.ev-poster,.map-card')]
+    .map(el=>[el,{cur:1,tgt:1}]));
+}
+function zoomStep(){
+  let moving=false;
+  zoomState.forEach((s,el)=>{
+    const d=s.tgt-s.cur;
+    if(Math.abs(d)>1e-4){s.cur+=d*0.13;moving=true} else s.cur=s.tgt;
+    el.style.setProperty('--iz',s.cur.toFixed(4));
+  });
+  zoomRaf=moving?requestAnimationFrame(zoomStep):0;
+}
+function zoomMeasure(){
+  if(!MOTION) return;
+  const vh=innerHeight, top0=hdr.getBoundingClientRect().height||0, usable=Math.max(vh-top0,1);
+  zoomState.forEach((s,el)=>{
+    const r=el.getBoundingClientRect();
+    if(r.bottom<-200||r.top>vh+200){s.tgt=1;return}
+    const vis=Math.max(0,Math.min(r.bottom,vh)-Math.max(r.top,top0));
+    const p=Math.max(0,Math.min(1,vis/Math.max(1,Math.min(r.height,usable))));
+    s.tgt=1+(p*p*(3-2*p))*0.072;
+  });
+  if(!zoomRaf) zoomRaf=requestAnimationFrame(zoomStep);
+}
+collectZoom();
+addEventListener('scroll',zoomMeasure,{passive:true});
+addEventListener('resize',()=>{collectZoom();zoomMeasure()},{passive:true});
+
+/* ---------- 2. cuvântul care se schimbă în titlu ---------- */
+const WORDS=['bine','gustos','cald','generos','sățios'];
+const hw=document.getElementById('heroWord');
+if(hw&&MOTION){
+  let wi=0;
+  setInterval(()=>{
+    wi=(wi+1)%WORDS.length;
+    hw.textContent=WORDS[wi]+'.';
+    hw.classList.remove('hero-word'); void hw.offsetWidth; hw.classList.add('hero-word');
+  },1900);
+}
+
+/* ---------- 3+4. traseul pe butoane și nota care tresare ---------- */
+if(MOTION){
+  const cta=document.getElementById('heroCta');
+  if(cta) new IntersectionObserver(([e])=>cta.classList.toggle('live',e.isIntersecting),{threshold:.55}).observe(cta);
+
+  const hp=document.getElementById('heroProof'), sp=hp&&hp.querySelector('.spark');
+  if(sp){
+    sp.innerHTML=[[-42,-18,-24],[-25,-38,-12],[0,-45,8],[27,-35,22],[43,-12,35],[31,15,18]]
+      .map(([x,y,r])=>`<i style="--sx:${x}px;--sy:${y}px;--sr:${r}deg">★</i>`).join('');
+    let pid=0;
+    const pop=()=>{hp.classList.remove('pop'); void hp.offsetWidth; hp.classList.add('pop')};
+    new IntersectionObserver(([e])=>{
+      if(e.isIntersecting){ if(!pid){pop(); pid=setInterval(pop,2600)} }
+      else{ clearInterval(pid); pid=0; hp.classList.remove('pop') }
+    },{threshold:.45}).observe(hp);
+  }
+}
+
+/* ---------- 5. confetti la adăugarea în coș ---------- */
+const CONF=[[-46,-74,-80,0],[-28,-92,42,40],[-10,-70,120,85],[10,-96,210,25],
+            [28,-76,75,70],[48,-88,165,115],[-58,-48,250,80],[58,-54,330,35],
+            [-38,-38,25,145],[-18,-56,190,120],[18,-48,290,155],[38,-42,105,175]];
+function confetti(x,y){
+  if(!MOTION) return;
+  const box=document.createElement('div');
+  box.className='confetti'; box.style.left=x+'px'; box.style.top=y+'px';
+  box.innerHTML=CONF.map(([cx,cy,cr,cd])=>
+    `<i style="--cx:${cx}px;--cy:${cy}px;--cr:${cr}deg;--cd:${cd}ms"></i>`).join('');
+  document.body.appendChild(box);
+  setTimeout(()=>box.remove(),1400);
+}
+function confettiFrom(el){
+  if(!el) return;
+  const r=el.getBoundingClientRect();
+  confetti(r.left+r.width/2, r.top+r.height/2);
+}
+
+/* ---------- 6. galeriile se trag cu mâna ---------- */
+let autoExtra=0;   // viteza pe care i-o dă utilizatorul galeriei care curge singură
+document.querySelectorAll('.rail').forEach(rail=>{
+  let st=null, moved=0;
+  rail.addEventListener('pointerdown',e=>{
+    /* Doar mouse și stylus. Pe telefon lăsăm derularea nativă: dacă am prelua
+       degetul aici, un scroll vertical peste galerie s-ar transforma în
+       tragere laterală și pagina ar părea blocată. */
+    if(e.pointerType==='touch') return;
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    st={x:e.clientX,left:rail.scrollLeft,lastX:e.clientX,lastT:performance.now(),v:0};
+    moved=0; rail.classList.add('is-drag');
+    try{rail.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  rail.addEventListener('pointermove',e=>{
+    if(!st) return;
+    const now=performance.now(), dt=Math.max(8,now-st.lastT);
+    st.v=st.v*0.55+((st.lastX-e.clientX)/dt)*0.45;
+    st.lastX=e.clientX; st.lastT=now;
+    const d=st.x-e.clientX; moved=Math.max(moved,Math.abs(d));
+    rail.scrollLeft=st.left+d*1.28;
+  });
+  const end=e=>{
+    if(!st) return;
+    let v=Math.max(-2.4,Math.min(2.4,st.v));
+    st=null; rail.classList.remove('is-drag');
+    try{if(rail.hasPointerCapture(e.pointerId))rail.releasePointerCapture(e.pointerId)}catch(_){}
+    if(!MOTION||Math.abs(v)<0.06) return;
+    /* galeria care curge singură nu-și oprește mersul: primește viteza ta
+       ca supliment și o lasă să se stingă în mersul de fond */
+    if(rail.id==='railEvent'){ autoExtra=v; return }
+    const glide=()=>{ rail.scrollLeft+=v*16; v*=0.92;
+      if(Math.abs(v)>0.02) requestAnimationFrame(glide) };
+    requestAnimationFrame(glide);
+  };
+  rail.addEventListener('pointerup',end);
+  rail.addEventListener('pointercancel',end);
+  /* dacă a tras, clicul de la final nu trebuie să deschidă nimic */
+  rail.addEventListener('click',e=>{ if(moved>6){e.preventDefault();e.stopPropagation()} },true);
+});
+
+/* ---------- 7. galeria de evenimente curge singură ----------
+   O tragi cât vrei; când îi dai drumul, viteza ta se stinge treptat și
+   se topește înapoi în mersul de fond. Nu se oprește brusc și nu sare. */
+const autoRail=document.getElementById('railEvent');
+if(autoRail&&MOTION){
+  [...autoRail.children].forEach(k=>{
+    const c=k.cloneNode(true); c.setAttribute('aria-hidden','true');
+    c.querySelectorAll('img').forEach(i=>i.alt=''); autoRail.appendChild(c);
+  });
+  autoRail.style.scrollSnapType='none';
+  const BAZA=0.045;                       // px pe milisecundă, mersul de fond
+  let last=performance.now(), inView=false, touching=0;
+  new IntersectionObserver(([e])=>{inView=e.isIntersecting},{threshold:.08}).observe(autoRail);
+  /* pe telefon derularea e nativă: o lăsăm să-și ducă inerția până la capăt */
+  autoRail.addEventListener('touchstart',()=>{touching=performance.now()},{passive:true});
+  autoRail.addEventListener('touchend',()=>{touching=performance.now()+700},{passive:true});
+  const loop=t=>{
+    const dt=Math.min(50,t-last); last=t;
+    const liber=inView&&!autoRail.classList.contains('is-drag')&&t>touching;
+    if(liber) autoRail.scrollLeft+=dt*(BAZA+autoExtra);
+    autoExtra*=Math.pow(0.90,dt/16.67);
+    if(Math.abs(autoExtra)<0.004) autoExtra=0;
+    const half=autoRail.scrollWidth/2;
+    if(half>10){
+      if(autoRail.scrollLeft>=half) autoRail.scrollLeft-=half;
+      else if(autoRail.scrollLeft<0) autoRail.scrollLeft+=half;
+    }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+
+/* ============================================================
+   MENIU — navigarea pe categorii (tipar Glovo/Wolt: bulinele de
+   sus nu filtrează, te duc la categorie; iar bulina se aprinde
+   singură pe categoria la care ai ajuns cu scrollul).
+   ============================================================ */
+const railEl=()=>document.getElementById('catRail');
+
+/* Banda de secțiuni se trage cu mâna — și pe laptop, cu mouse-ul, nu doar
+   pe telefon. railTras ține minte că a fost o tragere, ca să nu deschidă
+   din greșeală secțiunea peste care s-a oprit degetul. */
+let railTras=false;
+(function(){
+  const r=railEl(); if(!r) return;
+  let st=null;
+  r.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='touch') return;              // pe telefon, derulare nativă
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    st={x:e.clientX,left:r.scrollLeft}; railTras=false;
+    r.classList.add('is-drag');
+    try{r.setPointerCapture(e.pointerId)}catch(_){}
+  });
+  r.addEventListener('pointermove',e=>{
+    if(!st) return;
+    const d=st.x-e.clientX;
+    if(Math.abs(d)>5) railTras=true;
+    r.scrollLeft=st.left+d; railFades();
+  });
+  const gata=e=>{
+    if(!st) return;
+    st=null; r.classList.remove('is-drag');
+    try{if(r.hasPointerCapture(e.pointerId))r.releasePointerCapture(e.pointerId)}catch(_){}
+    setTimeout(()=>railTras=false,0);
+  };
+  r.addEventListener('pointerup',gata);
+  r.addEventListener('pointercancel',gata);
+})();
+
+function chipInView(chip){
+  const r=railEl();
+  r.scrollTo({left:Math.max(0,chip.offsetLeft-r.clientWidth/2+chip.offsetWidth/2),
+    behavior:MOTION?'smooth':'auto'});
+}
+function railFades(){
+  const r=railEl(); if(!r) return;
+  const max=r.scrollWidth-r.clientWidth;
+  r.classList.toggle('fade-l',r.scrollLeft>6);
+  r.classList.toggle('fade-r',r.scrollLeft<max-6);
+}
+
+/* Semnul că rândul de categorii se trage: la prima intrare în câmpul
+   vizual se duce singur puțin spre stânga și se întoarce. O dată. */
+let hintFacut=false;
+function railHint(){
+  const r=railEl();
+  if(hintFacut||!r||r.scrollWidth-r.clientWidth<40) return;
+  hintFacut=true;
+  if(!MOTION) return;
+  const dist=Math.min(68,r.scrollWidth-r.clientWidth), DUR=1100, t0=performance.now();
+  const pas=t=>{
+    const k=Math.min(1,(t-t0)/DUR);
+    r.scrollLeft=Math.sin(Math.PI*k)*dist;
+    if(k<1) requestAnimationFrame(pas); else {r.scrollLeft=0;railFades()}
+  };
+  setTimeout(()=>requestAnimationFrame(pas),450);
+}
+
+/* ---------- caruselul din „Experiența Baffi" ---------- */
+function initCarou(){
+  const box=document.getElementById('carouExp'); if(!box) return;
+  const track=document.getElementById('carouTrack'), figs=[...track.children],
+        dots=document.getElementById('carouDots'), bar=document.getElementById('carouBar');
+  const DUR=4200;
+  let idx=0, t0=performance.now(), tinut=false, inView=false;
+  dots.innerHTML=figs.map((f,i)=>`<button type="button" aria-label="Poza ${i+1} din ${figs.length}"></button>`).join('');
+  const dotEls=[...dots.children];
+  const mark=()=>dotEls.forEach((d,i)=>d.classList.toggle('on',i===idx));
+  function go(i){
+    idx=(i+figs.length)%figs.length;
+    track.scrollTo({left:figs[idx].offsetLeft-track.offsetLeft,behavior:MOTION?'smooth':'auto'});
+    mark(); t0=performance.now();
+  }
+  function aproape(){
+    const c=track.scrollLeft+track.clientWidth/2; let b=0,bd=1/0;
+    figs.forEach((f,i)=>{const d=Math.abs(f.offsetLeft+f.clientWidth/2-c);if(d<bd){bd=d;b=i}});
+    return b;
+  }
+  track.addEventListener('scroll',()=>{const n=aproape();if(n!==idx){idx=n;mark();t0=performance.now()}},{passive:true});
+  box.querySelector('.prev').addEventListener('click',()=>go(idx-1));
+  box.querySelector('.next').addEventListener('click',()=>go(idx+1));
+  dotEls.forEach((d,i)=>d.addEventListener('click',()=>go(i)));
+  /* cât ține degetul sau mouse-ul pe el, nu-i schimbăm noi poza sub mână */
+  box.addEventListener('pointerdown',()=>tinut=true);
+  addEventListener('pointerup',()=>{if(tinut){tinut=false;t0=performance.now()}});
+  box.addEventListener('touchstart',()=>tinut=true,{passive:true});
+  addEventListener('touchend',()=>{tinut=false;t0=performance.now()},{passive:true});
+  new IntersectionObserver(([e])=>{inView=e.isIntersecting;t0=performance.now()},{threshold:.35}).observe(box);
+  mark();
+  if(!MOTION){bar.style.display='none';return}
+  const loop=t=>{
+    if(inView&&!tinut){
+      const k=Math.min(1,(t-t0)/DUR);
+      bar.style.width=(k*100)+'%';
+      if(k>=1) go(idx+1);
+    } else { t0=t; bar.style.width='0%' }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+}
+
+/* ---------- valorile din PANOUL DE EDITARE, puse în pagină ---------- */
+function paintCfg(){
+  document.querySelectorAll('[data-cfg]').forEach(el=>{
+    if(el.dataset.cfg==='nota') el.textContent=CFG.nota;
+    if(el.dataset.cfg==='recenzii') el.textContent=CFG.recenzii;
+  });
+  const rb=document.getElementById('revBtn'); if(rb) rb.href=REVIEW_URL;
+  document.querySelectorAll('[data-net="kids"]').forEach(a=>a.href=CFG.linkKids);
+  document.querySelectorAll('[data-net="oasis"]').forEach(a=>a.href=CFG.linkOasis);
+  document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+CFG.tel);
+}
+
+/* ---------- PORNIRE ---------- */
+paintCfg();
+paintHours(); setInterval(paintHours,60000);
+paintEvents();
+paintRail(); paintMenu(); paintCart();
+initCarou();
+railFades();
+addEventListener('resize',()=>railFades(),{passive:true});
+if(railEl()) new IntersectionObserver(([e])=>{if(e.isIntersecting) railHint()},{threshold:.6}).observe(railEl());
+collectZoom(); zoomMeasure();
+addEventListener('load',()=>{collectZoom();zoomMeasure();railFades()});
+</script>
+</body>
+</html>
