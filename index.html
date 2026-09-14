@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600;1,800&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <link rel="preload" as="image" href="img/baffi-entrance-premium-v6.webp">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","@id":"https://bafficafe.ro/#restaurant",
@@ -52,22 +52,35 @@
    crem = pagina.
    ============================================================ */
 :root{
+  /* Culorile sunt cele din CSS-ul publicat Human (baffi-human-live.css),
+     nu aproximări. Suprafețele calde sunt ce dă senzația de „premium cald". */
   --navy:#071c2c; --navy-2:#0c2940; --sapphire:#0c4169; --sapphire-2:#12557f;
   --gold:#c99a4a; --gold-lite:#e2c17c; --gold-deep:#a97c33;
   --crimson:#a82d35;
-  --cream:#f5f0e7; --paper:#fbf8f1; --white:#fff;
+  --paper:#fffdf9; --cream:#f5efe6; --soft:#ece3d7; --soft-blue:#e8eef0;
+  --body-bg:#f2ece3; --warm:#fffaf3; --terasa:#f7f1e9; --eveniment:#eee6dc;
+  --white:#fff;
   --ink:#14212a; --ink-2:#3c4a53; --muted:#6c716f;
-  --line:rgba(7,28,44,.12); --line-2:rgba(7,28,44,.07);
+  --line:rgba(7,28,44,.1); --line-2:rgba(7,28,44,.06);
   --line-gold:rgba(201,154,74,.32);
 
-  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  /* Titlurile: Georgia, ca în referința Human. Toată scara de titluri din
+     brief (clamp-uri, tracking -.065em, line-height .89) e calibrată pe
+     litera Georgia — cu altă literă, titlul hero se rupe pe trei rânduri.
+     Dacă vrei litera mai „de revistă", schimbi DOAR rândul de mai jos cu:
+     --serif:"Playfair Display",Georgia,serif;  — dar atunci scade și
+     clamp-ul titlului hero, altfel nu mai încape pe două rânduri. */
+  --serif:Georgia,"Times New Roman",serif;
+  /* Scrisul din logo rămâne Georgia italic, exact ca în varianta aprobată. */
+  --serif-logo:Georgia,"Times New Roman",serif;
   --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
 
   --pad:clamp(20px,5vw,64px);
   --maxw:1280px;
-  --r:14px; --r-lg:22px;
-  --shadow:0 1px 2px rgba(7,28,44,.06),0 12px 34px -16px rgba(7,28,44,.28);
-  --shadow-lg:0 2px 6px rgba(7,28,44,.08),0 40px 80px -32px rgba(7,28,44,.42);
+  /* razele Human: 14 / 22 / 32 */
+  --r-sm:14px; --r:14px; --r-md:22px; --r-lg:22px; --r-xl:32px;
+  --shadow:0 14px 38px rgba(7,28,44,.09);
+  --shadow-lg:0 22px 58px rgba(7,28,44,.14);
   --ease:cubic-bezier(.22,.68,.28,1);
   --hdr-h:74px;
 }
@@ -75,7 +88,7 @@
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--hdr-h) + 18px)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
-body{margin:0;background:var(--paper);color:var(--ink);
+body{margin:0;background:var(--body-bg);color:var(--ink);
   font:400 16px/1.6 var(--sans);
   -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
 body.locked{overflow:hidden}
@@ -87,14 +100,23 @@ button{cursor:pointer;background:none;border:0;padding:0}
 h1,h2,h3,h4{margin:0;font-family:var(--serif);font-weight:800;letter-spacing:-.015em;line-height:1.04}
 p{margin:0}
 .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
-.eyebrow{font:600 11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--gold-deep)}
+.eyebrow{display:flex;align-items:center;gap:10px;font:800 10px/1 var(--sans);
+  letter-spacing:.24em;text-transform:uppercase;color:var(--sapphire)}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);flex:none}
 .eyebrow.on-navy{color:var(--gold-lite)}
+.eyebrow.on-navy::before{background:var(--gold-lite)}
 .lead{font-size:clamp(16px,1.25vw,18.5px);line-height:1.65;color:var(--ink-2);max-width:56ch}
+.hero .lead{font-size:18px;line-height:1.7;max-width:46ch}
+@media(max-width:680px){.hero .lead{font-size:16px}}
 .lead.on-navy{color:rgba(245,240,231,.76)}
 .h-lg{font-size:clamp(32px,4.6vw,60px)}
 .h-md{font-size:clamp(24px,2.7vw,36px)}
 .it{font-style:italic;font-weight:600;color:var(--gold)}
-.sect{padding-block:clamp(64px,8vw,124px)}
+/* ritmul Human: 110px/7vw pe desktop, 78px/5vw sub 980, 14px lateral pe telefon */
+.sect{padding:110px 7vw}
+.sect>.wrap{padding-inline:0}
+@media(max-width:980px){.sect{padding:78px 5vw}}
+@media(max-width:680px){.sect{padding-inline:14px}}
 .sect-head{display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(34px,4.4vw,58px)}
 .hr-gold{height:1px;background:linear-gradient(90deg,var(--gold),rgba(201,154,74,0));border:0;margin:0}
 
@@ -104,8 +126,9 @@ p{margin:0}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
 
 /* ---------- butoane ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  padding:15px 26px;border-radius:999px;font:600 14.5px/1 var(--sans);letter-spacing:.02em;
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:16px;
+  min-height:54px;padding-inline:25px;border-radius:999px;
+  font:800 11px/1 var(--sans);letter-spacing:.07em;text-transform:uppercase;
   transition:transform .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
   white-space:nowrap}
 .btn:active{transform:translateY(1px) scale(.99)}
@@ -117,7 +140,7 @@ p{margin:0}
 .btn-ghost:hover{border-color:var(--navy);background:rgba(7,28,44,.04)}
 .btn-ghost-gold{border:1px solid var(--line-gold);color:var(--cream)}
 .btn-ghost-gold:hover{border-color:var(--gold);background:rgba(201,154,74,.12)}
-.btn-sm{padding:11px 18px;font-size:13px}
+.btn-sm{min-height:42px;padding-inline:18px;font-size:10px;gap:10px}
 .btn .ar{transition:transform .3s var(--ease)}
 .btn:hover .ar{transform:translateX(4px)}
 
@@ -167,12 +190,23 @@ p{margin:0}
   color:var(--cream);transition:box-shadow .3s var(--ease)}
 .hdr.stuck{box-shadow:0 18px 40px -30px rgba(0,0,0,.9)}
 .hdr .wrap{display:flex;align-items:center;gap:clamp(12px,2.2vw,34px);height:var(--hdr-h)}
-.brand{display:flex;align-items:center;gap:12px;flex:none;margin-right:auto}
-.brand img{width:auto;height:42px}
-.brand small{display:none}
-@media(min-width:1140px){.brand small{display:block;font:600 9.5px/1.5 var(--sans);
-  letter-spacing:.2em;text-transform:uppercase;color:rgba(226,193,124,.7);
-  border-left:1px solid rgba(201,154,74,.3);padding-left:12px}}
+/* Logo: scris alb Georgia italic + bucătarul oficial lângă B.
+   Cifrele sunt cele din Human: lockup 62px, bucătar 64×54, text tras
+   cu -12px peste el, ca să se așeze exact lângă litera B. */
+.brand{display:flex;align-items:center;flex:none;margin-right:auto;min-width:max-content}
+.brand-lockup{display:flex;align-items:center;height:62px}
+.brand-chef{position:relative;z-index:1;width:64px;height:54px;object-fit:contain;
+  filter:drop-shadow(0 5px 8px rgba(0,0,0,.2))}
+.brand-copy{position:relative;z-index:2;display:flex;flex-direction:column;margin-left:-12px}
+.brand-kicker{font:700 8px/1 var(--sans);letter-spacing:.25em;color:var(--gold-lite);margin-bottom:1px}
+.brand strong{font:italic 600 29px/1.05 var(--serif-logo);letter-spacing:-.04em;color:#fff}
+@media(max-width:680px){
+  .brand-lockup{height:49px}
+  .brand-chef{width:55px;height:46px}
+  .brand-copy{margin-left:-10px}
+  .brand-kicker{display:none}
+  .brand strong{font-size:24px}
+}
 .nav{display:none;gap:clamp(14px,1.8vw,26px);font:500 13.5px/1 var(--sans);color:rgba(245,240,231,.8)}
 @media(min-width:1000px){.nav{display:flex}}
 .nav a{position:relative;padding:8px 0;transition:color .2s var(--ease)}
@@ -213,26 +247,41 @@ p{margin:0}
   padding:11px 0;border-bottom:1px solid rgba(201,154,74,.16)}
 .mnav a .n{font:600 11px/1 var(--sans);color:var(--gold);letter-spacing:.2em;margin-right:14px;vertical-align:middle}
 .mnav .m-foot{margin-top:auto;padding-top:26px;display:flex;flex-direction:column;gap:12px}
+/* butonul din meniul mobil moștenea mărimea uriașă a linkurilor de deasupra */
+.mnav .m-foot .btn{font:800 11px/1 var(--sans);letter-spacing:.07em}
 
 /* ---------- hero ---------- */
-.hero{background:var(--navy);color:var(--cream);position:relative;overflow:hidden}
+/* Hero-ul Human e un PANOU care plutește, nu o bandă lipită de margini:
+   margine 18px, colț 32px, 43%/57% și fotografia cu rama ei de 26px. */
+.hero{background:var(--navy);color:var(--paper);position:relative;overflow:hidden;
+  margin:18px;border-radius:var(--r-xl);min-height:700px;box-shadow:0 24px 70px rgba(7,28,44,.18)}
+@media(max-width:680px){.hero{margin:9px;border-radius:24px;min-height:0}}
 .hero-grid{display:grid;grid-template-columns:1fr;align-items:stretch}
-@media(min-width:960px){.hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.02fr)}}
+@media(min-width:960px){.hero-grid{grid-template-columns:43% 57%}}
 /* între 960 și 1200 coloana de text e strâmtă: îi dăm mai mult loc, altfel
    titlul se rupe pe alt rând la fiecare schimbare de cuvânt. */
-@media(min-width:960px) and (max-width:1199px){.hero-grid{grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr)}}
-.hero-copy{padding:clamp(42px,6vw,90px) var(--pad) clamp(38px,5vw,74px);
-  max-width:calc(var(--maxw)/2 + var(--pad));margin-left:auto;width:100%;
-  display:flex;flex-direction:column;justify-content:center;gap:clamp(20px,2.6vw,30px);position:relative;z-index:2}
-.hero h1{font-size:clamp(42px,5.9vw,88px);line-height:.98}
-@media(max-width:959px){.hero h1{font-size:clamp(42px,9vw,72px)}}
+@media(min-width:960px) and (max-width:1199px){.hero-grid{grid-template-columns:52% 48%}}
+.hero-copy{padding:76px 5.2vw 72px;width:100%;
+  display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,2.2vw,26px);position:relative;z-index:2}
+@media(max-width:680px){.hero-copy{padding:48px 22px 46px}}
+/* scara de titlu din Human */
+.hero h1{font-size:clamp(64px,6vw,94px);line-height:.89;letter-spacing:-.065em;font-weight:500;color:#fff}
+@media(max-width:680px){.hero h1{font-size:clamp(56px,17vw,74px)}}
 .hero h1 .l2{display:block}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
 .hero-tags{display:flex;flex-wrap:wrap;gap:8px 20px;font:600 10.5px/1 var(--sans);
   letter-spacing:.2em;text-transform:uppercase;color:rgba(226,193,124,.78)}
 .hero-tags i{font-style:normal;color:var(--gold);margin-right:8px;font-size:8px;vertical-align:middle}
-.hero-proof{display:flex;align-items:center;gap:16px;padding-top:clamp(14px,2vw,22px);
-  border-top:1px solid rgba(201,154,74,.22)}
+.hero-proof{display:flex;align-items:center;gap:16px;max-width:max-content;
+  padding:15px 18px;border-radius:18px;
+  background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.1)}
+@media(max-width:680px){
+  .hero-proof{width:100%;max-width:100%}
+  .hero-proof p{font-size:12px;line-height:1.4}
+  /* pe telefon butoanele hero sunt pe toată lățimea, unul sub altul */
+  .hero-cta{flex-direction:column;align-items:stretch}
+  .hero-cta .btn{width:100%}
+}
 .hero-proof b{font-family:var(--serif);font-size:40px;font-weight:800;color:var(--gold);line-height:1}
 .stars{display:flex;gap:2px;color:var(--gold)}
 .stars svg{width:14px;height:14px}
@@ -240,11 +289,15 @@ p{margin:0}
 /* overflow:hidden e OBLIGATORIU oriunde imaginea respiră pe scroll:
    fără el, poza mărită iese din cadru, iar degradeul rămâne în urmă —
    se vede o dungă din poză, nedarkuită, peste bleumarinul paginii. */
-.hero-media{position:relative;min-height:clamp(300px,52vw,640px);overflow:hidden}
+/* rama fotografiei: colț 26px, lipită de marginile panoului mai puțin stânga */
+.hero-media{position:relative;min-height:664px;overflow:hidden;
+  margin:18px 18px 18px 0;border-radius:26px}
+@media(max-width:959px){.hero-media{min-height:540px;margin:0 18px 18px}}
+@media(max-width:680px){.hero-media{min-height:410px;margin:0 9px 9px;border-radius:19px}}
 .hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero-media::after{content:"";position:absolute;inset:0;
   background:linear-gradient(90deg,var(--navy) 0%,rgba(7,28,44,.55) 26%,rgba(7,28,44,0) 62%)}
-@media(max-width:959px){.hero-media{min-height:280px;order:-1}
+@media(max-width:959px){.hero-media{order:2}
   /* ultimii pixeli trebuie să fie bleumarin PLIN, nu 99% —
      altfel rămâne o dungă de poză la trecerea spre text */
   .hero-media::after{background:linear-gradient(180deg,rgba(7,28,44,.5),rgba(7,28,44,.1) 40%,var(--navy) 96%)}}
@@ -287,7 +340,8 @@ p{margin:0}
 </style>
 <style>
 /* ---------- MENIU ---------- */
-.menu-sect{background:var(--paper)}
+.menu-sect{background:radial-gradient(circle at 8% 0,rgba(201,154,74,.12),transparent 24%),
+  linear-gradient(var(--eveniment),var(--body-bg))}
 .menu-top{display:grid;gap:clamp(22px,3vw,40px);align-items:end;margin-bottom:26px}
 @media(min-width:900px){.menu-top{grid-template-columns:minmax(0,1fr) minmax(300px,420px)}}
 .menu-tools{display:flex;flex-direction:column;gap:12px}
@@ -416,12 +470,13 @@ p{margin:0}
 /* Pe telefon cardul se culcă: text și preț la stânga, poză la dreapta —
    tiparul cu care oamenii sunt deja obișnuiți din aplicațiile de livrare. */
 @media(max-width:559px){
-  .dish{display:grid;grid-template-columns:minmax(0,1fr) 108px;
-    grid-template-areas:"body photo" "foot photo";
-    align-items:start;column-gap:13px;padding:12px;border-radius:var(--r)}
-  .dish-photo{grid-area:photo;width:108px;aspect-ratio:1;align-self:center;margin:0;border-radius:12px}
-  .dish-body{grid-area:body;padding:0;gap:3px}
-  .dish-foot{grid-area:foot;padding:10px 0 0;margin-top:0;align-self:end}
+  /* proporția Human: poza 38%, textul 62%, cardul de minimum 164px */
+  .dish{display:grid;grid-template-columns:38% 62%;
+    grid-template-areas:"photo body" "photo foot";
+    align-items:stretch;min-height:164px;padding:0;border-radius:18px;overflow:hidden}
+  .dish-photo{grid-area:photo;width:100%;height:100%;aspect-ratio:auto;margin:0;border-radius:0}
+  .dish-body{grid-area:body;padding:15px 16px 0;gap:3px}
+  .dish-foot{grid-area:foot;padding:8px 16px 14px;margin-top:0;align-self:end}
   .dish-name{font-size:15.5px}
   .dish-desc{font-size:12.2px}
   /* pe telefon insigna nu mai stă peste poză, ci intră în text —
@@ -600,7 +655,7 @@ p{margin:0}
 
 /* galerie orizontala */
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:14px;
-  margin-inline:calc(var(--pad) * -1);padding-inline:var(--pad);scrollbar-width:none}
+  scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
 .rail figure{margin:0;flex:none;width:min(78vw,340px);scroll-snap-align:start}
 .rail img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r);background:var(--cream)}
@@ -645,9 +700,16 @@ p{margin:0}
   display:flex;flex-direction:column;justify-content:flex-end;padding:28px;color:var(--cream);
   background:var(--navy);isolation:isolate;transition:transform .4s var(--ease)}
 .place:hover{transform:translateY(-5px)}
-.place.p-cafe{background:linear-gradient(165deg,var(--navy),var(--sapphire))}
-.place.p-kids{background:linear-gradient(165deg,#123c5a,#1e7ba6)}
-.place.p-oasis{background:linear-gradient(165deg,#0d4f5c,#17a2b8)}
+/* Human folosește fotografii pentru cele trei locuri, nu degradeuri:
+   fiecare card arată starea lui, nu doar o culoare. */
+.place-img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;
+  transition:transform .8s var(--ease)}
+.place:hover .place-img{transform:scale(1.05)}
+.place::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(7,28,44,.12) 0,rgba(7,28,44,.62) 48%,rgba(7,28,44,.93) 100%)}
+.place.p-cafe{background:var(--navy)}
+.place.p-kids{background:#123c5a}
+.place.p-oasis{background:#0d4f5c}
 .place .tag{position:absolute;top:22px;left:28px;font:600 10px/1 var(--sans);letter-spacing:.22em;
   text-transform:uppercase;color:rgba(245,240,231,.6)}
 .place .badge{position:absolute;top:18px;right:22px;font:600 9.5px/1 var(--sans);letter-spacing:.16em;
@@ -682,14 +744,21 @@ p{margin:0}
 .foot a:hover{color:var(--gold-lite)}
 
 /* bara mobila */
-.mobar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(7,28,44,.97);
-  backdrop-filter:blur(10px);border-top:1px solid rgba(201,154,74,.2);
-  padding:10px var(--pad) calc(10px + env(safe-area-inset-bottom));display:flex;gap:9px;
-  transform:translateY(120%);transition:transform .45s var(--ease)}
+/* Dockul Human nu e lipit de marginea ecranului: plutește la 8px, cu colț 18px.
+   Butonul din mijloc (Comandă) e accentul auriu, cu colțul lui de 13px. */
+.mobar{position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:50;
+  background:var(--navy);border-radius:18px;overflow:hidden;padding:6px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+  box-shadow:0 16px 42px rgba(4,19,31,.28);
+  transform:translateY(160%);transition:transform .45s var(--ease)}
 .mobar.on{transform:none}
 @media(min-width:760px){.mobar{display:none}}
-.mobar .btn{flex:1;padding:14px 10px;font-size:13.5px}
-.mobar .btn.ico{flex:0 0 50px;padding:14px 0}
+.mobar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:9px 5px;border-radius:13px;color:#fff;
+  font:800 9px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;
+  transition:background .25s var(--ease)}
+.mobar a i{font-style:normal;font-size:15px;line-height:1}
+.mobar a.primary{background:var(--gold);color:var(--navy);font-weight:900}
 
 /* toast */
 .toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom));transform:translate(-50%,20px);
@@ -723,10 +792,12 @@ p{margin:0}
 
 /* 2. Cuvântul care se schimbă în titlu. min-width ține rândul locului,
       ca titlul să nu salte la fiecare schimbare de cuvânt. */
-#heroWord{display:inline-block;text-align:left}
-/* 3,6em = lățimea celui mai lung cuvânt din listă („generos."). Ține rândul
-   locului doar acolo unde coloana e sigur destul de largă. */
-@media(min-width:1200px){#heroWord{min-width:3.6em}}
+/* Cuvântul care se schimbă stă pe rândul lui, ÎNTOTDEAUNA.
+   Motivul: la scara de titlu din Human (până la 94px), „e mai generos."
+   nu încape pe un rând în coloana de 43%, iar dacă l-am lăsa să curgă,
+   titlul ar sări între două și trei rânduri la fiecare 1,9 secunde.
+   Așa, rândul e fix și cuvântul auriu primește accentul întreg. */
+#heroWord{display:block;text-align:left}
 .hero-word{display:inline-block;animation:word-in .44s cubic-bezier(.22,.8,.25,1) both}
 @keyframes word-in{from{filter:blur(4px);opacity:0;transform:translateY(10px)}
   to{filter:blur(0);opacity:1;transform:none}}
@@ -825,9 +896,15 @@ p{margin:0}
 <!-- ══════════════ HEADER ══════════════ -->
 <header class="hdr" id="hdr">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Baffi Cafe — acasă">
-      <img src="img/logo-gold.webp" alt="Baffi Cafe" width="760" height="235">
-      <small>Restaurant<br>Bragadiru</small>
+    <a class="brand" href="#acasa" aria-label="Baffi Cafe — Acasă">
+      <span class="brand-lockup" aria-hidden="true">
+        <img class="brand-chef" src="img/baffi-chef-official.webp" alt=""
+             width="684" height="575" fetchpriority="high" decoding="async">
+        <span class="brand-copy">
+          <span class="brand-kicker">RESTAURANT · BRAGADIRU</span>
+          <strong>Baffi Cafe</strong>
+        </span>
+      </span>
     </a>
     <nav class="nav">
       <a href="#meniu">Meniu</a>
@@ -1040,7 +1117,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ EVENIMENT ══════════════ -->
-<section class="sect" id="evenimente" style="background:var(--cream)">
+<section class="sect" id="evenimente" style="background:var(--eveniment)">
   <div class="wrap">
     <div class="sect-head rv">
       <span class="eyebrow">Ce urmează la Baffi</span>
@@ -1143,7 +1220,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ BAFFI PLACES ══════════════ -->
-<section class="sect" id="locatii" style="background:var(--cream)">
+<section class="sect" id="locatii" style="background:var(--soft)">
   <div class="wrap">
     <div class="sect-head rv">
       <span class="eyebrow">Baffi Places</span>
@@ -1152,6 +1229,7 @@ p{margin:0}
     </div>
     <div class="places rv">
       <div class="place p-cafe">
+        <img class="place-img" src="img/baffi-place-cafe-mood.webp" alt="Atmosfera de la Baffi Cafe Bragadiru" loading="lazy" decoding="async" width="900" height="1200">
         <span class="tag">Baffi Place 01</span><span class="badge">Ești aici</span>
         <div class="k">Restaurant · Bragadiru</div>
         <h3>Gust, foc<br>și seri lungi.</h3>
@@ -1159,6 +1237,7 @@ p{margin:0}
         <a class="go" href="#meniu">Vezi meniul <span class="ar">→</span></a>
       </div>
       <div class="place p-kids">
+        <img class="place-img" src="img/baffi-place-kids-mood.webp" alt="Atmosfera de la Baffi Kids Crângași" loading="lazy" decoding="async" width="900" height="1200">
         <span class="tag">Baffi Place 02</span>
         <div class="k">Crângași · Experiențe</div>
         <h3>Joacă mare.<br>Griji mici.</h3>
@@ -1166,6 +1245,7 @@ p{margin:0}
         <a class="go" data-net="kids" target="_blank" rel="noopener">Descoperă Baffi Kids <span class="ar">↗</span></a>
       </div>
       <div class="place p-oasis">
+        <img class="place-img" src="img/baffi-place-oasis-mood.webp" alt="Atmosfera de la Baffi Oasis Berceni" loading="lazy" decoding="async" width="900" height="1200">
         <span class="tag">Baffi Place 03</span>
         <div class="k">Berceni · Pool &amp; Summer Club</div>
         <h3>Soare, apă<br>și zile lente.</h3>
@@ -1379,11 +1459,9 @@ p{margin:0}
 </div>
 
 <div class="mobar" id="mobar">
-  <a class="btn btn-gold" href="#meniu">Comandă</a>
-  <button class="btn btn-ghost-gold" data-open="rez">Rezervă</button>
-  <a class="btn btn-ghost-gold ico" href="tel:+40756021501" aria-label="Sună la Baffi">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
-  </a>
+  <a href="#meniu"><i>☰</i>Meniu</a>
+  <a class="primary" id="mobarCart" href="#meniu"><i>+</i>Comandă</a>
+  <a data-open="rez"><i>◷</i>Rezervă</a>
 </div>
 
 <button class="top" id="toTop" aria-label="Sus">↑</button>
@@ -2035,6 +2113,11 @@ function closeAll(){
   document.body.classList.remove('locked');
 }
 document.getElementById('cartBtn').addEventListener('click',openCart);
+/* butonul auriu din dockul mobil: dacă are ceva în coș îl deschide,
+   dacă nu, te duce la meniu — să nu deschidă un coș gol degeaba */
+document.getElementById('mobarCart').addEventListener('click',e=>{
+  if(count()){e.preventDefault();openCart()}
+});
 document.getElementById('cartClose').addEventListener('click',closeAll);
 scrim.addEventListener('click',closeAll);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
