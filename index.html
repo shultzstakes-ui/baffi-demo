@@ -344,7 +344,7 @@ p{margin:0}
 .intents{background:var(--cream);border-block:1px solid var(--line-2)}
 .intent-grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
 @media(min-width:820px){.intent-grid{grid-template-columns:repeat(3,1fr)}}
-.intent{background:var(--paper);padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;gap:12px;
+.intent{background:var(--paper);padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;gap:10px;
   position:relative;transition:background .3s var(--ease);min-height:200px;text-align:left}
 .intent:hover{background:var(--white)}
 .intent .num{font:700 11px/1 var(--sans);letter-spacing:.2em;color:var(--gold-deep)}
@@ -354,6 +354,61 @@ p{margin:0}
   letter-spacing:.14em;text-transform:uppercase;color:var(--navy);padding-top:14px}
 .intent .go .ar{transition:transform .3s var(--ease)}
 .intent:hover .go .ar{transform:translateX(5px)}
+
+
+/* ---------- desenele din cele trei carduri ----------
+   Ideea: fiecare traseu e desenat PE O FARFURIE văzută de sus. Farfuria e
+   obiectul pe care orice restaurant îl are, deci nu e o pictogramă luată
+   de undeva — e limbajul casei. Linie subțire aurie, fără umpluturi.
+   Se desenează singure o dată, când secțiunea intră în ecran, apoi stau
+   liniștite; la hover își repetă povestea. */
+.intent-art{width:clamp(74px,7.5vw,92px);height:auto;margin-bottom:4px;overflow:visible}
+.intent-art .rim{fill:none;stroke:rgba(7,28,44,.17);stroke-width:1.4}
+.intent-art .rim-in{fill:none;stroke:rgba(7,28,44,.13);stroke-width:1.2}
+.intent-art .ink{fill:none;stroke:var(--navy);stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round}
+.intent-art .au{fill:none;stroke:var(--gold);stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round}
+.intent-art .au-fill{fill:var(--gold);stroke:none}
+.intent-art .ruta{stroke-dasharray:3 4;opacity:.85}
+
+/* Desenul e ÎNTREG din start. Desenarea din linie e doar un plus, care se
+   întâmplă când cardurile intră în ecran. Dacă din orice motiv animația nu
+   pornește, desenele rămân complete — nu goale. */
+.intent-art .traseu{stroke-dasharray:1;stroke-dashoffset:0}
+.intent-grid.in .intent-art .traseu{animation:deseneaza 1s var(--ease) forwards}
+.intent-grid.in .intent:nth-child(2) .intent-art .traseu{animation-delay:.12s}
+.intent-grid.in .intent:nth-child(3) .intent-art .traseu{animation-delay:.24s}
+@keyframes deseneaza{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+
+/* bulina care duce comanda acasă */
+.intent-art .curier{offset-path:path("M27 45 C 35 24, 61 24, 70 46");offset-rotate:0deg;
+  offset-distance:52%;opacity:1}
+.intent-grid.in .intent-art .curier,
+.intent:hover .intent-art .curier{animation:livreaza 2.8s var(--ease) infinite}
+@keyframes livreaza{
+  0%{offset-distance:0%;opacity:0}
+  12%{opacity:1}
+  82%{opacity:1}
+  100%{offset-distance:100%;opacity:0}
+}
+
+/* arcul de ceas care ajunge la ora aleasă */
+.intent-art .ceas{stroke-dasharray:1;stroke-dashoffset:.72;transform:rotate(-90deg);
+  transform-origin:48px 48px}
+.intent-grid.in .intent-art .ceas{animation:pregateste 2.6s var(--ease) forwards}
+.intent:hover .intent-art .ceas{animation:pregateste 2.6s var(--ease) forwards}
+@keyframes pregateste{from{stroke-dashoffset:1}to{stroke-dashoffset:.72}}
+
+/* biletul de pe masă se ridică puțin când te uiți la card */
+.intent-art .bilet{transform-origin:48px 70px;transition:transform .45s var(--ease)}
+.intent:hover .intent-art .bilet{transform:translateY(-3px) rotate(-3deg)}
+
+@media (prefers-reduced-motion:reduce){
+  .intent-art .traseu{stroke-dashoffset:0;animation:none}
+  .intent-art .curier{opacity:1;offset-distance:52%;animation:none}
+  .intent-art .ceas{stroke-dashoffset:.72;animation:none}
+}
 
 /* ---------- bara de informatii ---------- */
 .info-strip{background:var(--navy);color:var(--cream)}
@@ -861,9 +916,18 @@ p{margin:0}
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   mask-composite:exclude;opacity:0;pointer-events:none}
-.hero-cta.live .btn-trace::before{animation:trace 2.6s cubic-bezier(.45,.05,.35,1) infinite}
-.hero-cta.live .btn-trace:last-of-type::before{animation-delay:1.3s}
-@keyframes trace{0%{--ta:0deg;opacity:0}7%{opacity:.95}62%{opacity:.95}76%,100%{--ta:360deg;opacity:0}}
+/* Traseele se fac pe rând, nu simultan: fiecare buton are jumătatea lui
+   din ciclu. Ocolul propriu-zis durează la fel ca înainte (~1,85 s), doar
+   că al doilea buton pornește după ce primul s-a stins. Două lumini care
+   se rotesc în același timp pe două butoane alăturate obosesc privirea. */
+.hero-cta.live .btn-trace::before{animation:trace 4s cubic-bezier(.45,.05,.35,1) infinite}
+.hero-cta.live .btn-trace:last-of-type::before{animation-delay:2s}
+@keyframes trace{
+  0%{--ta:0deg;opacity:0}
+  4%{opacity:.95}
+  46%{--ta:360deg;opacity:.95}
+  50%,100%{--ta:360deg;opacity:0}
+}
 
 /* 4. Nota 4,5 tresare și scapă stele */
 .score{position:relative;display:inline-block;flex:none}
@@ -1033,7 +1097,7 @@ p{margin:0}
         <span class="score"><b data-cfg="nota">4,5</b><span class="spark" aria-hidden="true"></span></span>
         <div>
           <div class="stars" aria-hidden="true"></div>
-          <p>Peste <span data-cfg="recenzii">450</span> de recenzii pe Google<br>Locul 3 din 75 de restaurante din Bragadiru</p>
+          <p>Peste <span data-cfg="recenzii">450</span> de recenzii pe Google</p>
         </div>
       </div>
     </div>
@@ -1048,18 +1112,63 @@ p{margin:0}
   <div class="wrap" style="padding-block:clamp(46px,5vw,72px)">
     <div class="intent-grid rv">
       <a class="intent" href="#meniu" data-mode="livrare">
+        <svg class="intent-art" viewBox="0 0 96 96" aria-hidden="true">
+          <circle class="rim" cx="48" cy="48" r="42"/>
+          <circle class="rim-in" cx="48" cy="48" r="33"/>
+          <!-- pravalia: copertina lata, vitrina, usa -->
+          <path class="ink traseu" pathLength="1" d="M19 68V52h16v16"/>
+          <path class="ink traseu" pathLength="1" d="M15 52l4-6h16l4 6z"/>
+          <path class="rim-in traseu" pathLength="1" d="M24 68v-8h6v8"/>
+          <!-- casa omului: acoperis in doua ape, cos -->
+          <path class="ink traseu" pathLength="1" d="M62 68V55h16v13"/>
+          <path class="ink traseu" pathLength="1" d="M59 56l11-9 11 9"/>
+          <path class="rim-in traseu" pathLength="1" d="M75 49v-5h3v8"/>
+          <!-- drumul dintre ele -->
+          <path class="au traseu ruta" pathLength="1" d="M27 45C35 24 61 24 70 46"/>
+          <circle class="au-fill curier" r="3.6"/>
+        </svg>
         <span class="num">01 · Vreau acasă</span>
         <h3>Comandă cu livrare</h3>
         <p>Meniul complet, fără cont și fără comision de aplicație. Gratuit de la 70 de lei.</p>
         <span class="go">Deschide meniul <span class="ar">→</span></span>
       </a>
       <a class="intent" href="#meniu" data-mode="ridicare">
+        <svg class="intent-art" viewBox="0 0 96 96" aria-hidden="true">
+          <circle class="rim" cx="48" cy="48" r="42"/>
+          <!-- reperele de ceas pe marginea farfuriei -->
+          <path class="rim-in" d="M48 3v6M93 48h-6M48 93v-6M3 48h6"/>
+          <!-- arcul care se umple pana la ora aleasa -->
+          <circle class="au ceas" cx="48" cy="48" r="42" pathLength="1"/>
+          <!-- punga pregatita -->
+          <path class="ink traseu" pathLength="1" d="M35 45h26l-2.5 27h-21z"/>
+          <path class="ink traseu" pathLength="1" d="M41 45v-4a7 7 0 0 1 14 0v4"/>
+          <path class="rim-in traseu" pathLength="1" d="M36.5 54h23"/>
+        </svg>
         <span class="num">02 · Sunt pe drum</span>
         <h3>Comandă pentru ridicare</h3>
         <p>Alegi ora, noi pregătim. Ajungi, iei punga și pleci — fără așteptare.</p>
         <span class="go">Comandă de ridicat <span class="ar">→</span></span>
       </a>
       <button class="intent" data-open="rez">
+        <svg class="intent-art" viewBox="0 0 96 96" aria-hidden="true">
+          <circle class="rim" cx="48" cy="48" r="42"/>
+          <circle class="rim-in" cx="48" cy="48" r="33"/>
+          <!-- farfuria din mijloc -->
+          <circle class="ink traseu" pathLength="1" cx="48" cy="52" r="13"/>
+          <circle class="rim-in traseu" pathLength="1" cx="48" cy="52" r="8"/>
+          <!-- furculita, in stanga -->
+          <path class="ink traseu" pathLength="1" d="M27 66V46"/>
+          <path class="ink traseu" pathLength="1" d="M23 34v8a4 4 0 0 0 8 0v-8"/>
+          <path class="rim-in traseu" pathLength="1" d="M27 34v8"/>
+          <!-- cutitul, in dreapta -->
+          <path class="ink traseu" pathLength="1" d="M69 66V48"/>
+          <path class="ink traseu" pathLength="1" d="M69 48c-3-2-3-10 0-14 3 4 3 12 0 14z"/>
+          <!-- biletul de rezervare, sprijinit pe masa -->
+          <g class="bilet">
+            <path class="au traseu" pathLength="1" d="M38 78h20l-3-9H41z"/>
+            <path class="rim-in traseu" pathLength="1" d="M43 74h10"/>
+          </g>
+        </svg>
         <span class="num">03 · Ies la Baffi</span>
         <h3>Rezervă o masă</h3>
         <p>Prânz, cină sau o seară lungă cu prietenii. Confirmăm rapid, prin telefon.</p>
@@ -1535,7 +1644,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.6';
+window.BAFFI_VERSIUNE='5.8';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
