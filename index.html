@@ -1499,7 +1499,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='4.9';
+window.BAFFI_VERSIUNE='5.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1535,6 +1535,12 @@ const CFG = {
   pizzaZilnic: false
 };
 const TEL=CFG.tel, WA=CFG.wa;
+
+/* Respectăm setarea de sistem „mișcare redusă". Se citește O SINGURĂ DATĂ,
+   aici sus: e folosită în toată pagina, iar dacă declarația stă mai jos decât
+   prima folosire, scriptul se oprește cu ReferenceError și NIMIC din ce vine
+   după nu mai rulează — bulinele de categorii, cardurile, caruselele. */
+const MOTION=!matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* Linkul de recenzie. Deocamdată trimite la fișa Google a restaurantului.
    ÎNLOCUIEȘTE-L cu linkul scurt din Google Business Profile → „Cere recenzii"
@@ -2326,7 +2332,6 @@ reveal();
    MIȘCARE — partea de JS. Nimic nu pornește dacă utilizatorul
    a cerut mai puțină animație din sistemul lui de operare.
    ============================================================ */
-const MOTION=!matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ---------- 1. imaginile respiră pe scroll ----------
    Cât e vizibil elementul → smoothstep → zoom țintă (max +7,2%).
