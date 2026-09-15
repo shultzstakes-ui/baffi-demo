@@ -654,7 +654,11 @@ p{margin:0}
 .dark .tick b{color:var(--gold)}
 
 /* ---------- carusel (merge singur, dar îl poți conduce) ---------- */
-.carou{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;background:var(--navy-2)}
+.carou{position:relative;border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;
+  background:var(--navy-2);cursor:grab}
+.carou.is-drag{cursor:grabbing}
+.carou.is-drag img,.carou.is-drag figcaption{pointer-events:none}
+.carou-track{cursor:inherit}
 .carou-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
   -webkit-overflow-scrolling:touch}
 .carou-track::-webkit-scrollbar{display:none}
@@ -879,6 +883,19 @@ p{margin:0}
 .rail{cursor:grab}
 .rail.is-drag{cursor:grabbing;scroll-snap-type:none;user-select:none}
 .rail.is-drag img,.rail.is-drag figcaption{pointer-events:none}
+
+/* Galeria care curge singură merge pe ANIMAȚIE CSS, nu pe cadre din JS.
+   Motivul e practic: banda aurie de sus folosește același mecanism și merge
+   peste tot, în timp ce o buclă pe requestAnimationFrame se poate opri din
+   zeci de motive (filă în fundal, economie de baterie, o stare rămasă
+   agățată) — și atunci galeria stă, fără nicio eroare care să spună de ce. */
+.rail-track{display:flex;gap:14px;width:max-content;
+  animation:railFlow var(--flow-dur,70s) linear infinite}
+@keyframes railFlow{to{transform:translateX(calc(-50% - 7px))}}
+.rail:hover .rail-track,
+.rail.is-drag .rail-track,
+.rail.e-tras .rail-track{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.rail-track{animation:none}}
 .rail-nav{display:flex;align-items:center;gap:10px;margin-top:10px}
 .rail-nav .dots{display:flex;gap:6px;margin-left:auto}
 .rail-nav .dots button{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.26;
@@ -1499,7 +1516,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.2';
+window.BAFFI_VERSIUNE='5.3';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2428,7 +2445,6 @@ function confettiFrom(el){
 }
 
 /* ---------- 6. galeriile se trag cu mâna ---------- */
-let autoExtra=0;   // viteza pe care i-o dă utilizatorul galeriei care curge singură
 document.querySelectorAll('.rail').forEach(rail=>{
   let st=null, moved=0;
   rail.addEventListener('pointerdown',e=>{
@@ -2455,9 +2471,6 @@ document.querySelectorAll('.rail').forEach(rail=>{
     st=null; rail.classList.remove('is-drag');
     try{if(rail.hasPointerCapture(e.pointerId))rail.releasePointerCapture(e.pointerId)}catch(_){}
     if(!MOTION||Math.abs(v)<0.06) return;
-    /* galeria care curge singură nu-și oprește mersul: primește viteza ta
-       ca supliment și o lasă să se stingă în mersul de fond */
-    if(rail.id==='railEvent'){ autoExtra=v; return }
     const glide=()=>{ rail.scrollLeft+=v*16; v*=0.92;
       if(Math.abs(v)>0.02) requestAnimationFrame(glide) };
     requestAnimationFrame(glide);
@@ -2469,45 +2482,38 @@ document.querySelectorAll('.rail').forEach(rail=>{
 });
 
 /* ---------- 7. galeria de evenimente curge singură ----------
-   O tragi cât vrei; când îi dai drumul, viteza ta se stinge treptat și
-   se topește înapoi în mersul de fond. Nu se oprește brusc și nu sare. */
+   Mersul de fond îl face animația CSS (vezi .rail-track). Aici doar
+   dublăm conținutul, ca bucla să fie fără cusătură, și punem pauză cât
+   timp omul o ține sub deget sau sub mouse — ca să apuce să se uite. */
 const autoRail=document.getElementById('railEvent');
 if(autoRail&&MOTION){
-  [...autoRail.children].forEach(k=>{
-    const c=k.cloneNode(true); c.setAttribute('aria-hidden','true');
-    c.querySelectorAll('img').forEach(i=>i.alt=''); autoRail.appendChild(c);
+  const figuri=[...autoRail.children];
+  const track=document.createElement('div');
+  track.className='rail-track';
+  figuri.forEach(f=>track.appendChild(f));
+  figuri.forEach(f=>{
+    const c=f.cloneNode(true); c.setAttribute('aria-hidden','true');
+    c.querySelectorAll('img').forEach(i=>i.alt=''); track.appendChild(c);
   });
+  autoRail.appendChild(track);
   autoRail.style.scrollSnapType='none';
-  const BAZA=0.045;                       // px pe milisecundă, mersul de fond
-  let last=performance.now(), pauzaPanaLa=0;
-  /* Verificăm vizibilitatea direct, nu prin observator: un observator care
-     din orice motiv nu raportează lasă galeria oprită definitiv, iar asta
-     e exact felul de defect care se vede abia pe telefonul omului. */
-  const eVizibila=()=>{
-    const r=autoRail.getBoundingClientRect();
-    return r.bottom>0 && r.top<innerHeight && r.width>0;
+  autoRail.style.overflowX='hidden';          // mișcarea o dă animația
+  /* durata se calculează din lățime, ca viteza să fie aceeași pe orice ecran */
+  const setViteza=()=>{
+    const l=track.scrollWidth/2;
+    if(l>10) autoRail.style.setProperty('--flow-dur',Math.round(l/48)+'s');
   };
-  /* Pe telefon derularea e nativă. Punem pauză doar cât ține degetul pe ea,
-     plus o jumătate de secundă, ca inerția nativă să se stingă. */
-  const pauza=ms=>{pauzaPanaLa=performance.now()+ms};
-  autoRail.addEventListener('touchstart',()=>pauza(4000),{passive:true});
-  autoRail.addEventListener('touchmove',()=>pauza(4000),{passive:true});
-  autoRail.addEventListener('touchend',()=>pauza(500),{passive:true});
-  autoRail.addEventListener('touchcancel',()=>pauza(500),{passive:true});
-  const loop=t=>{
-    const dt=Math.min(50,t-last); last=t;
-    const liber=eVizibila()&&!autoRail.classList.contains('is-drag')&&t>pauzaPanaLa;
-    if(liber) autoRail.scrollLeft+=dt*(BAZA+autoExtra);
-    autoExtra*=Math.pow(0.90,dt/16.67);
-    if(Math.abs(autoExtra)<0.004) autoExtra=0;
-    const half=autoRail.scrollWidth/2;
-    if(half>10){
-      if(autoRail.scrollLeft>=half) autoRail.scrollLeft-=half;
-      else if(autoRail.scrollLeft<0) autoRail.scrollLeft+=half;
-    }
-    requestAnimationFrame(loop);
-  };
-  requestAnimationFrame(loop);
+  setViteza(); addEventListener('resize',setViteza,{passive:true});
+  addEventListener('load',setViteza);
+  /* pauză cât e ținută sub deget */
+  let idPauza=0;
+  const tine=()=>{autoRail.classList.add('e-tras');clearTimeout(idPauza)};
+  const lasa=()=>{clearTimeout(idPauza);idPauza=setTimeout(()=>autoRail.classList.remove('e-tras'),600)};
+  autoRail.addEventListener('touchstart',tine,{passive:true});
+  autoRail.addEventListener('touchend',lasa,{passive:true});
+  autoRail.addEventListener('touchcancel',lasa,{passive:true});
+  autoRail.addEventListener('pointerdown',tine);
+  addEventListener('pointerup',lasa);
 }
 
 /* ============================================================
@@ -2603,6 +2609,44 @@ function initCarou(){
     return b;
   }
   track.addEventListener('scroll',()=>{const n=aproape();if(n!==idx){idx=n;mark();t0=performance.now()}},{passive:true});
+
+  /* Tragere cu mouse-ul. Pe telefon glisarea merge deja nativ (overflow-x
+     plus scroll-snap), dar pe laptop n-aveai decât săgețile.
+     Fără setPointerCapture: captura redirecționează evenimentul către
+     container și înghite clicul pe săgeți și pe buline. */
+  let tr=null, tras=0;
+  function trMove(e){
+    if(!tr) return;
+    const d=tr.x-e.clientX;
+    tras=Math.max(tras,Math.abs(d));
+    track.scrollLeft=tr.left+d;
+  }
+  function trGata(){
+    if(!tr) return;
+    const plecatDe=tr.idx; tr=null;
+    track.style.scrollSnapType='';
+    box.classList.remove('is-drag');
+    removeEventListener('pointermove',trMove);
+    /* dacă a tras destul, sare la poza următoare în direcția tragerii */
+    if(tras>28){
+      const n=aproape();
+      go(n!==plecatDe ? n : plecatDe);
+    }
+    setTimeout(()=>{tras=0},0);
+    t0=performance.now();
+  }
+  track.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='touch') return;       // pe telefon, glisare nativă
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    tr={x:e.clientX,left:track.scrollLeft,idx:idx}; tras=0;
+    track.style.scrollSnapType='none';        // altfel snap-ul se luptă cu mâna
+    box.classList.add('is-drag');
+    addEventListener('pointermove',trMove);
+    addEventListener('pointerup',trGata,{once:true});
+    addEventListener('pointercancel',trGata,{once:true});
+  });
+  /* după o tragere, clicul de la final nu trebuie să însemne altceva */
+  box.addEventListener('click',e=>{ if(tras>10){e.preventDefault();e.stopPropagation()} },true);
   box.querySelector('.prev').addEventListener('click',()=>go(idx-1));
   box.querySelector('.next').addEventListener('click',()=>go(idx+1));
   dotEls.forEach((d,i)=>d.addEventListener('click',()=>go(i)));
