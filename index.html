@@ -1516,7 +1516,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.3';
+window.BAFFI_VERSIUNE='5.4';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2498,13 +2498,25 @@ if(autoRail&&MOTION){
   autoRail.appendChild(track);
   autoRail.style.scrollSnapType='none';
   autoRail.style.overflowX='hidden';          // mișcarea o dă animația
-  /* durata se calculează din lățime, ca viteza să fie aceeași pe orice ecran */
+  /* Durata se calculează din lățimea reală, ca viteza să fie aceeași pe orice
+     ecran. Se RECALCULEAZĂ pe măsură ce intră pozele: dacă o măsurăm înainte
+     să se încarce, lățimea e mică, durata iese de câteva secunde și galeria
+     zboară. Plus limite, ca o măsurătoare greșită să nu strice nimic. */
   const setViteza=()=>{
     const l=track.scrollWidth/2;
-    if(l>10) autoRail.style.setProperty('--flow-dur',Math.round(l/48)+'s');
+    if(l<200) return;                       // încă nu s-au încărcat pozele
+    const sec=Math.min(150,Math.max(30,Math.round(l/48)));
+    autoRail.style.setProperty('--flow-dur',sec+'s');
   };
-  setViteza(); addEventListener('resize',setViteza,{passive:true});
+  setViteza();
+  addEventListener('resize',setViteza,{passive:true});
   addEventListener('load',setViteza);
+  track.querySelectorAll('img').forEach(i=>{
+    if(i.complete) return;
+    i.addEventListener('load',setViteza,{once:true});
+    i.addEventListener('error',setViteza,{once:true});
+  });
+  if(window.ResizeObserver) new ResizeObserver(setViteza).observe(track);
   /* pauză cât e ținută sub deget */
   let idPauza=0;
   const tine=()=>{autoRail.classList.add('e-tras');clearTimeout(idPauza)};
