@@ -699,7 +699,10 @@ p{margin:0}
 .place{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:330px;
   display:flex;flex-direction:column;justify-content:flex-end;padding:28px;color:var(--cream);
   background:var(--navy);isolation:isolate;transition:transform .4s var(--ease)}
+.place{cursor:pointer}
 .place:hover{transform:translateY(-5px)}
+.place:hover .go{color:var(--gold-lite)}
+.place .go{transition:color .25s var(--ease)}
 /* Human folosește fotografii pentru cele trei locuri, nu degradeuri:
    fiecare card arată starea lui, nu doar o culoare. */
 .place-img{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover;
@@ -1228,30 +1231,30 @@ p{margin:0}
       <p class="lead">Același nume, trei experiențe cu personalitate proprie. Alegi starea și ajungi direct unde trebuie.</p>
     </div>
     <div class="places rv">
-      <div class="place p-cafe">
+      <a class="place p-cafe" href="#meniu">
         <img class="place-img" src="img/baffi-place-cafe-mood.webp" alt="Atmosfera de la Baffi Cafe Bragadiru" loading="lazy" decoding="async" width="900" height="1200">
         <span class="tag">Baffi Place 01</span><span class="badge">Ești aici</span>
         <div class="k">Restaurant · Bragadiru</div>
         <h3>Gust, foc<br>și seri lungi.</h3>
         <p>Grătar, cuptor de pizza, terasă și evenimente private. Str. Safirului 69R.</p>
-        <a class="go" href="#meniu">Vezi meniul <span class="ar">→</span></a>
-      </div>
-      <div class="place p-kids">
+        <span class="go">Vezi meniul <span class="ar">→</span></span>
+      </a>
+      <a class="place p-kids" data-net="kids" target="_blank" rel="noopener">
         <img class="place-img" src="img/baffi-place-kids-mood.webp" alt="Atmosfera de la Baffi Kids Crângași" loading="lazy" decoding="async" width="900" height="1200">
         <span class="tag">Baffi Place 02</span>
         <div class="k">Crângași · Experiențe</div>
         <h3>Joacă mare.<br>Griji mici.</h3>
         <p>Loc de joacă, petreceri pentru copii, cursuri de dans și teatru. Calea Crângași 29, etaj 5.</p>
-        <a class="go" data-net="kids" target="_blank" rel="noopener">Descoperă Baffi Kids <span class="ar">↗</span></a>
-      </div>
-      <div class="place p-oasis">
+        <span class="go">Descoperă Baffi Kids <span class="ar">↗</span></span>
+      </a>
+      <a class="place p-oasis" data-net="oasis" target="_blank" rel="noopener">
         <img class="place-img" src="img/baffi-place-oasis-mood.webp" alt="Atmosfera de la Baffi Oasis Berceni" loading="lazy" decoding="async" width="900" height="1200">
         <span class="tag">Baffi Place 03</span>
         <div class="k">Berceni · Pool &amp; Summer Club</div>
         <h3>Soare, apă<br>și zile lente.</h3>
         <p>Piscină de 200 de locuri, restaurant și bar. Bd. Metalurgiei 132, Cartier Solar. Sezonier.</p>
-        <a class="go" data-net="oasis" target="_blank" rel="noopener">Descoperă Baffi Oasis <span class="ar">↗</span></a>
-      </div>
+        <span class="go">Descoperă Baffi Oasis <span class="ar">↗</span></span>
+      </a>
     </div>
   </div>
 </section>
@@ -1957,9 +1960,16 @@ function alegeCat(name,scroll){
   const chip=[...railEl().querySelectorAll('.chip')].find(c=>c.dataset.cat===name);
   if(chip) chipInView(chip);
   if(scroll){
-    const y=document.getElementById('meniu').getBoundingClientRect().top+scrollY
-            -(document.querySelector('.hdr')?.offsetHeight||74)-10;
-    scrollTo({top:y,behavior:MOTION?'smooth':'auto'});
+    /* Aterizăm PE lista aleasă, chiar sub banda lipicioasă de categorii.
+       Dacă am sări la începutul secțiunii, pe telefon omul ar vedea doar
+       titlul, căutarea și bulinele — și ar crede că nu s-a întâmplat nimic. */
+    requestAnimationFrame(()=>{
+      const tinta=document.querySelector('#menuList .cat-block, #menuList .cat-picker, #menuList .picker-head');
+      if(!tinta) return;
+      const sus=(document.querySelector('.hdr')?.offsetHeight||74)
+               +(railEl()?.offsetHeight||48)+12;
+      scrollTo({top:tinta.getBoundingClientRect().top+scrollY-sus,behavior:MOTION?'smooth':'auto'});
+    });
   }
 }
 document.getElementById('catRail').addEventListener('click',e=>{
@@ -2408,14 +2418,24 @@ if(autoRail&&MOTION){
   });
   autoRail.style.scrollSnapType='none';
   const BAZA=0.045;                       // px pe milisecundă, mersul de fond
-  let last=performance.now(), inView=false, touching=0;
-  new IntersectionObserver(([e])=>{inView=e.isIntersecting},{threshold:.08}).observe(autoRail);
-  /* pe telefon derularea e nativă: o lăsăm să-și ducă inerția până la capăt */
-  autoRail.addEventListener('touchstart',()=>{touching=performance.now()},{passive:true});
-  autoRail.addEventListener('touchend',()=>{touching=performance.now()+700},{passive:true});
+  let last=performance.now(), pauzaPanaLa=0;
+  /* Verificăm vizibilitatea direct, nu prin observator: un observator care
+     din orice motiv nu raportează lasă galeria oprită definitiv, iar asta
+     e exact felul de defect care se vede abia pe telefonul omului. */
+  const eVizibila=()=>{
+    const r=autoRail.getBoundingClientRect();
+    return r.bottom>0 && r.top<innerHeight && r.width>0;
+  };
+  /* Pe telefon derularea e nativă. Punem pauză doar cât ține degetul pe ea,
+     plus o jumătate de secundă, ca inerția nativă să se stingă. */
+  const pauza=ms=>{pauzaPanaLa=performance.now()+ms};
+  autoRail.addEventListener('touchstart',()=>pauza(4000),{passive:true});
+  autoRail.addEventListener('touchmove',()=>pauza(4000),{passive:true});
+  autoRail.addEventListener('touchend',()=>pauza(500),{passive:true});
+  autoRail.addEventListener('touchcancel',()=>pauza(500),{passive:true});
   const loop=t=>{
     const dt=Math.min(50,t-last); last=t;
-    const liber=inView&&!autoRail.classList.contains('is-drag')&&t>touching;
+    const liber=eVizibila()&&!autoRail.classList.contains('is-drag')&&t>pauzaPanaLa;
     if(liber) autoRail.scrollLeft+=dt*(BAZA+autoExtra);
     autoExtra*=Math.pow(0.90,dt/16.67);
     if(Math.abs(autoExtra)<0.004) autoExtra=0;
