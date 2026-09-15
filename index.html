@@ -80,6 +80,9 @@
      nu aproximări. Suprafețele calde sunt ce dă senzația de „premium cald". */
   --navy:#071c2c; --navy-2:#0c2940; --sapphire:#0c4169; --sapphire-2:#12557f;
   --gold:#c99a4a; --gold-lite:#e2c17c; --gold-deep:#a97c33;
+  /* auriul din banda locațiilor, o treaptă mai deschis și mai cald decât
+     auriul butoanelor — ca pastila locației curente să iasă mai bine */
+  --gold-bar:#dba95c;
   --crimson:#a82d35;
   --paper:#fffdf9; --cream:#f5efe6; --soft:#ece3d7; --soft-blue:#e8eef0;
   --body-bg:#f2ece3; --warm:#fffaf3; --terasa:#f7f1e9; --eveniment:#eee6dc;
@@ -183,8 +186,8 @@ p{margin:0}
   background:rgba(255,255,255,.14);font:inherit;font-size:7px;font-style:normal;
   letter-spacing:0;transform:rotate(-7deg)}
 .network-bar a b{font-size:8px;letter-spacing:.16em}
-.network-bar a.active,.network-bar a:hover{background:var(--gold);color:var(--navy)}
-.network-bar a.active i{background:#fff;color:var(--gold)}
+.network-bar a.active,.network-bar a:hover{background:var(--gold-bar);color:var(--navy)}
+.network-bar a.active i{background:#fff;color:var(--gold-deep)}
 .network-bar small{justify-self:end;opacity:.55;font-size:7px}
 @media(max-width:780px){
   .network-bar{grid-template-columns:auto 1fr;padding:0}
@@ -889,6 +892,11 @@ p{margin:0}
    peste tot, în timp ce o buclă pe requestAnimationFrame se poate opri din
    zeci de motive (filă în fundal, economie de baterie, o stare rămasă
    agățată) — și atunci galeria stă, fără nicio eroare care să spună de ce. */
+/* Două straturi, fiecare cu transformarea lui, ca să nu se calce:
+   .rail-tug ține deplasarea dată de mâna omului, .rail-track ține mersul
+   de fond. Se compun singure, fără să se anuleze una pe alta. */
+.rail{touch-action:pan-y}          /* degetul trage lateral, pagina merge vertical */
+.rail-tug{transform:translateX(var(--tug,0px));will-change:transform}
 .rail-track{display:flex;gap:14px;width:max-content;
   animation:railFlow var(--flow-dur,70s) linear infinite}
 @keyframes railFlow{to{transform:translateX(calc(-50% - 7px))}}
@@ -1516,7 +1524,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.4';
+window.BAFFI_VERSIUNE='5.5';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2495,7 +2503,9 @@ if(autoRail&&MOTION){
     const c=f.cloneNode(true); c.setAttribute('aria-hidden','true');
     c.querySelectorAll('img').forEach(i=>i.alt=''); track.appendChild(c);
   });
-  autoRail.appendChild(track);
+  const tug=document.createElement('div');
+  tug.className='rail-tug'; tug.appendChild(track);
+  autoRail.appendChild(tug);
   autoRail.style.scrollSnapType='none';
   autoRail.style.overflowX='hidden';          // mișcarea o dă animația
   /* Durata se calculează din lățimea reală, ca viteza să fie aceeași pe orice
@@ -2517,15 +2527,53 @@ if(autoRail&&MOTION){
     i.addEventListener('error',setViteza,{once:true});
   });
   if(window.ResizeObserver) new ResizeObserver(setViteza).observe(track);
-  /* pauză cât e ținută sub deget */
-  let idPauza=0;
-  const tine=()=>{autoRail.classList.add('e-tras');clearTimeout(idPauza)};
-  const lasa=()=>{clearTimeout(idPauza);idPauza=setTimeout(()=>autoRail.classList.remove('e-tras'),600)};
-  autoRail.addEventListener('touchstart',tine,{passive:true});
-  autoRail.addEventListener('touchend',lasa,{passive:true});
-  autoRail.addEventListener('touchcancel',lasa,{passive:true});
-  autoRail.addEventListener('pointerdown',tine);
-  addEventListener('pointerup',lasa);
+  /* ---------- tragerea cu mâna, peste mersul de fond ----------
+     Cât ții, animația stă pe loc și galeria urmează degetul. Când dai
+     drumul, deplasarea ta NU se pierde și NU sare înapoi: o convertim în
+     avans de fază al animației, iar galeria pornește mai departe exact de
+     unde ai lăsat-o. */
+  let apucat=null, faza=0, deplasare=0;
+  const jumatate=()=>Math.max(1,track.scrollWidth/2);
+  const durata=()=>parseFloat(getComputedStyle(track).animationDuration)||70;
+  const aplicaFaza=()=>{ track.style.animationDelay=(-faza)+'s' };
+
+  function apuca(x){
+    apucat={x,tug:deplasare};
+    autoRail.classList.add('e-tras');
+  }
+  function trage(x){
+    if(!apucat) return;
+    deplasare=apucat.tug+(x-apucat.x);
+    tug.style.setProperty('--tug',deplasare+'px');
+  }
+  function elibereaza(){
+    if(!apucat) return;
+    apucat=null;
+    const d=durata();
+    /* deplasarea în pixeli devine deplasare în timp pe animație */
+    faza=(faza - (deplasare/jumatate())*d) % d;
+    if(faza<0) faza+=d;
+    deplasare=0;
+    tug.style.setProperty('--tug','0px');
+    aplicaFaza();
+    autoRail.classList.remove('e-tras');
+  }
+
+  autoRail.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    apuca(e.clientX);
+    addEventListener('pointermove',mutaCuMouse);
+    addEventListener('pointerup',opresteMouse,{once:true});
+    addEventListener('pointercancel',opresteMouse,{once:true});
+  });
+  function mutaCuMouse(e){ trage(e.clientX) }
+  function opresteMouse(){ removeEventListener('pointermove',mutaCuMouse); elibereaza() }
+
+  /* degetul: overflow e ascuns, deci derularea nativă nu ne mai ajută */
+  autoRail.addEventListener('touchstart',e=>{ if(e.touches[0]) apuca(e.touches[0].clientX) },{passive:true});
+  autoRail.addEventListener('touchmove',e=>{ if(e.touches[0]) trage(e.touches[0].clientX) },{passive:true});
+  autoRail.addEventListener('touchend',elibereaza,{passive:true});
+  autoRail.addEventListener('touchcancel',elibereaza,{passive:true});
 }
 
 /* ============================================================
