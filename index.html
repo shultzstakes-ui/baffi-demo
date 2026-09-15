@@ -80,8 +80,9 @@
      nu aproximări. Suprafețele calde sunt ce dă senzația de „premium cald". */
   --navy:#071c2c; --navy-2:#0c2940; --sapphire:#0c4169; --sapphire-2:#12557f;
   --gold:#c99a4a; --gold-lite:#e2c17c; --gold-deep:#a97c33;
-  /* auriul din banda locațiilor, o treaptă mai deschis și mai cald decât
-     auriul butoanelor — ca pastila locației curente să iasă mai bine */
+  /* Auriu cu o treaptă mai deschisă, dacă vrei banda de eveniment mai
+     luminoasă decât în referință: pui --gold-bar în locul lui --gold
+     la .ticker. Referința folosește --gold, așa e acum. */
   --gold-bar:#dba95c;
   --crimson:#a82d35;
   --paper:#fffdf9; --cream:#f5efe6; --soft:#ece3d7; --soft-blue:#e8eef0;
@@ -186,8 +187,8 @@ p{margin:0}
   background:rgba(255,255,255,.14);font:inherit;font-size:7px;font-style:normal;
   letter-spacing:0;transform:rotate(-7deg)}
 .network-bar a b{font-size:8px;letter-spacing:.16em}
-.network-bar a.active,.network-bar a:hover{background:var(--gold-bar);color:var(--navy)}
-.network-bar a.active i{background:#fff;color:var(--gold-deep)}
+.network-bar a.active,.network-bar a:hover{background:var(--gold);color:var(--navy)}
+.network-bar a.active i{background:#fff;color:var(--gold)}
 .network-bar small{justify-self:end;opacity:.55;font-size:7px}
 @media(max-width:780px){
   .network-bar{grid-template-columns:auto 1fr;padding:0}
@@ -198,18 +199,28 @@ p{margin:0}
   .network-bar small{display:none}
 }
 
-/* ---------- ticker eveniment ---------- */
-.ticker{background:linear-gradient(90deg,var(--sapphire),var(--sapphire-2) 55%,var(--sapphire));
-  color:var(--cream);overflow:hidden;position:relative}
+/* ---------- banda cu ce urmează la Baffi ----------
+   Valorile sunt cele din referință (baffi-human-live.css): fundal auriu
+   plin, scris bleumarin, eticheta e un chip bleumarin PESTE auriu, iar
+   capetele se sting în auriu ca textul să nu pară tăiat de margine. */
+.ticker{position:relative;z-index:16;height:37px;overflow:hidden;white-space:nowrap;
+  background:var(--gold);color:var(--navy);box-shadow:0 6px 18px rgba(7,28,44,.12)}
 .ticker[hidden]{display:none}
-.ticker a{display:block;padding:9px 0}
-.tk-track{display:flex;width:max-content;animation:tk 38s linear infinite}
-.ticker:hover .tk-track{animation-play-state:paused}
+.ticker::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,var(--gold),transparent 4%,transparent 96%,var(--gold))}
+.ticker a{display:block;height:100%}
+.tk-track{display:flex;align-items:center;width:max-content;height:100%;
+  animation:tk 27s linear infinite}
+.ticker:hover .tk-track,.ticker:focus-visible .tk-track{animation-play-state:paused}
 @keyframes tk{to{transform:translateX(-50%)}}
-.tk-grp{display:flex;align-items:center;gap:26px;padding-right:26px;
-  font:600 11.5px/1 var(--sans);letter-spacing:.19em;text-transform:uppercase;white-space:nowrap}
-.tk-grp span{opacity:.9}.tk-grp em{font-style:normal;color:var(--gold-lite)}
-.tk-d{color:var(--gold);font-size:8px}
+.tk-grp{display:flex;align-items:center;gap:22px;padding-right:22px;flex:none}
+.tk-grp b,.tk-grp strong,.tk-grp span,.tk-grp em{
+  font:700 10px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;font-style:normal}
+.tk-grp b{background:var(--navy);color:var(--gold-lite);padding:6px 10px}
+.tk-grp strong{font-weight:900}
+.tk-grp em{font-weight:900;text-decoration:underline;text-underline-offset:3px}
+.tk-d{color:rgba(7,28,44,.42);font-size:7px;letter-spacing:0}
+@media (prefers-reduced-motion:reduce){.tk-track{animation:none}}
 
 /* ---------- header ---------- */
 .hdr{position:sticky;top:0;z-index:60;background:rgba(7,28,44,.96);
@@ -1524,7 +1535,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.5';
+window.BAFFI_VERSIUNE='5.6';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1822,7 +1833,13 @@ function paintEvents(){
   const up=upcoming(), tk=document.getElementById('ticker');
   if(up.length){
     const e=up[0];
-    const grp=`<div class="tk-grp"><span class="tk-d">◆</span><span>Urmează la Baffi</span><span class="tk-d">◆</span><em>${e.t}</em><span class="tk-d">◆</span><span>${evDate(e.start).toUpperCase()}</span><span class="tk-d">◆</span><span>Vezi evenimentul →</span></div>`;
+    const grp=`<div class="tk-grp">`
+      +`<b>Urmează la Baffi</b><i class="tk-d">◆</i>`
+      +`<strong>${e.t}</strong><i class="tk-d">◆</i>`
+      +`<span>${evDate(e.start).toUpperCase()}</span><i class="tk-d">◆</i>`
+      +(e.sub?`<span>${e.sub}</span><i class="tk-d">◆</i>`:``)
+      +`<em>Vezi evenimentul →</em><i class="tk-d">◆</i>`
+      +`</div>`;
     document.getElementById('tkTrack').innerHTML=grp.repeat(4);
     tk.hidden=false;
   } else tk.hidden=true;
