@@ -21,6 +21,30 @@
 <meta property="og:type" content="restaurant">
 <meta property="og:locale" content="ro_RO">
 <meta name="twitter:card" content="summary_large_image">
+<script>
+/* Dacă ceva din pagină crapă pe telefonul sau browserul cuiva, nu vreau să
+   se vadă doar prin „nu merge nimic". Bannerul ăsta apare DOAR la eroare și
+   scrie exact ce s-a întâmplat, ca să pot repara din prima. */
+(function(){
+  function arata(txt){
+    try{
+      var d=document.getElementById('baffi-eroare');
+      if(!d){
+        d=document.createElement('div'); d.id='baffi-eroare';
+        d.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;'+
+          'background:#a82d35;color:#fff;font:600 12px/1.5 system-ui,-apple-system,sans-serif;'+
+          'padding:12px 14px;border-radius:12px;white-space:pre-wrap;box-shadow:0 10px 30px rgba(0,0,0,.4)';
+        (document.body||document.documentElement).appendChild(d);
+      }
+      d.textContent='Eroare în pagină — trimite-mi textul ăsta: '+txt;
+    }catch(e){}
+  }
+  window.addEventListener('error',function(e){
+    arata((e.message||String(e.error||'eroare'))+' — '+(e.filename||'').split('/').pop()+':'+(e.lineno||'?'));
+  });
+  window.addEventListener('unhandledrejection',function(e){ arata('promisiune respinsă: '+e.reason); });
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
@@ -1475,7 +1499,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='4.7';
+window.BAFFI_VERSIUNE='4.8';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2278,6 +2302,11 @@ addEventListener('scroll',()=>{
 },{passive:true});
 toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
 document.getElementById('yr').textContent=new Date().getFullYear();
+/* eticheta de versiune + starea „mișcare redusă", ca să nu mai ghicim */
+(function(){
+  const v=document.getElementById('ver');
+  if(v) v.textContent='v'+window.BAFFI_VERSIUNE+(MOTION?'':' · mișcare redusă');
+})();
 
 const RV=[...document.querySelectorAll('.rv')];
 function reveal(){
