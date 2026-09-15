@@ -921,7 +921,10 @@ p{margin:0}
    că al doilea buton pornește după ce primul s-a stins. Două lumini care
    se rotesc în același timp pe două butoane alăturate obosesc privirea. */
 .hero-cta.live .btn-trace::before{animation:trace 4s cubic-bezier(.45,.05,.35,1) infinite}
-.hero-cta.live .btn-trace:last-of-type::before{animation-delay:2s}
+/* NU :last-of-type — unul e <a>, altul e <button>, deci fiecare e
+   „ultimul de tipul lui" și regula prindea AMBELE butoane. De-aici veneau
+   cele două lumini perfect sincronizate. Fratele care urmează, punctual. */
+.hero-cta.live .btn-trace + .btn-trace::before{animation-delay:2s}
 @keyframes trace{
   0%{--ta:0deg;opacity:0}
   4%{opacity:.95}
@@ -1644,7 +1647,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.8';
+window.BAFFI_VERSIUNE='5.9';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
