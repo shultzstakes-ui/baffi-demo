@@ -7,6 +7,29 @@
 <meta name="description" content="Loc de joacă și petreceri pentru copii în Crângași, Itaoui Center etaj 5. Aniversări cu exclusivitate, serbări de grup, ateliere și teatru. Configurezi cererea și primești confirmarea pe WhatsApp.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#12142e">
+<script>
+/* Daca ceva din pagina crapa, se VEDE: banda rosie cu eroarea exacta.
+   Apare doar la eroare. */
+(function(){
+  function arata(txt){
+    try{
+      var d=document.getElementById('baffi-eroare');
+      if(!d){
+        d=document.createElement('div'); d.id='baffi-eroare';
+        d.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:99999;'+
+          'background:#a82d35;color:#fff;font:600 12px/1.5 system-ui,-apple-system,sans-serif;'+
+          'padding:12px 14px;border-radius:12px;white-space:pre-wrap;box-shadow:0 10px 30px rgba(0,0,0,.4)';
+        (document.body||document.documentElement).appendChild(d);
+      }
+      d.textContent='Eroare in pagina - trimite-mi textul asta: '+txt;
+    }catch(e){}
+  }
+  window.addEventListener('error',function(e){
+    arata((e.message||String(e.error||'eroare'))+' - '+(e.filename||'').split('/').pop()+':'+(e.lineno||'?'));
+  });
+  window.addEventListener('unhandledrejection',function(e){ arata('promisiune respinsa: '+e.reason); });
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;500;600;700;800;900&display=swap">
@@ -185,8 +208,6 @@ p{margin:0}
 .fmt:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
 .fmt-top{display:flex;align-items:center;gap:12px}
 .fmt-n{font:800 11px/1 var(--sans);letter-spacing:.2em;color:var(--muted)}
-.fmt-ic{margin-left:auto;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;
-  font-size:18px;background:var(--cream)}
 .fmt h3{font-size:clamp(20px,2vw,25px)}
 .fmt p{font-size:14.5px;color:var(--muted);line-height:1.6}
 .fmt .go{margin-top:auto;padding-top:12px;display:inline-flex;align-items:center;gap:8px;
@@ -370,6 +391,25 @@ p{margin:0}
   opacity:0;pointer-events:none;transition:.4s var(--ease);box-shadow:var(--shadow)}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 @media(min-width:760px){.toast{bottom:30px}}
+
+/* ---------- desenele din carduri ----------
+   Aceeasi idee ca la Baffi Cafe: fiecare traseu e desenat PE O FARFURIE
+   vazuta de sus. Linie subtire, fara umpluturi, aceeasi grosime peste tot.
+   Desenele sunt INTREGI la incarcare; desenarea din linie e doar un plus,
+   ca sa nu ramana goale daca animatia nu porneste. */
+.card-art{width:clamp(70px,7vw,86px);height:auto;margin-bottom:6px;overflow:visible}
+.card-art .rim{fill:none;stroke:var(--rim);stroke-width:1.4}
+.card-art .rim-in{fill:none;stroke:var(--rim2);stroke-width:1.2}
+.card-art .ink{fill:none;stroke:var(--art-ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.card-art .au{fill:none;stroke:var(--art-ac);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.card-art .traseu{stroke-dasharray:1;stroke-dashoffset:0}
+.rv.in .card-art .traseu{animation:deseneaza 1s var(--ease) forwards}
+.rv.in *:nth-child(2) .card-art .traseu{animation-delay:.12s}
+.rv.in *:nth-child(3) .card-art .traseu{animation-delay:.24s}
+@keyframes deseneaza{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.card-art .traseu{stroke-dashoffset:0;animation:none}}
+
+.fmt{--art-ink:var(--ink);--art-ac:var(--coral);--rim:rgba(18,20,46,.17);--rim2:rgba(18,20,46,.12)}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -450,19 +490,22 @@ p{margin:0}
     </div>
     <div class="formats rv">
       <button class="fmt" data-fmt="Aniversare">
-        <div class="fmt-top"><span class="fmt-n">01</span><span class="fmt-ic">✦</span></div>
+        <svg class="card-art" viewBox="0 0 96 96" aria-hidden="true"><circle class="rim" cx="48" cy="48" r="42"/><circle class="rim-in" cx="48" cy="48" r="33"/><path class="ink traseu" pathLength="1" d="M31 70V56h34v14z"/><path class="rim-in traseu" pathLength="1" d="M31 63h34"/><path class="ink traseu" pathLength="1" d="M48 56v-8"/><path class="au traseu" pathLength="1" d="M48 48c-3-3-1-6 0-7 1 1 3 4 0 7z"/><path class="au traseu" pathLength="1" d="M26 40l2-4M68 40l-2-4M37 33l1-4M59 33l-1-4"/></svg>
+        <div class="fmt-top"><span class="fmt-n">01</span></div>
         <h3>Aniversare privată</h3>
         <p>Locul este al petrecerii voastre, iar ziua se construiește în jurul sărbătoritului.</p>
         <span class="go">Configurează cererea <span class="ar">↘</span></span>
       </button>
       <button class="fmt" data-fmt="Serbare">
-        <div class="fmt-top"><span class="fmt-n">02</span><span class="fmt-ic">☀</span></div>
+        <svg class="card-art" viewBox="0 0 96 96" aria-hidden="true"><circle class="rim" cx="48" cy="48" r="42"/><circle class="rim-in" cx="48" cy="48" r="33"/><circle class="ink traseu" pathLength="1" cx="33" cy="44" r="6"/><path class="ink traseu" pathLength="1" d="M24 68v-8a9 9 0 0 1 18 0v8"/><circle class="ink traseu" pathLength="1" cx="63" cy="44" r="6"/><path class="ink traseu" pathLength="1" d="M54 68v-8a9 9 0 0 1 18 0v8"/><circle class="au traseu" pathLength="1" cx="48" cy="36" r="6"/><path class="au traseu" pathLength="1" d="M39 62v-9a9 9 0 0 1 18 0v9"/></svg>
+        <div class="fmt-top"><span class="fmt-n">02</span></div>
         <h3>Serbare de grup</h3>
         <p>Copii, părinți și cadre didactice într-un singur loc, cu mai puțină logistică.</p>
         <span class="go">Configurează cererea <span class="ar">↘</span></span>
       </button>
       <button class="fmt" data-fmt="Atelier">
-        <div class="fmt-top"><span class="fmt-n">03</span><span class="fmt-ic">✎</span></div>
+        <svg class="card-art" viewBox="0 0 96 96" aria-hidden="true"><circle class="rim" cx="48" cy="48" r="42"/><circle class="rim-in" cx="48" cy="48" r="33"/><path class="ink traseu" pathLength="1" d="M24 30h48"/><path class="ink traseu" pathLength="1" d="M30 30v30c6-4 6-14 5-30"/><path class="ink traseu" pathLength="1" d="M66 30v30c-6-4-6-14-5-30"/><path class="au traseu" pathLength="1" d="M42 70l10-14 6 4-10 14z"/><path class="au traseu" pathLength="1" d="M42 70l-6 3 2-6"/></svg>
+        <div class="fmt-top"><span class="fmt-n">03</span></div>
         <h3>Atelier &amp; teatru</h3>
         <p>Joacă, curiozitate și o experiență comună pentru grupuri de copii.</p>
         <span class="go">Configurează cererea <span class="ar">↘</span></span>
@@ -689,7 +732,7 @@ p{margin:0}
       <a href="tel:+40736856880">0736 856 880</a>
       <a data-net="cafe">Baffi Café ↗</a>
       <a data-net="oasis">Baffi Oasis ↗</a>
-      <span>© <span id="yr">2026</span> Baffi Kids</span>
+      <span>© <span id="yr">2026</span> Baffi Kids · <b id="ver" style="font-weight:700;opacity:.75"></b></span>
     </div>
   </div>
 </footer>
@@ -707,6 +750,7 @@ p{margin:0}
    Cererea pleacă ca mesaj WhatsApp gata scris, exact ca la Cafe:
    când apare un server, se schimbă doar funcția send().
    ============================================================ */
+window.BAFFI_VERSIUNE='1.1';
 const CFG={
   tel:'+40736856880', wa:'40736856880',
   linkCafe:'https://shultzstakes-ui.github.io/baffi-demo/',
@@ -719,6 +763,8 @@ document.querySelectorAll('[data-net="cafe"]').forEach(a=>a.href=CFG.linkCafe);
 document.querySelectorAll('[data-net="oasis"]').forEach(a=>a.href=CFG.linkOasis);
 document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+CFG.tel);
 document.getElementById('yr').textContent=new Date().getFullYear();
+(function(){const v=document.getElementById('ver');
+  if(v) v.textContent='v'+window.BAFFI_VERSIUNE+(MOTION?'':' \u00b7 mi\u0219care redus\u0103')})();
 
 /* banda care curge */
 const STRIP=['BIG DAY!','Petrecere cu exclusivitate','Meniu pentru copii','Spațiu pentru adulți','Un singur punct de contact'];

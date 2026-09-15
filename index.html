@@ -299,12 +299,17 @@ p{margin:0}
 /* între 960 și 1200 coloana de text e strâmtă: îi dăm mai mult loc, altfel
    titlul se rupe pe alt rând la fiecare schimbare de cuvânt. */
 @media(min-width:960px) and (max-width:1199px){.hero-grid{grid-template-columns:52% 48%}}
-.hero-copy{padding:76px 5.2vw 72px;width:100%;
+.hero-copy{container-type:inline-size;padding:76px clamp(26px,4.2vw,64px) 72px;width:100%;
   display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,2.2vw,26px);position:relative;z-index:2}
 @media(max-width:680px){.hero-copy{padding:48px 22px 46px}}
-/* scara de titlu din Human */
-.hero h1{font-size:clamp(64px,6vw,94px);line-height:.89;letter-spacing:-.065em;font-weight:500;color:#fff}
-@media(max-width:680px){.hero h1{font-size:clamp(56px,17vw,74px)}}
+/* Titlul se măsoară după COLOANA lui, nu după ecran (cqw = procent din
+   lățimea coloanei de text). Așa „e mai generos." încape mereu pe un rând,
+   pe orice dispozitiv, iar titlul rămâne pe două rânduri — nu pe trei.
+   15,2cqw e lățimea la care cel mai lung cuvânt din listă intră fix. */
+.hero h1{font-size:clamp(34px,15.2cqw,88px);line-height:.92;letter-spacing:-.05em;
+  font-weight:500;color:#fff}
+/* al doilea rând nu se rupe niciodată: perechea „e mai" + cuvânt stă lipită */
+.hero h1 .l2{display:block;white-space:nowrap}
 .hero h1 .l2{display:block}
 .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
 .hero-tags{display:flex;flex-wrap:wrap;gap:8px 20px;font:600 10.5px/1 var(--sans);
@@ -729,7 +734,7 @@ p{margin:0}
 .carou.is-drag img,.carou.is-drag figcaption{pointer-events:none}
 .carou-track{cursor:inherit}
 .carou-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
-  -webkit-overflow-scrolling:touch}
+  -webkit-overflow-scrolling:touch;scroll-behavior:auto;overscroll-behavior-x:contain}
 .carou-track::-webkit-scrollbar{display:none}
 .carou figure{margin:0;flex:0 0 100%;height:100%;scroll-snap-align:center;position:relative}
 .carou figure img{width:100%;height:100%;object-fit:cover;display:block}
@@ -897,12 +902,9 @@ p{margin:0}
 
 /* 2. Cuvântul care se schimbă în titlu. min-width ține rândul locului,
       ca titlul să nu salte la fiecare schimbare de cuvânt. */
-/* Cuvântul care se schimbă stă pe rândul lui, ÎNTOTDEAUNA.
-   Motivul: la scara de titlu din Human (până la 94px), „e mai generos."
-   nu încape pe un rând în coloana de 43%, iar dacă l-am lăsa să curgă,
-   titlul ar sări între două și trei rânduri la fiecare 1,9 secunde.
-   Așa, rândul e fix și cuvântul auriu primește accentul întreg. */
-#heroWord{display:block;text-align:left}
+/* Cuvântul stă pe același rând cu „e mai". Titlul are exact două rânduri,
+   iar mărimea calculată din lățimea coloanei garantează că încape. */
+#heroWord{display:inline}
 .hero-word{display:inline-block;animation:word-in .44s cubic-bezier(.22,.8,.25,1) both}
 @keyframes word-in{from{filter:blur(4px);opacity:0;transform:translateY(10px)}
   to{filter:blur(0);opacity:1;transform:none}}
@@ -1647,7 +1649,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.9';
+window.BAFFI_VERSIUNE='6.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2661,31 +2663,54 @@ if(autoRail&&MOTION){
      drumul, deplasarea ta NU se pierde și NU sare înapoi: o convertim în
      avans de fază al animației, iar galeria pornește mai departe exact de
      unde ai lăsat-o. */
-  let apucat=null, faza=0, deplasare=0;
+  let apucat=null, faza=0, deplasare=0, viteza=0, ultimX=0, ultimT=0, raf=0, gataId=0;
   const jumatate=()=>Math.max(1,track.scrollWidth/2);
   const durata=()=>parseFloat(getComputedStyle(track).animationDuration)||70;
   const aplicaFaza=()=>{ track.style.animationDelay=(-faza)+'s' };
+  const scrie=()=>tug.style.setProperty('--tug',deplasare.toFixed(2)+'px');
 
   function apuca(x){
+    cancelAnimationFrame(raf); clearTimeout(gataId);
     apucat={x,tug:deplasare};
+    viteza=0; ultimX=x; ultimT=performance.now();
     autoRail.classList.add('e-tras');
   }
   function trage(x){
     if(!apucat) return;
+    const t=performance.now(), dt=Math.max(8,t-ultimT);
+    /* viteza netezită: altfel ultimul cadru dictează totul și zvâcnește */
+    viteza=viteza*0.7+((x-ultimX)/dt)*0.3;
+    ultimX=x; ultimT=t;
     deplasare=apucat.tug+(x-apucat.x);
-    tug.style.setProperty('--tug',deplasare+'px');
+    scrie();
+  }
+  /* mutăm deplasarea în pixeli în avans de fază pe animație:
+     galeria continuă de unde a rămas, fără salt */
+  function preiaFaza(){
+    clearTimeout(gataId); cancelAnimationFrame(raf);
+    const d=durata();
+    faza=(faza - (deplasare/jumatate())*d) % d;
+    if(faza<0) faza+=d;
+    deplasare=0; scrie(); aplicaFaza();
+    autoRail.classList.remove('e-tras');
   }
   function elibereaza(){
     if(!apucat) return;
     apucat=null;
-    const d=durata();
-    /* deplasarea în pixeli devine deplasare în timp pe animație */
-    faza=(faza - (deplasare/jumatate())*d) % d;
-    if(faza<0) faza+=d;
-    deplasare=0;
-    tug.style.setProperty('--tug','0px');
-    aplicaFaza();
-    autoRail.classList.remove('e-tras');
+    /* alunecare scurtă după ce ridici degetul, apoi predarea către animație.
+       Plasa de siguranță pe ceas: dacă browserul nu dă cadre, predarea se
+       face oricum și galeria nu rămâne blocată în poziția trasă. */
+    gataId=setTimeout(preiaFaza,760);
+    if(!MOTION||Math.abs(viteza)<0.03){ preiaFaza(); return }
+    let v=Math.max(-3.2,Math.min(3.2,viteza)), t0=performance.now(), ult=t0;
+    const glisa=t=>{
+      const dt=Math.min(40,t-ult); ult=t;
+      v*=Math.pow(0.93,dt/16.67);
+      deplasare+=v*dt; scrie();
+      if(Math.abs(v)>0.02 && t-t0<700) raf=requestAnimationFrame(glisa);
+      else preiaFaza();
+    };
+    raf=requestAnimationFrame(glisa);
   }
 
   autoRail.addEventListener('pointerdown',e=>{
@@ -2803,9 +2828,13 @@ function initCarou(){
      plus scroll-snap), dar pe laptop n-aveai decât săgețile.
      Fără setPointerCapture: captura redirecționează evenimentul către
      container și înghite clicul pe săgeți și pe buline. */
-  let tr=null, tras=0;
+  let tr=null, tras=0, vit=0, uX=0, uT=0;
   function trMove(e){
     if(!tr) return;
+    const t=performance.now(), dt=Math.max(8,t-uT);
+    /* viteză netezită: fără asta, ultimul cadru decide totul și sare */
+    vit=vit*0.7+((uX-e.clientX)/dt)*0.3;
+    uX=e.clientX; uT=t;
     const d=tr.x-e.clientX;
     tras=Math.max(tras,Math.abs(d));
     track.scrollLeft=tr.left+d;
@@ -2813,21 +2842,27 @@ function initCarou(){
   function trGata(){
     if(!tr) return;
     const plecatDe=tr.idx; tr=null;
-    track.style.scrollSnapType='';
     box.classList.remove('is-drag');
     removeEventListener('pointermove',trMove);
-    /* dacă a tras destul, sare la poza următoare în direcția tragerii */
-    if(tras>28){
-      const n=aproape();
-      go(n!==plecatDe ? n : plecatDe);
-    }
-    setTimeout(()=>{tras=0},0);
+    /* O aruncătură scurtă trece la poza următoare chiar dacă n-ai tras mult;
+       o tragere lentă se așază pe poza cea mai apropiată. Fixarea nativă
+       rămâne oprită până se termină alunecarea, altfel se bat cap în cap
+       și de-acolo vine senzația de smucit. */
+    let tinta;
+    if(Math.abs(vit)>0.45) tinta=plecatDe+(vit>0?1:-1);
+    else if(tras>26) tinta=aproape();
+    else tinta=plecatDe;
+    go(Math.max(0,Math.min(figs.length-1,tinta)));
+    clearTimeout(trGata._t);
+    trGata._t=setTimeout(()=>{track.style.scrollSnapType=''},520);
+    setTimeout(()=>{tras=0;vit=0},0);
     t0=performance.now();
   }
   track.addEventListener('pointerdown',e=>{
     if(e.pointerType==='touch') return;       // pe telefon, glisare nativă
     if(e.pointerType==='mouse'&&e.button!==0) return;
-    tr={x:e.clientX,left:track.scrollLeft,idx:idx}; tras=0;
+    tr={x:e.clientX,left:track.scrollLeft,idx:idx}; tras=0; vit=0;
+    uX=e.clientX; uT=performance.now();
     track.style.scrollSnapType='none';        // altfel snap-ul se luptă cu mâna
     box.classList.add('is-drag');
     addEventListener('pointermove',trMove);
