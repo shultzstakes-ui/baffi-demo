@@ -1499,7 +1499,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.0';
+window.BAFFI_VERSIUNE='5.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1541,6 +1541,10 @@ const TEL=CFG.tel, WA=CFG.wa;
    prima folosire, scriptul se oprește cu ReferenceError și NIMIC din ce vine
    după nu mai rulează — bulinele de categorii, cardurile, caruselele. */
 const MOTION=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Ridicat cât timp banda de categorii chiar e trasă cu mâna. Stă sus, lângă
+   MOTION, din același motiv: orice valoare folosită în mai multe locuri se
+   declară o dată, la început. */
+let railTras=false;
 
 /* Linkul de recenzie. Deocamdată trimite la fișa Google a restaurantului.
    ÎNLOCUIEȘTE-L cu linkul scurt din Google Business Profile → „Cere recenzii"
@@ -2021,7 +2025,12 @@ function duLaLista(){
   },400);
 }
 document.getElementById('catRail').addEventListener('click',e=>{
-  const b=e.target.closest('.chip'); if(!b||railTras) return;
+  const b=e.target.closest('.chip'); if(!b) return;
+  /* Steagul se CONSUMĂ aici, o singură dată. Dacă l-am lăsa să se stingă
+     printr-un temporizator, s-ar suprapune peste click (ordinea reală e
+     pointerup → click → temporizator) și apăsarea s-ar pierde: butonul
+     ar părea mort după orice tremurat al mâinii. */
+  if(railTras){ railTras=false; return; }
   alegeCat(b.dataset.cat,true);
 });
 document.getElementById('menuList').addEventListener('click',e=>{
@@ -2511,7 +2520,6 @@ const railEl=()=>document.getElementById('catRail');
 /* Banda de secțiuni se trage cu mâna — și pe laptop, cu mouse-ul, nu doar
    pe telefon. railTras ține minte că a fost o tragere, ca să nu deschidă
    din greșeală secțiunea peste care s-a oprit degetul. */
-let railTras=false;
 (function(){
   const r=railEl(); if(!r) return;
   let st=null;
@@ -2526,14 +2534,14 @@ let railTras=false;
   r.addEventListener('pointermove',e=>{
     if(!st) return;
     const d=st.x-e.clientX;
-    if(Math.abs(d)>5) railTras=true;
+    if(Math.abs(d)>9) railTras=true;
     r.scrollLeft=st.left+d; railFades();
   });
   const gata=e=>{
     if(!st) return;
     st=null; r.classList.remove('is-drag');
     try{if(r.hasPointerCapture(e.pointerId))r.releasePointerCapture(e.pointerId)}catch(_){}
-    setTimeout(()=>railTras=false,0);
+    setTimeout(()=>{railTras=false},400);   // plasă: nu rămâne ridicat
   };
   r.addEventListener('pointerup',gata);
   r.addEventListener('pointercancel',gata);
