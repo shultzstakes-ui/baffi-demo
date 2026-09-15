@@ -1499,7 +1499,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
-window.BAFFI_VERSIUNE='5.1';
+window.BAFFI_VERSIUNE='5.2';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2523,28 +2523,34 @@ const railEl=()=>document.getElementById('catRail');
 (function(){
   const r=railEl(); if(!r) return;
   let st=null;
-  r.addEventListener('pointerdown',e=>{
-    railTras=false;                                  // nu se poate bloca niciodată
-    if(e.pointerType==='touch') return;              // pe telefon, derulare nativă
-    if(e.pointerType==='mouse'&&e.button!==0) return;
-    st={x:e.clientX,left:r.scrollLeft}; railTras=false;
-    r.classList.add('is-drag');
-    try{r.setPointerCapture(e.pointerId)}catch(_){}
-  });
-  r.addEventListener('pointermove',e=>{
+  /* ATENȚIE, aici a fost un defect care a costat: NU folosim
+     setPointerCapture pe bandă. Când banda captează indicatorul, browserul
+     redirecționează evenimentul către ea, iar clicul nu mai ajunge la
+     bulina apăsată — `e.target.closest('.chip')` întoarce null și apăsarea
+     se pierde în tăcere. Apăsarea programatică mergea, cea cu mâna nu.
+     Urmărim mișcarea pe fereastră, nu prin captură. */
+  function mutare(e){
     if(!st) return;
     const d=st.x-e.clientX;
     if(Math.abs(d)>9) railTras=true;
-    r.scrollLeft=st.left+d; railFades();
-  });
-  const gata=e=>{
-    if(!st) return;
+    r.scrollLeft=st.left+d;
+    railFades();
+  }
+  function gata(){
     st=null; r.classList.remove('is-drag');
-    try{if(r.hasPointerCapture(e.pointerId))r.releasePointerCapture(e.pointerId)}catch(_){}
-    setTimeout(()=>{railTras=false},400);   // plasă: nu rămâne ridicat
-  };
-  r.addEventListener('pointerup',gata);
-  r.addEventListener('pointercancel',gata);
+    removeEventListener('pointermove',mutare);
+    setTimeout(()=>{railTras=false},400);      // plasă: nu rămâne ridicat
+  }
+  r.addEventListener('pointerdown',e=>{
+    railTras=false;
+    if(e.pointerType==='touch') return;        // pe telefon, derulare nativă
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    st={x:e.clientX,left:r.scrollLeft};
+    r.classList.add('is-drag');
+    addEventListener('pointermove',mutare);
+    addEventListener('pointerup',gata,{once:true});
+    addEventListener('pointercancel',gata,{once:true});
+  });
 })();
 
 function chipInView(chip){
