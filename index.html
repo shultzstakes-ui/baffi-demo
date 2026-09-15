@@ -374,6 +374,11 @@ p{margin:0}
 .chip:hover{border-color:var(--navy)}
 .chip.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
 .cat-block{padding-top:clamp(30px,4vw,52px)}
+/* Cât loc lasă browserul deasupra când sare la acest bloc: înălțimea
+   headerului plus banda lipicioasă de categorii. Așa nu mai calculăm noi
+   poziția cu matematică — o face browserul, și o face corect peste tot. */
+.cat-block,.picker-head{scroll-margin-top:calc(var(--hdr-h) + 62px)}
+@media(max-width:680px){.cat-block,.picker-head{scroll-margin-top:calc(var(--hdr-h) + 58px)}}
 .cat-h{display:flex;align-items:baseline;gap:16px;margin-bottom:18px}
 .cat-h h3{font-size:clamp(23px,2.4vw,32px)}
 .cat-h .rule{flex:1;height:1px;background:var(--line)}
@@ -1470,6 +1475,7 @@ p{margin:0}
 <button class="top" id="toTop" aria-label="Sus">↑</button>
 <div class="toast" id="toast"></div>
 <script>
+window.BAFFI_VERSIUNE='4.7';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1959,18 +1965,30 @@ function alegeCat(name,scroll){
   cat=name; paintRail(); paintMenu();
   const chip=[...railEl().querySelectorAll('.chip')].find(c=>c.dataset.cat===name);
   if(chip) chipInView(chip);
-  if(scroll){
-    /* Aterizăm PE lista aleasă, chiar sub banda lipicioasă de categorii.
-       Dacă am sări la începutul secțiunii, pe telefon omul ar vedea doar
-       titlul, căutarea și bulinele — și ar crede că nu s-a întâmplat nimic. */
-    requestAnimationFrame(()=>{
-      const tinta=document.querySelector('#menuList .cat-block, #menuList .cat-picker, #menuList .picker-head');
-      if(!tinta) return;
-      const sus=(document.querySelector('.hdr')?.offsetHeight||74)
-               +(railEl()?.offsetHeight||48)+12;
-      scrollTo({top:tinta.getBoundingClientRect().top+scrollY-sus,behavior:MOTION?'smooth':'auto'});
-    });
-  }
+  if(scroll) duLaLista();
+}
+
+/* Aterizăm PE lista aleasă, chiar sub banda lipicioasă de categorii.
+   Dacă am sări la începutul secțiunii, pe telefon s-ar vedea doar titlul,
+   căutarea și bulinele — și ar părea că nu s-a întâmplat nimic.
+   Se face pe loc, fără requestAnimationFrame: dacă browserul suspendă
+   cadrele (fereastră în fundal, telefon care economisește baterie),
+   un scroll programat într-un cadru viitor pur și simplu nu se mai execută. */
+function duLaLista(){
+  const tinta=document.querySelector('#menuList .cat-block, #menuList .picker-head, #menuList .cat-picker');
+  if(!tinta) return;
+  const plecatDeLa=scrollY;
+  try{ tinta.scrollIntoView({behavior:MOTION?'smooth':'auto',block:'start'}) }
+  catch(_){ tinta.scrollIntoView(true) }
+  /* Plasă de siguranță: dacă în 400 ms nu s-a mișcat nimic (unele browsere
+     ignoră derularea lină când pagina e în fundal sau în economie de baterie),
+     o facem instant, cu poziția calculată de mână. */
+  setTimeout(()=>{
+    if(Math.abs(scrollY-plecatDeLa)>4) return;
+    const sus=(document.querySelector('.hdr')?.offsetHeight||74)+(railEl()?.offsetHeight||48)+12;
+    const y=Math.max(0,tinta.getBoundingClientRect().top+scrollY-sus);
+    if(Math.abs(scrollY-y)>8) scrollTo(0,y);
+  },400);
 }
 document.getElementById('catRail').addEventListener('click',e=>{
   const b=e.target.closest('.chip'); if(!b||railTras) return;
@@ -2464,6 +2482,7 @@ let railTras=false;
   const r=railEl(); if(!r) return;
   let st=null;
   r.addEventListener('pointerdown',e=>{
+    railTras=false;                                  // nu se poate bloca niciodată
     if(e.pointerType==='touch') return;              // pe telefon, derulare nativă
     if(e.pointerType==='mouse'&&e.button!==0) return;
     st={x:e.clientX,left:r.scrollLeft}; railTras=false;
