@@ -1108,6 +1108,36 @@ p{margin:0}
 @media (prefers-reduced-motion:reduce){
   .pet-galerie figure{transition:none}
   .pet-galerie figure:hover{transform:none}}
+
+/* ---------- LUPA ----------
+   Ecran plin, poza incadrata intreg, fara taiere. Pe telefon butoanele stau
+   jos, la degetul mare, nu sus unde nu ajunge. */
+.lb{position:fixed;inset:0;z-index:200;display:none;
+  background:rgba(7,28,44,.94);backdrop-filter:blur(6px);
+  opacity:0;transition:opacity .28s var(--ease)}
+.lb.on{display:flex;flex-direction:column}
+.lb.vizibil{opacity:1}
+.lb-poza{flex:1;display:grid;place-items:center;min-height:0;
+  padding:clamp(12px,3vw,40px)}
+.lb-poza img{max-width:100%;max-height:100%;width:auto;height:auto;
+  object-fit:contain;border-radius:10px;
+  box-shadow:0 24px 70px rgba(0,0,0,.45)}
+.lb-jos{flex:none;display:flex;align-items:center;gap:14px;
+  padding:14px clamp(14px,3vw,28px) calc(14px + env(safe-area-inset-bottom,0px));
+  background:rgba(7,28,44,.6);border-top:1px solid rgba(226,193,124,.18)}
+.lb-text{flex:1;min-width:0;color:var(--cream);font:600 14.5px/1.4 var(--sans)}
+.lb-text span{display:block;font-weight:500;font-size:12px;
+  color:rgba(245,240,231,.55);margin-top:2px;font-variant-numeric:tabular-nums}
+.lb-b{flex:none;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;
+  display:grid;place-items:center;color:var(--cream);
+  background:rgba(255,255,255,.1);transition:.2s var(--ease)}
+.lb-b:hover{background:rgba(201,154,74,.28)}
+.lb-b:disabled{opacity:.3;cursor:default}
+.lb-x{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:12px;
+  z-index:2;background:rgba(7,28,44,.55)}
+/* poza apasabila arata apasabila */
+.pet-galerie figure,.ev-foto,.carou-track figure{cursor:zoom-in}
+@media (prefers-reduced-motion:reduce){.lb{transition:none}}
 </style>
 </head>
 <body>
@@ -1821,10 +1851,21 @@ p{margin:0}
 </div>
 
 <button class="top" id="toTop" aria-label="Sus">↑</button>
+
+<!-- ══════════════ LUPA ══════════════ -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Fotografie mărită">
+  <button class="lb-b lb-x" id="lbX" type="button" aria-label="Închide"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <div class="lb-poza"><img id="lbImg" src="" alt=""></div>
+  <div class="lb-jos">
+    <button class="lb-b" id="lbPrev" type="button" aria-label="Poza anterioară"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <div class="lb-text"><b id="lbCap"></b><span id="lbNr"></span></div>
+    <button class="lb-b" id="lbNext" type="button" aria-label="Poza următoare"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='8.0';
+window.BAFFI_VERSIUNE='8.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2612,6 +2653,81 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
   g.innerHTML=PETRECERI.map(p=>
     `<figure><img src="img/${p.f}" alt="${p.c}" loading="lazy" decoding="async">`
     +`<figcaption>${p.c}</figcaption></figure>`).join('');
+})();
+/* ---------- LUPA ---------- */
+(function(){
+  const lb=document.getElementById('lb'); if(!lb) return;
+  const poza=document.getElementById('lbImg'), cap=document.getElementById('lbCap'),
+        nr=document.getElementById('lbNr'),
+        prev=document.getElementById('lbPrev'), next=document.getElementById('lbNext');
+  const GRUPURI='.pet-galerie, .ev-sir, .carou-track';
+  let set=[], idx=0, sus=0;
+
+  function textul(fig){
+    const c=fig.querySelector('figcaption'); if(!c) return '';
+    const t=c.querySelector('strong');
+    return (t?t.textContent:c.textContent).trim();
+  }
+  function arata(){
+    const p=set[idx]; if(!p) return;
+    poza.src=p.src; poza.alt=p.alt;
+    cap.textContent=p.cap; nr.textContent=(idx+1)+' din '+set.length;
+    prev.disabled=next.disabled=set.length<2;
+  }
+  function deschide(fig){
+    const grup=fig.closest(GRUPURI); if(!grup) return;
+    const figuri=[...grup.querySelectorAll('figure')].filter(f=>f.querySelector('img'));
+    set=figuri.map(f=>{ const im=f.querySelector('img');
+      return {src:im.currentSrc||im.src, alt:im.alt||'', cap:textul(f)}; });
+    idx=Math.max(0, figuri.indexOf(fig));
+    arata();
+    /* pagina se blocheaza pe pozitia ei, ca sa nu curga in spate */
+    sus=scrollY;
+    document.body.style.cssText+=';position:fixed;left:0;right:0;top:'+(-sus)+'px';
+    lb.classList.add('on'); requestAnimationFrame(()=>lb.classList.add('vizibil'));
+  }
+  function inchide(){
+    lb.classList.remove('vizibil');
+    setTimeout(()=>{
+      lb.classList.remove('on'); poza.src='';
+      document.body.style.position=''; document.body.style.top='';
+      document.body.style.left=''; document.body.style.right='';
+      scrollTo(0,sus);
+    }, 260);
+  }
+  function muta(d){ if(!set.length) return;
+    idx=(idx+d+set.length)%set.length; arata(); }
+
+  /* Un clic care vine dupa o tragere nu e clic. Caruselul se trage cu
+     degetul si browserul trimite oricum un clic la ridicare. */
+  let apx=0, apy=0;
+  document.addEventListener('pointerdown',e=>{ apx=e.clientX; apy=e.clientY; }, true);
+  document.addEventListener('click',e=>{
+    if(Math.hypot(e.clientX-apx, e.clientY-apy)>9) return;
+    const fig=e.target.closest('figure'); if(!fig) return;
+    if(!fig.closest(GRUPURI)) return;
+    if(e.target.closest('a,button')) return;
+    e.preventDefault(); deschide(fig);
+  });
+
+  document.getElementById('lbX').addEventListener('click',inchide);
+  prev.addEventListener('click',()=>muta(-1));
+  next.addEventListener('click',()=>muta(1));
+  lb.addEventListener('click',e=>{ if(!e.target.closest('img,.lb-jos,.lb-x')) inchide(); });
+  addEventListener('keydown',e=>{
+    if(!lb.classList.contains('on')) return;
+    if(e.key==='Escape') inchide();
+    else if(e.key==='ArrowLeft') muta(-1);
+    else if(e.key==='ArrowRight') muta(1);
+  });
+  /* pe telefon: degetul in stanga sau in dreapta schimba poza */
+  let tx=null;
+  lb.addEventListener('touchstart',e=>{ tx=e.touches[0].clientX; },{passive:true});
+  lb.addEventListener('touchend',e=>{
+    if(tx===null) return;
+    const d=e.changedTouches[0].clientX-tx; tx=null;
+    if(Math.abs(d)>45) muta(d<0?1:-1);
+  },{passive:true});
 })();
 document.getElementById('yr').textContent=new Date().getFullYear();
 /* eticheta de versiune + starea „mișcare redusă", ca să nu mai ghicim */
