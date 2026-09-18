@@ -281,7 +281,8 @@ p{margin:0}
 .cart-btn:hover{background:var(--gold-lite);transform:scale(1.06)}
 .cart-btn.bump{animation:bump .5s var(--ease)}
 @keyframes bump{40%{transform:scale(1.22)}70%{transform:scale(.94)}100%{transform:scale(1)}}
-.cart-btn .cc{position:absolute;top:-3px;right:-3px;min-width:20px;height:20px;padding:0 5px;
+.cart-btn .cc{position:absolute;top:-4px;right:-4px;min-width:20px;height:21px;padding:0 8px;
+  white-space:nowrap;font-variant-numeric:tabular-nums;
   border-radius:999px;background:var(--crimson);color:#fff;font:700 11px/20px var(--sans);
   text-align:center;border:2px solid var(--navy);transform:scale(0);transition:transform .3s var(--ease)}
 .cart-btn .cc.on{transform:scale(1)}
@@ -1563,6 +1564,29 @@ p{margin:0}
           <button data-p="card">Card la livrare</button>
         </div>
       </div>
+      <div class="f-row">
+        <label>Pe cine se face bonul</label>
+        <div class="pick" id="pickFact">
+          <button class="on" data-f="fizica" type="button">Persoană fizică</button>
+          <button data-f="juridica" type="button">Persoană juridică</button>
+        </div>
+      </div>
+      <div id="boxFirma" hidden>
+        <div class="f-2">
+          <div class="f-row"><label>Denumirea firmei</label><input id="fCompany" placeholder="Exemplu S.R.L." autocomplete="organization"></div>
+          <div class="f-row"><label>CUI / CIF</label><input id="fCui" placeholder="RO12345678" inputmode="text"></div>
+        </div>
+        <div class="f-2">
+          <div class="f-row"><label>Nr. Reg. Comerțului</label><input id="fReg" placeholder="J23/1234/2020"></div>
+          <div class="f-row"><label>Persoana care preia (opțional)</label><input id="fDeleg" placeholder="Nume delegat"></div>
+        </div>
+        <div class="f-row"><label>Sediul social</label><input id="fSediu" placeholder="Strada, număr, oraș, județ"></div>
+        <div class="f-2">
+          <div class="f-row"><label>Banca (opțional)</label><input id="fBank" placeholder="ING Bank"></div>
+          <div class="f-row"><label>IBAN (opțional)</label><input id="fIban" placeholder="RO00 XXXX 0000 0000 0000 0000"></div>
+        </div>
+        <p class="fine" style="margin:2px 0 0">Factura se emite pe firmă și vine odată cu comanda. Dacă ai nevoie de ea în avans, scrie-ne la mențiuni.</p>
+      </div>
       <div class="f-row"><label>Mențiuni (opțional)</label><textarea id="fNote" placeholder="Fără ceapă, sunați la poartă, tacâmuri pentru 3…"></textarea></div>
       <div class="sum" id="sumBox"></div>
       <div class="err" id="errCk"></div>
@@ -1673,7 +1697,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='7.1';
+window.BAFFI_VERSIUNE='7.2';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2138,7 +2162,8 @@ function addItem(ci,ii,silent){
 }
 function paintCart(){
   const n=count(), cc=document.getElementById('cartCount');
-  cc.textContent=n; cc.classList.toggle('on',n>0);
+  cc.textContent=n?money(total()):''; cc.classList.toggle('on',n>0);
+  cc.setAttribute('aria-label', n? n+' produse, '+money(total()) : 'coș gol');
   const body=document.getElementById('cartBody'), foot=document.getElementById('cartFoot');
   if(!n){
     foot.hidden=true;
@@ -2273,12 +2298,39 @@ function err(id,msg){const e=document.getElementById(id);e.textContent=msg;e.cla
 function send(txt){
   window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(txt),'_blank','noopener');
 }
+/* Pe cine se face bonul. Persoana fizica e starea implicita: majoritatea
+   comenzilor sunt personale, iar cine deconteaza pe firma stie sa caute. */
+let fact='fizica';
+document.getElementById('pickFact').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-f]'); if(!b) return;
+  fact=b.dataset.f;
+  [...b.parentNode.children].forEach(x=>x.classList.toggle('on',x===b));
+  document.getElementById('boxFirma').hidden = fact!=='juridica';
+});
+
+/* CUI romanesc: optional prefixat cu RO, apoi 2-10 cifre. Verificam forma,
+   nu existenta - nu avem cum sa interogam registrul comertului de aici. */
+const cuiOk=v=>/^(RO)?\d{2,10}$/i.test(String(v).replace(/[\s.-]/g,''));
+
 document.getElementById('sendWa').addEventListener('click',()=>{
   if(!cart.length) return err('errCk','Coșul e gol — alege întâi ceva din meniu.');
   if(val('fName').length<3) return err('errCk','Scrie-ne numele tău, ca să știm cu cine vorbim.');
   if(!phoneOk(val('fPhone'))) return err('errCk','Numărul de telefon nu pare corect. Exemplu: 0722 333 444.');
   if(mode==='livrare'&&val('fAddr').length<8) return err('errCk','Avem nevoie de adresa completă, cu reper dacă se poate.');
   if(mode==='livrare'&&total()<MIN) return err('errCk','Comanda minimă pentru livrare e 70 de lei. Poți ridica și de la restaurant.');
+  if(fact==='juridica'){
+    if(val('fCompany').length<3) return err('errCk','Scrie denumirea firmei pe care se face bonul.');
+    if(!cuiOk(val('fCui')))      return err('errCk','CUI-ul nu pare corect. Exemplu: RO12345678.');
+    if(val('fSediu').length<6)   return err('errCk','Scrie sediul social al firmei.');
+  }
+  const firma = fact!=='juridica' ? [] : ['','*Date de facturare \u2014 persoan\u0103 juridic\u0103:*',
+    `Firma: ${val('fCompany')}`,
+    `CUI: ${val('fCui')}`,
+    val('fReg')   ? `Reg. Com.: ${val('fReg')}` : '',
+    `Sediu: ${val('fSediu')}`,
+    val('fBank')  ? `Banca: ${val('fBank')}` : '',
+    val('fIban')  ? `IBAN: ${val('fIban')}` : '',
+    val('fDeleg') ? `Preia: ${val('fDeleg')}` : ''].filter(Boolean);
   const when=timeMode==='asap'?'cât de repede se poate':('la ora '+(val('fHour')||'—'));
   const t=['*Comandă nouă de pe site — Baffi Cafe*','',
     `*${mode==='livrare'?'LIVRARE':'RIDICARE'}* · ${when}`,
@@ -2287,6 +2339,7 @@ document.getElementById('sendWa').addEventListener('click',()=>{
     `Plata: ${pay==='cash'?'cash':'card la livrare'}`,'','*Comanda:*',
     ...cart.map(x=>`• ${x.q} × ${x.n} — ${money(x.p*x.q)}`),
     '',`*Total: ${money(total())}*`,
+    ...firma,
     val('fNote')?`\nMențiuni: ${val('fNote')}`:''].join('\n');
   send(t); toast('Îți deschidem WhatsApp cu comanda scrisă.');
 });
