@@ -1030,38 +1030,6 @@ p{margin:0}
 .rev-ask p{font-size:14px;color:var(--muted);line-height:1.55;max-width:56ch}
 .rev-ask .btn{flex:none;margin-left:auto}
 
-/* ---------- PANOUL DE COMANDA ----------
-   Nu e o bara laterala permanenta, e un raspuns la ce faci. Apare lipit de
-   marginea din dreapta cand atingi un preparat sau adaugi ceva, si se stinge
-   cand te uiti in alta parte. Nu misca nimic din pagina si nu sta peste
-   coloana de continut: traieste in marginea goala din dreapta.
-   Sub 1200px nu exista - n-ar avea unde sa stea fara sa sufoce cardurile. */
-@media (min-width:1200px){
-  .cart.ancorat{
-    top:auto;left:auto;right:0;
-    bottom:clamp(20px,7vh,72px);
-    width:min(312px,24vw);
-    max-height:min(60vh,520px);
-    border-radius:18px 0 0 18px;
-    border:1px solid var(--line-gold);border-right:0;
-    box-shadow:-22px 24px 58px rgba(7,28,44,.16);
-    opacity:0;transform:translateX(16px);pointer-events:none;
-    transition:none;
-    overflow:hidden}
-  .cart.ancorat.fin{transition:opacity .36s var(--ease),transform .36s var(--ease)}
-  .cart.ancorat.vizibil{opacity:1;transform:none;pointer-events:auto}
-  .cart.ancorat .cart-h{padding:15px 18px 12px}
-  .cart.ancorat .cart-h .x{display:none}
-  .cart.ancorat .cart-body{padding:16px 18px}
-  .cart.ancorat .cart-empty{padding:10px 0 6px;gap:8px}
-  .cart.ancorat .cart-empty img{width:44px}
-  .cart.ancorat .cart-empty b{font-size:18px}
-  .cart.ancorat .quick{margin-top:16px}
-  .cart.ancorat .cart-foot{padding:14px 18px}
-}
-@media (prefers-reduced-motion:reduce){
-  .cart.ancorat{transition:none}
-}
 </style>
 </head>
 <body>
@@ -1705,7 +1673,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='7.0';
+window.BAFFI_VERSIUNE='7.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2164,7 +2132,6 @@ function addItem(ci,ii,silent){
   const ex=cart.find(x=>x.k===key);
   if(ex) ex.q++; else cart.push({k:key,n:it[0],p:it[1],c:c.c,q:1});
   save(); paintCart();
-  document.dispatchEvent(new Event('baffi:cos-schimbat'));
   const btn=document.getElementById('cartBtn');
   btn.classList.remove('bump'); void btn.offsetWidth; btn.classList.add('bump');
   if(!silent) toast(it[0]+' · adăugat în coș');
@@ -2230,88 +2197,11 @@ document.getElementById('cartBody').addEventListener('click',e=>{
 
 /* ---------- SERTAR + MODALE ---------- */
 const scrim=document.getElementById('scrim'), cartEl=document.getElementById('cart');
-function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat','vizibil','fin');scrim.classList.add('on');document.body.classList.add('locked');document.dispatchEvent(new Event('baffi:cos'))}
+function openCart(){cartEl.classList.add('on');scrim.classList.add('on');document.body.classList.add('locked')}
 
-/* Panoul de comanda, ancorat la marginea din dreapta.
 
-   Reguli, exact:
-     - apare DOAR cand omul adauga ceva in cos, din prima clipa;
-     - ramane cat timp derularea e in sectiunea de meniu;
-     - incepe fade-out imediat ce intra alta sectiune in camp, sus sau jos;
-     - dispare cat timp e deschisa fisa unui preparat - acolo omul citeste
-       ce contine, n-are ce cauta un panou peste;
-     - dispare cand comanda merge mai departe (sertarul sau finalizarea).
-
-   Nu apare la simplul click pe un card si nu apare din derulare. */
-(function(){
-  const sect=document.getElementById('meniu');
-  const dupa=document.getElementById('experienta');
-  const lista=document.getElementById('menuList');
-  if(!sect||!cartEl||!window.IntersectionObserver) return;
-
-  const lat=matchMedia('(min-width:1200px)');
-  const IESIRE=420;               /* cat tine fade-out-ul, in ms */
-  let inMeniu=false, altaSectiune=false, cerut=false, ceas=0;
-
-  /* Deschis inseamna: nicio fereastra peste pagina, ecran lat, si derularea
-     inca in sectiunea de meniu. */
-  function libera(){
-    return lat.matches && inMeniu && !altaSectiune
-           && !document.body.classList.contains('locked');
-  }
-
-  function aplica(){
-    const arata = cerut && libera();
-    clearTimeout(ceas);
-    if(arata){
-      if(cartEl.classList.contains('ancorat')){
-        cartEl.classList.add('fin','vizibil');
-      } else {
-        /* se aseaza fara tranzitie, ca sa nu se vada venind din afara;
-           tranzitiile se aprind abia dupa doua cadre */
-        cartEl.classList.add('ancorat');
-        requestAnimationFrame(()=>requestAnimationFrame(()=>{
-          if(cerut && libera()) cartEl.classList.add('fin','vizibil');
-        }));
-      }
-    } else {
-      cartEl.classList.remove('vizibil');       /* porneste fade-out-ul */
-      ceas=setTimeout(()=>{
-        if(!cartEl.classList.contains('vizibil'))
-          cartEl.classList.remove('ancorat','fin');
-      }, IESIRE);
-    }
-  }
-
-  /* Sectiunea de meniu tine mijlocul ecranului? Pragul de 42% inseamna:
-     cat timp meniul acopera banda din mijloc, suntem inca „in meniu". */
-  new IntersectionObserver(e=>{ inMeniu=e[0].isIntersecting; aplica(); },
-    {rootMargin:'-42% 0px -42% 0px'}).observe(sect);
-
-  /* Experienta Baffi intra in camp -> fade-out imediat. */
-  if(dupa) new IntersectionObserver(e=>{ altaSectiune=e[0].isIntersecting; aplica(); },
-    {rootMargin:'0px'}).observe(dupa);
-
-  /* Apare doar la adaugarea in cos. Butonul din lista si cel din fisa
-     preparatului trec amandoua prin evenimentul de mai jos. */
-  document.addEventListener('baffi:cos-schimbat', ()=>{ cerut=true; aplica(); });
-  if(lista) lista.addEventListener('click', e=>{
-    if(e.target.closest('.add')){ cerut=true; aplica(); }
-  });
-
-  /* Orice fereastra deschisa peste pagina - fisa unui preparat, sertarul,
-     finalizarea comenzii - stinge panoul. `locked` e pus pe body de fiecare
-     dintre ele, deci il urmarim pe el, nu fiecare in parte. */
-  new MutationObserver(aplica).observe(document.body,
-    {attributes:true, attributeFilter:['class']});
-
-  (lat.addEventListener? lat.addEventListener('change',aplica)
-                       : lat.addListener(aplica));
-  document.addEventListener('baffi:cos', aplica);
-})();
 function closeAll(){
   cartEl.classList.remove('on');scrim.classList.remove('on');
-  setTimeout(()=>document.dispatchEvent(new Event('baffi:cos')),0);
   document.querySelectorAll('.modal').forEach(m=>m.classList.remove('on'));
   document.body.classList.remove('locked');
 }
