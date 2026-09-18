@@ -1138,6 +1138,17 @@ p{margin:0}
 /* poza apasabila arata apasabila */
 .pet-galerie figure,.ev-foto,.carou-track figure{cursor:zoom-in}
 @media (prefers-reduced-motion:reduce){.lb{transition:none}}
+
+/* farfuriile din banda de jos duc in meniu, deci arata apasabile */
+.rail figure[data-preparat],.rail figure[data-sectiune]{cursor:pointer}
+.rail figure[data-preparat] figcaption::after{content:"Vezi în meniu →";
+  display:block;margin-top:6px;font:700 10.5px/1 var(--sans);
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gold-lite);
+  opacity:.75;transition:opacity .2s var(--ease)}
+.rail figure[data-sectiune] figcaption::after{content:"Vezi petrecerile →";
+  display:block;margin-top:6px;font:700 10.5px/1 var(--sans);
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gold-lite);opacity:.75}
+.rail figure:hover figcaption::after{opacity:1}
 </style>
 </head>
 <body>
@@ -1521,11 +1532,11 @@ p{margin:0}
 
     <div style="margin-top:clamp(38px,5vw,72px)">
       <div class="rail" id="railEvent">
-        <figure><img src="img/bcf-event-platter-cold.webp" alt="Platou rece pentru eveniment" loading="lazy" width="700" height="933"><figcaption><div class="fc-k">Starter</div><div class="fc-t">Platouri care deschid masa</div></figcaption></figure>
-        <figure><img src="img/bcf-event-buffet.webp" alt="Bufet pentru eveniment privat" loading="lazy" width="1000" height="587"><figcaption><div class="fc-k">De împărțit</div><div class="fc-t">Servire generoasă, prezentare atentă</div></figcaption></figure>
-        <figure><img src="img/bcf-event-seafood.webp" alt="Preparate din pește pentru eveniment" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Selecția mării</div><div class="fc-t">Farfurii care impresionează din prima</div></figcaption></figure>
-        <figure><img src="img/bcf-seafood-platter.webp" alt="Platou cu fructe de mare" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Platou</div><div class="fc-t">Pentru masa care stă mult</div></figcaption></figure>
-        <figure><img src="img/bcf-burger-baffi.webp" alt="Burger Baffi" loading="lazy" width="1000" height="753"><figcaption><div class="fc-k">Semnătura casei</div><div class="fc-t">Burger Baffi, 600 g</div></figcaption></figure>
+        <figure data-preparat="Platou de brânzeturi"><img src="img/bcf-event-platter-cold.webp" alt="Platou rece pentru eveniment" loading="lazy" width="700" height="933"><figcaption><div class="fc-k">Starter</div><div class="fc-t">Platouri care deschid masa</div></figcaption></figure>
+        <figure data-preparat="Platou cald"><img src="img/bcf-event-buffet.webp" alt="Bufet pentru eveniment privat" loading="lazy" width="1000" height="587"><figcaption><div class="fc-k">De împărțit</div><div class="fc-t">Servire generoasă, prezentare atentă</div></figcaption></figure>
+        <figure data-preparat="Grigliata frutti di mare"><img src="img/bcf-event-seafood.webp" alt="Preparate din pește pentru eveniment" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Selecția mării</div><div class="fc-t">Farfurii care impresionează din prima</div></figcaption></figure>
+        <figure data-preparat="Platou fructe de mare pane"><img src="img/bcf-seafood-platter.webp" alt="Platou cu fructe de mare" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Platou</div><div class="fc-t">Pentru masa care stă mult</div></figcaption></figure>
+        <figure data-preparat="Burger Baffi"><img src="img/bcf-burger-baffi.webp" alt="Burger Baffi" loading="lazy" width="1000" height="753"><figcaption><div class="fc-k">Semnătura casei</div><div class="fc-t">Burger Baffi, 600 g</div></figcaption></figure>
       </div>
       <p class="rail-hint" style="color:rgba(245,240,231,.5)">Trage pentru a explora →</p>
     </div>
@@ -1865,7 +1876,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='8.1';
+window.BAFFI_VERSIUNE='8.2';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2728,6 +2739,51 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
     const d=e.changedTouches[0].clientX-tx; tx=null;
     if(Math.abs(d)>45) muta(d<0?1:-1);
   },{passive:true});
+})();
+/* ---------- BANDA DE JOS: fiecare farfurie duce undeva ----------
+   Preparatul se cauta dupa NUME in MENU, nu dupa pozitie: daca maine se
+   schimba ordinea categoriilor, legatura tine. O pozitie scrisa de mana s-ar
+   rupe tacut si clicul ar deschide alt fel de mancare. */
+(function(){
+  const banda=document.getElementById('railEvent'); if(!banda) return;
+
+  function gaseste(nume){
+    for(let ci=0; ci<MENU.length; ci++){
+      const lista=MENU[ci].i;
+      for(let ii=0; ii<lista.length; ii++){
+        const n=lista[ii][0];
+        if(n===nume || n.indexOf(nume+' (')===0) return {ci, ii, cat:MENU[ci].c};
+      }
+    }
+    return null;
+  }
+
+  /* Banda se trage cu degetul si browserul trimite oricum un clic la
+     ridicare. Peste 9 pixeli de miscare inseamna tragere, nu clic. */
+  let apx=0, apy=0;
+  banda.addEventListener('pointerdown', e=>{ apx=e.clientX; apy=e.clientY; });
+  banda.addEventListener('click', e=>{
+    if(Math.hypot(e.clientX-apx, e.clientY-apy)>9) return;
+    const fig=e.target.closest('figure'); if(!fig) return;
+
+    const sect=fig.dataset.sectiune;
+    if(sect){
+      const t=document.getElementById(sect);
+      if(t) t.scrollIntoView({behavior:MOTION?'smooth':'auto', block:'start'});
+      return;
+    }
+    const nume=fig.dataset.preparat; if(!nume) return;
+    const g=gaseste(nume);
+    if(!g){                                   /* numele nu mai exista in meniu */
+      document.getElementById('meniu')
+        .scrollIntoView({behavior:MOTION?'smooth':'auto', block:'start'});
+      return;
+    }
+    alegeCat(g.cat, true);
+    /* fisa se deschide dupa ce derularea s-a asezat, altfel se deschide
+       peste o pagina care inca se misca */
+    setTimeout(()=>openDish(g.ci, g.ii), MOTION?520:0);
+  });
 })();
 document.getElementById('yr').textContent=new Date().getFullYear();
 /* eticheta de versiune + starea „mișcare redusă", ca să nu mai ghicim */
