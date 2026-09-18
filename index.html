@@ -1029,6 +1029,38 @@ p{margin:0}
 .rev-ask b{font-family:var(--serif);font-size:clamp(18px,2vw,22px);font-weight:700;display:block;margin-bottom:5px}
 .rev-ask p{font-size:14px;color:var(--muted);line-height:1.55;max-width:56ch}
 .rev-ask .btn{flex:none;margin-left:auto}
+
+/* ---------- COSUL ANCORAT ----------
+   Pe ecran lat, cat timp esti in sectiunea de meniu, cosul nu mai e un
+   sertar pe care trebuie sa-l deschizi: sta langa meniu, la vedere, si
+   vezi tot timpul ce ai adaugat. Se ancoreaza singur cand intri in meniu
+   si se retrage cand iesi.
+   Sub 1200px nu se ancoreaza - n-ar incapea fara sa sufoce cardurile. */
+@media (min-width:1200px){
+  .cart.ancorat{
+    top:calc(var(--hdr-h,74px) + 22px);
+    right:max(18px, calc((100vw - var(--maxw)) / 2 - 12px));
+    bottom:auto;left:auto;
+    width:352px;max-height:calc(100vh - var(--hdr-h,74px) - 52px);
+    transform:none;border-radius:20px;overflow:hidden;
+    box-shadow:0 22px 60px rgba(7,28,44,.18), 0 2px 0 rgba(201,154,74,.25);
+    border:1px solid var(--line-gold);
+    transition:opacity .35s var(--ease), transform .35s var(--ease)}
+  .cart.ancorat .cart-h{padding-block:16px 13px}
+  .cart.ancorat .cart-h .x{display:none}       /* nu ai ce inchide */
+  .cart.ancorat .cart-body{padding-block:18px}
+  .cart.ancorat .cart-empty{padding:18px 0 14px}
+  .cart.ancorat .cart-empty img{width:54px}
+  /* cardurile se dau la o parte, ca sa nu intre sub panou */
+  body.meniu-activ .menu-sect .wrap{padding-right:392px}
+  /* butonul rotund de cos nu mai are rost cat panoul e la vedere */
+  body.meniu-activ .cart-btn{opacity:0;pointer-events:none;transform:scale(.85)}
+}
+/* apare fin, nu dintr-o data */
+@media (min-width:1200px) and (prefers-reduced-motion:no-preference){
+  .cart.ancorat{animation:cosIntra .4s var(--ease) both}
+  @keyframes cosIntra{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+}
 </style>
 </head>
 <body>
@@ -1672,7 +1704,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='6.2';
+window.BAFFI_VERSIUNE='6.7';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1762,6 +1794,15 @@ function paintHours(){
 /* ---------- EVENIMENTE (expiră singure) ----------
    Adaugi un rând nou aici și pe site apare imediat.
    Când data trece, dispare singur din ticker și din pagină. */
+/* Banda de sus nu se stinge niciodata. Cand nu e niciun eveniment anuntat,
+   trece pe mesajele astea - lucruri adevarate tot timpul anului, nimic
+   sezonier. Un site pe care nu se misca nimic pare inchis. */
+const MESAJE=[
+  {b:'Livrare gratuită', t:'peste 70 de lei', d:'curierii noștri, fără comision de aplicație', cta:'Vezi meniul', la:'#meniu'},
+  {b:'208 preparate', t:'în meniu', d:'cu gramaje și ingrediente, la vedere', cta:'Deschide meniul', la:'#meniu'},
+  {b:'Comenzi', t:'0756 021 501', d:'sau pe WhatsApp, în două minute', cta:'Comandă acum', la:'#meniu'},
+  {b:'Petreceri și platouri', t:'ne ocupăm noi de tot', d:'botez, aniversare, masă de firmă', cta:'Cere o ofertă', la:'#private'}
+];
 const EVENTS=[
   {t:'Seară grecească',sub:'Mihalis Greek Show · farfuriile le aducem noi',
    start:'2026-09-18T19:30', poster:'img/baffi-greek-night-poster-2026.webp',
@@ -1787,8 +1828,21 @@ function paintEvents(){
       +`<em>Vezi evenimentul →</em><i class="tk-d">◆</i>`
       +`</div>`;
     document.getElementById('tkTrack').innerHTML=grp.repeat(4);
+    tk.querySelector('a').setAttribute('href','#evenimente');
     tk.hidden=false;
-  } else tk.hidden=true;
+  } else {
+    /* Fara eveniment anuntat, banda nu dispare - spune altceva adevarat.
+       Aceeasi forma vizuala, ca miscarea sa arate identic. */
+    const grp=MESAJE.map(m=>`<div class="tk-grp">`
+      +`<b>${m.b}</b><i class="tk-d">◆</i>`
+      +`<strong>${m.t}</strong><i class="tk-d">◆</i>`
+      +`<span>${m.d}</span><i class="tk-d">◆</i>`
+      +`<em>${m.cta} →</em><i class="tk-d">◆</i>`
+      +`</div>`).join('');
+    document.getElementById('tkTrack').innerHTML=grp.repeat(2);
+    tk.querySelector('a').setAttribute('href','#meniu');
+    tk.hidden=false;
+  }
 
   const wrap=document.getElementById('evWrap');
   if(!up.length){
@@ -2161,9 +2215,31 @@ document.getElementById('cartBody').addEventListener('click',e=>{
 
 /* ---------- SERTAR + MODALE ---------- */
 const scrim=document.getElementById('scrim'), cartEl=document.getElementById('cart');
-function openCart(){cartEl.classList.add('on');scrim.classList.add('on');document.body.classList.add('locked')}
+function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat');document.body.classList.remove('meniu-activ');scrim.classList.add('on');document.body.classList.add('locked');document.dispatchEvent(new Event('baffi:cos'))}
+
+/* Cosul ancorat: cat timp sectiunea de meniu e pe ecran si ecranul e lat,
+   cosul sta langa meniu in loc sa fie un sertar. Nu blocheaza pagina si
+   nu are scrim - e mobila, nu fereastra modala. */
+(function(){
+  const sect=document.getElementById('meniu');
+  if(!sect||!cartEl||!window.IntersectionObserver) return;
+  const lat=matchMedia('(min-width:1200px)');
+  let inMeniu=false;
+  function aplica(){
+    const vrem = inMeniu && lat.matches && !cartEl.classList.contains('on');
+    document.body.classList.toggle('meniu-activ', vrem);
+    cartEl.classList.toggle('ancorat', vrem);
+    cartEl.hidden = false;
+  }
+  new IntersectionObserver(e=>{ inMeniu=e[0].isIntersecting; aplica(); },
+    {rootMargin:'-20% 0px -20% 0px'}).observe(sect);
+  (lat.addEventListener? lat.addEventListener('change',aplica)
+                       : lat.addListener(aplica));
+  document.addEventListener('baffi:cos', aplica);
+})();
 function closeAll(){
   cartEl.classList.remove('on');scrim.classList.remove('on');
+  setTimeout(()=>document.dispatchEvent(new Event('baffi:cos')),0);
   document.querySelectorAll('.modal').forEach(m=>m.classList.remove('on'));
   document.body.classList.remove('locked');
 }
