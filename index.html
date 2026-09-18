@@ -1743,7 +1743,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='7.4';
+window.BAFFI_VERSIUNE='7.5';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2398,24 +2398,36 @@ document.getElementById('sendWa').addEventListener('click',()=>{
     if(!cuiOk(val('fCui')))      return err('errCk','CUI-ul nu pare corect. Exemplu: RO12345678.');
     if(val('fSediu').length<6)   return err('errCk','Scrie sediul social al firmei.');
   }
-  const firma = fact!=='juridica' ? [] : ['','*Date de facturare \u2014 persoan\u0103 juridic\u0103:*',
-    `Firma: ${val('fCompany')}`,
-    `CUI: ${val('fCui')}`,
-    val('fReg')   ? `Reg. Com.: ${val('fReg')}` : '',
-    `Sediu: ${val('fSediu')}`,
-    val('fBank')  ? `Banca: ${val('fBank')}` : '',
-    val('fIban')  ? `IBAN: ${val('fIban')}` : '',
-    val('fDeleg') ? `Preia: ${val('fDeleg')}` : ''].filter(Boolean);
+  const firma = fact!=='juridica' ? [] : ['','*FACTUR\u0102 \u2014 persoan\u0103 juridic\u0103*',
+    `\u2022 Firma: ${val('fCompany')}`,
+    `\u2022 CUI: ${val('fCui')}`,
+    val('fReg')   ? `\u2022 Reg. Com.: ${val('fReg')}` : '',
+    `\u2022 Sediu: ${val('fSediu')}`,
+    val('fBank')  ? `\u2022 Banca: ${val('fBank')}` : '',
+    val('fIban')  ? `\u2022 IBAN: ${val('fIban')}` : '',
+    val('fDeleg') ? `\u2022 Preia: ${val('fDeleg')}` : ''].filter(Boolean);
   const when=timeMode==='asap'?'cât de repede se poate':('la ora '+(val('fHour')||'—'));
-  const t=['*Comandă nouă de pe site — Baffi Cafe*','',
-    `*${mode==='livrare'?'LIVRARE':'RIDICARE'}* · ${when}`,
-    `Nume: ${val('fName')}`,`Telefon: ${val('fPhone')}`,
-    mode==='livrare'?`Adresă: ${val('fAddr')}`:'Ridic de la restaurant',
-    `Plata: ${pay==='cash'?'cash':'card la livrare'}`,'','*Comanda:*',
-    ...cart.map(x=>`• ${x.q} × ${x.n} — ${money(x.p*x.q)}`),
-    '',`*Total: ${money(total())}*`,
+  const linie='\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014';
+  const t=[
+    '*COMAND\u0102 NOU\u0102 \u2014 de pe site*',
+    linie,
+    `*${mode==='livrare'?'LIVRARE':'RIDICARE DE LA RESTAURANT'}*`,
+    `\u2022 C\u00e2nd: ${when}`,
+    '',
+    '*PREPARATE*',
+    ...cart.map(x=>`\u2022 ${x.q} \u00d7 ${x.n} \u2014 ${money(x.p*x.q)}`),
+    '',
+    `*TOTAL: ${money(total())}*`,
+    `\u2022 Plata: ${pay==='cash'?'cash la livrare':'card la livrare'}`,
+    '',
+    '*CLIENT*',
+    `\u2022 ${val('fName')}`,
+    `\u2022 ${val('fPhone')}`,
+    ...(mode==='livrare' ? [`\u2022 ${val('fAddr')}`] : []),
+    ...(val('fNote') ? ['', '*MEN\u021aIUNI*', `\u2022 ${val('fNote')}`] : []),
     ...firma,
-    val('fNote')?`\nMențiuni: ${val('fNote')}`:''].join('\n');
+    linie
+  ].join('\n');
   send(t); toast('Îți deschidem WhatsApp cu comanda scrisă.');
 });
 document.getElementById('sendRez').addEventListener('click',()=>{
