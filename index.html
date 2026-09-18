@@ -58,6 +58,7 @@
 "telephone":"+40756021501","servesCuisine":["Românească","Grătar","Paste","Pește și fructe de mare","Burgeri"],
 "priceRange":"$$","currenciesAccepted":"RON","paymentAccepted":"Numerar, Card",
 "acceptsReservations":"True",
+"areaServed":[{"@type":"Place","name":"Bragadiru"},{"@type":"Place","name":"Cartierul Latin"},{"@type":"Place","name":"Cornetu"},{"@type":"Place","name":"Buda"},{"@type":"Place","name":"Măgurele"},{"@type":"Place","name":"Vărteju"},{"@type":"Place","name":"Clinceni"},{"@type":"Place","name":"Domnești"},{"@type":"Place","name":"Prelungirea Ghencea"},{"@type":"Place","name":"Ghencea"},{"@type":"Place","name":"Antiaeriană"},{"@type":"Place","name":"Militari"},{"@type":"Place","name":"Drumul Taberei"},{"@type":"Place","name":"Șoseaua Alexandriei"}],
 "amenityFeature":[{"@type":"LocationFeatureSpecification","name":"Terasă","value":true},
 {"@type":"LocationFeatureSpecification","name":"Parcare","value":true},
 {"@type":"LocationFeatureSpecification","name":"Evenimente private","value":true}],
@@ -455,8 +456,9 @@ p{margin:0}
 /* Zilele cu inchidere mai tarzie primesc auriul brandului pe ora, ca sa se
    vada dintr-o privire ca vineri si sambata se sta mai mult. Clasa se pune
    dupa ora reala de inchidere, nu dupa numele zilei. */
-.hours-row.tarziu b{color:var(--gold-lite);font-weight:700}
-.hours-row.tarziu.today b{color:var(--gold-lite)}
+.hours-row.tarziu{color:var(--gold-lite)}
+.hours-row.tarziu b{font-weight:700}
+.hours-row.tarziu.today{font-weight:600}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -1058,6 +1060,15 @@ p{margin:0}
 .rev-ask p{font-size:14px;color:var(--muted);line-height:1.55;max-width:56ch}
 .rev-ask .btn{flex:none;margin-left:auto}
 
+
+/* zona de livrare, scrisa pe nume */
+.zone{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.zone span{font:600 12px/1 var(--sans);padding:7px 10px;border-radius:99px;
+  background:rgba(201,154,74,.12);border:1px solid rgba(201,154,74,.24);
+  color:var(--gold-lite);white-space:nowrap}
+.zone-nota{display:block;margin-top:10px;font-size:12.6px;line-height:1.55;
+  color:rgba(245,240,231,.6)}
+.zone-nota a{color:var(--gold-lite)}
 </style>
 </head>
 <body>
@@ -1136,7 +1147,7 @@ p{margin:0}
     <div class="hero-copy">
       <span class="eyebrow on-navy">Gust · Atmosferă · Oameni</span>
       <h1>Tot la Baffi<span class="l2">e mai <span class="it" id="heroWord">bine.</span></span></h1>
-      <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate. Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei în Bragadiru și în zonele din jur. Nu ești sigur dacă ajungem la tine? Întreabă-ne, răspundem pe loc.</p>
+      <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate. Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei în Bragadiru și pe o rază de circa 8 km — Cornetu, Domnești, Măgurele, Clinceni, Ghencea, Militari.</p>
       <div class="hero-cta" id="heroCta">
         <a class="btn btn-gold btn-trace" href="#meniu">Comandă acum <span class="ar">→</span></a>
         <button class="btn btn-ghost-gold btn-trace" data-open="rez">Rezervă o masă</button>
@@ -1501,6 +1512,14 @@ p{margin:0}
           <span>Bragadiru, Ilfov · parcare chiar vizavi de restaurant</span>
         </div>
         <div class="c-item">
+          <span class="eyebrow on-navy">Unde livrăm</span>
+          <b>Bragadiru și pe o rază de circa 8 km</b>
+          <div class="zone" id="zoneList"></div>
+          <span class="zone-nota">Livrare gratuită de la 70 de lei, cu curierii noștri.
+            Nu găsești strada ta în listă? <a href="tel:+40756021501">Sună-ne</a> —
+            de cele mai multe ori ajungem.</span>
+        </div>
+        <div class="c-item">
           <span class="eyebrow on-navy">Telefon</span>
           <b><a href="tel:+40756021501">0756 021 501</a></b>
           <span>Comenzi, rezervări și evenimente private</span>
@@ -1724,7 +1743,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='7.3';
+window.BAFFI_VERSIUNE='7.4';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1826,6 +1845,21 @@ const MESAJE=[
   {b:'Comenzi', t:'0756 021 501', d:'sau pe WhatsApp, în două minute', cta:'Comandă acum', la:'#meniu'},
   {b:'Petreceri și platouri', t:'ne ocupăm noi de tot', d:'botez, aniversare, masă de firmă', cta:'Cere o ofertă', la:'#private'}
 ];
+/* ---------- ZONA DE LIVRARE ----------
+   Se livreaza pe o raza de circa 8 km. Numele conteaza: cine cauta
+   „livrare mancare Cornetu" nu gaseste un site care spune doar
+   „si imprejurimi".
+   Distante din centrul Bragadirului (surse publice):
+     Varteju 1,9 · Buda 2,1 · Cornetu 2,9 · Magurele 3,3
+     Clinceni 3,7 · Domnesti 5,8
+   Se editeaza aici, nu in pagina. */
+const ZONE={
+  ilfov:['Bragadiru','Cartierul Latin','Cornetu','Buda','M\u0103gurele','V\u0103rteju',
+         'Clinceni','Domne\u0219ti'],
+  bucuresti:['Prelungirea Ghencea','Ghencea','Antiaerian\u0103','Militari',
+             'Drumul Taberei','\u0218oseaua Alexandriei'],
+  raza:8
+};
 const EVENTS=[
   {t:'Seară grecească',sub:'Mihalis Greek Show · farfuriile le aducem noi',
    start:'2026-09-18T19:30', poster:'img/baffi-greek-night-poster-2026.webp',
@@ -2436,6 +2470,13 @@ addEventListener('scroll',()=>{
   toTop.classList.toggle('on',y>1400);
 },{passive:true});
 toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+/* Zona de livrare se deseneaza din ZONE, ca pagina si datele pentru
+   Google sa nu poata ajunge sa spuna lucruri diferite. */
+(function(){
+  const z=document.getElementById('zoneList'); if(!z) return;
+  z.innerHTML=[...ZONE.ilfov,...ZONE.bucuresti]
+    .map(n=>`<span>${n}</span>`).join('');
+})();
 document.getElementById('yr').textContent=new Date().getFullYear();
 /* eticheta de versiune + starea „mișcare redusă", ca să nu mai ghicim */
 (function(){
