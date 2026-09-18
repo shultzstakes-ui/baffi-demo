@@ -1705,7 +1705,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='6.9';
+window.BAFFI_VERSIUNE='7.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2233,61 +2233,77 @@ const scrim=document.getElementById('scrim'), cartEl=document.getElementById('ca
 function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat','vizibil','fin');scrim.classList.add('on');document.body.classList.add('locked');document.dispatchEvent(new Event('baffi:cos'))}
 
 /* Panoul de comanda, ancorat la marginea din dreapta.
-   Reguli, in ordinea in care conteaza:
-     - exista doar cat esti in sectiunea de meniu si doar pe ecran lat;
-     - se stinge instant cand intra Experienta Baffi in camp;
-     - apare cand atingi un preparat sau adaugi ceva in cos;
-     - se stinge daca dai click oriunde altundeva.
-   Nu blocheaza pagina si nu are scrim: e mobila, nu fereastra modala. */
+
+   Reguli, exact:
+     - apare DOAR cand omul adauga ceva in cos, din prima clipa;
+     - ramane cat timp derularea e in sectiunea de meniu;
+     - incepe fade-out imediat ce intra alta sectiune in camp, sus sau jos;
+     - dispare cat timp e deschisa fisa unui preparat - acolo omul citeste
+       ce contine, n-are ce cauta un panou peste;
+     - dispare cand comanda merge mai departe (sertarul sau finalizarea).
+
+   Nu apare la simplul click pe un card si nu apare din derulare. */
 (function(){
   const sect=document.getElementById('meniu');
   const dupa=document.getElementById('experienta');
   const lista=document.getElementById('menuList');
   if(!sect||!cartEl||!window.IntersectionObserver) return;
+
   const lat=matchMedia('(min-width:1200px)');
-  let inMeniu=false, vineDupa=false, cerut=false, ceas=0;
+  const IESIRE=420;               /* cat tine fade-out-ul, in ms */
+  let inMeniu=false, altaSectiune=false, cerut=false, ceas=0;
 
-  function poate(){ return lat.matches && inMeniu && !vineDupa
-                        && !cartEl.classList.contains('on'); }
-  function aplica(){
-    const arata = poate() && cerut;
-    const ancorat = lat.matches && inMeniu && !vineDupa
-                    && !cartEl.classList.contains('on');
-    if(ancorat && !cartEl.classList.contains('ancorat')){
-      /* se aseaza fara tranzitie, ca sa nu se vada venind din afara */
-      cartEl.classList.add('ancorat');
-      requestAnimationFrame(()=>requestAnimationFrame(
-        ()=>cartEl.classList.add('fin')));
-    } else if(!ancorat){
-      cartEl.classList.remove('ancorat','fin');
-    }
-    cartEl.classList.toggle('vizibil', arata);
+  /* Deschis inseamna: nicio fereastra peste pagina, ecran lat, si derularea
+     inca in sectiunea de meniu. */
+  function libera(){
+    return lat.matches && inMeniu && !altaSectiune
+           && !document.body.classList.contains('locked');
   }
-  function cere(){ cerut=true; clearTimeout(ceas); aplica(); }
-  function lasa(){ cerut=false; aplica(); }
 
-  new IntersectionObserver(e=>{ inMeniu=e[0].isIntersecting;
-    if(!inMeniu) cerut=false; aplica(); },
-    {rootMargin:'-15% 0px -15% 0px'}).observe(sect);
+  function aplica(){
+    const arata = cerut && libera();
+    clearTimeout(ceas);
+    if(arata){
+      if(cartEl.classList.contains('ancorat')){
+        cartEl.classList.add('fin','vizibil');
+      } else {
+        /* se aseaza fara tranzitie, ca sa nu se vada venind din afara;
+           tranzitiile se aprind abia dupa doua cadre */
+        cartEl.classList.add('ancorat');
+        requestAnimationFrame(()=>requestAnimationFrame(()=>{
+          if(cerut && libera()) cartEl.classList.add('fin','vizibil');
+        }));
+      }
+    } else {
+      cartEl.classList.remove('vizibil');       /* porneste fade-out-ul */
+      ceas=setTimeout(()=>{
+        if(!cartEl.classList.contains('vizibil'))
+          cartEl.classList.remove('ancorat','fin');
+      }, IESIRE);
+    }
+  }
 
-  /* Experienta Baffi intra in camp -> panoul se stinge imediat, in fade. */
-  if(dupa) new IntersectionObserver(e=>{ vineDupa=e[0].isIntersecting;
-    if(vineDupa) cerut=false; aplica(); },
+  /* Sectiunea de meniu tine mijlocul ecranului? Pragul de 42% inseamna:
+     cat timp meniul acopera banda din mijloc, suntem inca „in meniu". */
+  new IntersectionObserver(e=>{ inMeniu=e[0].isIntersecting; aplica(); },
+    {rootMargin:'-42% 0px -42% 0px'}).observe(sect);
+
+  /* Experienta Baffi intra in camp -> fade-out imediat. */
+  if(dupa) new IntersectionObserver(e=>{ altaSectiune=e[0].isIntersecting; aplica(); },
     {rootMargin:'0px'}).observe(dupa);
 
-  /* Atingi un preparat sau adaugi ceva -> apare. */
-  if(lista) lista.addEventListener('click',e=>{
-    if(e.target.closest('.dish')||e.target.closest('.add')) cere();
+  /* Apare doar la adaugarea in cos. Butonul din lista si cel din fisa
+     preparatului trec amandoua prin evenimentul de mai jos. */
+  document.addEventListener('baffi:cos-schimbat', ()=>{ cerut=true; aplica(); });
+  if(lista) lista.addEventListener('click', e=>{
+    if(e.target.closest('.add')){ cerut=true; aplica(); }
   });
-  document.addEventListener('baffi:cos-schimbat', cere);
 
-  /* Click oriunde altundeva -> se stinge. */
-  document.addEventListener('click',e=>{
-    if(!cartEl.classList.contains('ancorat')) return;
-    if(cartEl.contains(e.target)) return;
-    if(lista&&(e.target.closest('.dish')||e.target.closest('.add'))) return;
-    lasa();
-  });
+  /* Orice fereastra deschisa peste pagina - fisa unui preparat, sertarul,
+     finalizarea comenzii - stinge panoul. `locked` e pus pe body de fiecare
+     dintre ele, deci il urmarim pe el, nu fiecare in parte. */
+  new MutationObserver(aplica).observe(document.body,
+    {attributes:true, attributeFilter:['class']});
 
   (lat.addEventListener? lat.addEventListener('change',aplica)
                        : lat.addListener(aplica));
