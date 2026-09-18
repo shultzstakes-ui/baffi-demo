@@ -452,6 +452,11 @@ p{margin:0}
   color:rgba(245,240,231,.72);padding:5px 0;border-bottom:1px solid rgba(201,154,74,.12)}
 .hours-row:last-child{border:0}
 .hours-row.today{color:var(--gold-lite);font-weight:600}
+/* Zilele cu inchidere mai tarzie primesc auriul brandului pe ora, ca sa se
+   vada dintr-o privire ca vineri si sambata se sta mai mult. Clasa se pune
+   dupa ora reala de inchidere, nu dupa numele zilei. */
+.hours-row.tarziu b{color:var(--gold-lite);font-weight:700}
+.hours-row.tarziu.today b{color:var(--gold-lite)}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -805,7 +810,29 @@ p{margin:0}
   padding:10px 14px;text-align:center;min-width:64px}
 .ev-cd b{display:block;font-family:var(--serif);font-size:24px;font-weight:800;color:var(--gold-lite);line-height:1.1}
 .ev-cd span{font:600 9px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,231,.55)}
-.ev-none{padding:clamp(28px,4vw,56px);text-align:center;border:1px dashed var(--line);border-radius:var(--r-lg);background:var(--cream)}
+.ev-none{padding:clamp(26px,3.6vw,44px) 0 0;text-align:center}
+.ev-none .ev-cap{padding-inline:clamp(18px,4vw,44px)}
+
+/* Banda cu fotografii din local. Curge singura, incet, si se opreste cand
+   pui mana pe ea. Continutul e dublat, iar animatia muta exact jumatate -
+   asa bucla se inchide fara salt. */
+.ev-banda{position:relative;margin-top:26px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.ev-sir{display:flex;gap:14px;width:max-content;
+  animation:evCurge var(--ev-dur,68s) linear infinite}
+.ev-banda:hover .ev-sir{animation-play-state:paused}
+@keyframes evCurge{to{transform:translateX(calc(-50% - 7px))}}
+.ev-foto{position:relative;flex:none;width:clamp(210px,26vw,300px);
+  aspect-ratio:4/3;border-radius:var(--r-md,14px);overflow:hidden;
+  background:var(--soft)}
+.ev-foto img{width:100%;height:100%;object-fit:cover;display:block}
+.ev-foto figcaption{position:absolute;left:0;right:0;bottom:0;
+  padding:22px 13px 11px;text-align:left;
+  font:600 12px/1.35 var(--sans);color:#fff;
+  background:linear-gradient(transparent,rgba(7,28,44,.78))}
+@media (prefers-reduced-motion:reduce){.ev-sir{animation:none;
+  overflow-x:auto;width:auto}}
 
 /* recenzii */
 .rev-grid{display:grid;gap:16px}
@@ -1109,7 +1136,7 @@ p{margin:0}
     <div class="hero-copy">
       <span class="eyebrow on-navy">Gust · Atmosferă · Oameni</span>
       <h1>Tot la Baffi<span class="l2">e mai <span class="it" id="heroWord">bine.</span></span></h1>
-      <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate. Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei în Bragadiru.</p>
+      <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate. Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei în Bragadiru și în zonele din jur. Nu ești sigur dacă ajungem la tine? Întreabă-ne, răspundem pe loc.</p>
       <div class="hero-cta" id="heroCta">
         <a class="btn btn-gold btn-trace" href="#meniu">Comandă acum <span class="ar">→</span></a>
         <button class="btn btn-ghost-gold btn-trace" data-open="rez">Rezervă o masă</button>
@@ -1697,7 +1724,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='7.2';
+window.BAFFI_VERSIUNE='7.3';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1778,7 +1805,10 @@ function paintHours(){
   const today=new Date().getDay();
   const html=GRUPE.map(([lab,days])=>{
     const [o,c]=HOURS[days[0]];
-    return `<div class="hours-row${days.includes(today)?' today':''}"><span>${lab}</span><span>${fmtH(o)} — ${fmtH(c)}</span></div>`;
+    /* mai tarziu decat inchiderea obisnuita = zi de scos in evidenta */
+    const tarziu = c > Math.min(...Object.values(HOURS).map(h=>h[1]));
+    return `<div class="hours-row${days.includes(today)?' today':''}${tarziu?' tarziu':''}">`
+      + `<span>${lab}</span><span>${fmtH(o)} — <b>${fmtH(c)}</b></span></div>`;
   }).join('');
   document.getElementById('hoursList').innerHTML=html;
   document.getElementById('hoursList2').innerHTML=html;
@@ -1852,10 +1882,21 @@ function paintEvents(){
 
   const wrap=document.getElementById('evWrap');
   if(!up.length){
-    wrap.innerHTML=`<div class="ev-none"><span class="eyebrow">Deocamdată</span>
-      <h3 class="h-md" style="margin:14px 0 12px">Nu avem un eveniment anunțat.</h3>
-      <p class="lead" style="margin:0 auto 22px">Bucătăria, terasa și barul merg ca de obicei — iar dacă vrei să organizezi tu ceva, ne ocupăm noi de rest.</p>
-      <button class="btn btn-navy" data-open="oferta">Organizează un eveniment</button></div>`;
+    /* Fara eveniment anuntat, sectiunea nu ramane un chenar gol: curge o
+       banda cu fotografii din local. Subtitlurile descriu ce se vede in
+       poza - nimic inventat, nicio seara care nu a avut loc. */
+    const evSir=`<figure class="ev-foto"><img src="img/bcf-interior-event-setup-premium-v2.webp" alt="Sala, pregătită pentru un eveniment" loading="lazy" decoding="async"><figcaption>Sala, pregătită pentru un eveniment</figcaption></figure><figure class="ev-foto"><img src="img/bcf-event-buffet.webp" alt="Platou cald, pentru mese mari" loading="lazy" decoding="async"><figcaption>Platou cald, pentru mese mari</figcaption></figure><figure class="ev-foto"><img src="img/baffi-terrace-premium.webp" alt="Terasa" loading="lazy" decoding="async"><figcaption>Terasa</figcaption></figure><figure class="ev-foto"><img src="img/bcf-event-platter-cold.webp" alt="Platou de brânzeturi" loading="lazy" decoding="async"><figcaption>Platou de brânzeturi</figcaption></figure><figure class="ev-foto"><img src="img/baffi-bar-sapphire-uhd-v2.webp" alt="Barul" loading="lazy" decoding="async"><figcaption>Barul</figcaption></figure><figure class="ev-foto"><img src="img/bcf-event-seafood.webp" alt="Grigliata frutti di mare" loading="lazy" decoding="async"><figcaption>Grigliata frutti di mare</figcaption></figure><figure class="ev-foto"><img src="img/baffi-indoor-terrace-premium.webp" alt="Terasa acoperită" loading="lazy" decoding="async"><figcaption>Terasa acoperită</figcaption></figure><figure class="ev-foto"><img src="img/baffi-interior-dining-01.webp" alt="Sala mare" loading="lazy" decoding="async"><figcaption>Sala mare</figcaption></figure>`;
+    wrap.innerHTML=`<div class="ev-none">
+      <div class="ev-cap">
+        <span class="eyebrow">Deocamdată</span>
+        <h3 class="h-md" style="margin:14px 0 12px">Nu avem un eveniment anunțat.</h3>
+        <p class="lead" style="margin:0 auto 20px">Dar sala, terasa și barul lucrează în fiecare săptămână — botezuri, aniversări, mese de firmă. Ne ocupăm noi de tot, de la meniu la ultimul pahar.</p>
+        <button class="btn btn-navy" data-open="oferta">Organizează un eveniment</button>
+      </div>
+      <div class="ev-banda" aria-label="Fotografii din local">
+        <div class="ev-sir">${evSir}${evSir}</div>
+      </div>
+    </div>`;
     bindOpeners(); return;
   }
   const e=up[0];
