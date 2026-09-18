@@ -1743,7 +1743,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='7.5';
+window.BAFFI_VERSIUNE='7.6';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2408,8 +2408,16 @@ document.getElementById('sendWa').addEventListener('click',()=>{
     val('fDeleg') ? `\u2022 Preia: ${val('fDeleg')}` : ''].filter(Boolean);
   const when=timeMode==='asap'?'cât de repede se poate':('la ora '+(val('fHour')||'—'));
   const linie='\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014';
+  /* Codul comenzii ESTE ora la care a intrat: barmanul poate spune
+     "comanda de la 19:47" si toata lumea stie care. Litera desparte
+     doua comenzi intrate in acelasi minut. */
+  const acum=new Date();
+  const dd=n=>String(n).padStart(2,'0');
+  const cod='#B-'+dd(acum.getHours())+dd(acum.getMinutes())+'-'
+    +'ABCDEFGHJKLMNPRSTUVXZ'[Math.floor(Math.random()*21)];
   const t=[
-    '*COMAND\u0102 NOU\u0102 \u2014 de pe site*',
+    `*COMANDĂ NOUĂ ${cod}*`,
+    `${dd(acum.getDate())}.${dd(acum.getMonth()+1)} · ora ${dd(acum.getHours())}:${dd(acum.getMinutes())} · de pe site`,
     linie,
     `*${mode==='livrare'?'LIVRARE':'RIDICARE DE LA RESTAURANT'}*`,
     `\u2022 C\u00e2nd: ${when}`,
