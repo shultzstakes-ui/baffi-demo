@@ -229,7 +229,7 @@ p{margin:0}
   background:linear-gradient(90deg,var(--gold),transparent 4%,transparent 96%,var(--gold))}
 .ticker a{display:block;height:100%}
 .tk-track{display:flex;align-items:center;width:max-content;height:100%;
-  animation:tk 27s linear infinite}
+  animation:tk var(--tk-dur,46s) linear infinite}
 .ticker:hover .tk-track,.ticker:focus-visible .tk-track{animation-play-state:paused}
 @keyframes tk{to{transform:translateX(-50%)}}
 .tk-grp{display:flex;align-items:center;gap:22px;padding-right:22px;flex:none}
@@ -1030,36 +1030,36 @@ p{margin:0}
 .rev-ask p{font-size:14px;color:var(--muted);line-height:1.55;max-width:56ch}
 .rev-ask .btn{flex:none;margin-left:auto}
 
-/* ---------- COSUL ANCORAT ----------
-   Pe ecran lat, cat timp esti in sectiunea de meniu, cosul nu mai e un
-   sertar pe care trebuie sa-l deschizi: sta langa meniu, la vedere, si
-   vezi tot timpul ce ai adaugat. Se ancoreaza singur cand intri in meniu
-   si se retrage cand iesi.
-   Sub 1200px nu se ancoreaza - n-ar incapea fara sa sufoce cardurile. */
+/* ---------- PANOUL DE COMANDA ----------
+   Nu e o bara laterala permanenta, e un raspuns la ce faci. Apare lipit de
+   marginea din dreapta cand atingi un preparat sau adaugi ceva, si se stinge
+   cand te uiti in alta parte. Nu misca nimic din pagina si nu sta peste
+   coloana de continut: traieste in marginea goala din dreapta.
+   Sub 1200px nu exista - n-ar avea unde sa stea fara sa sufoce cardurile. */
 @media (min-width:1200px){
   .cart.ancorat{
-    top:calc(var(--hdr-h,74px) + 22px);
-    right:max(18px, calc((100vw - var(--maxw)) / 2 - 12px));
-    bottom:auto;left:auto;
-    width:352px;max-height:calc(100vh - var(--hdr-h,74px) - 52px);
-    transform:none;border-radius:20px;overflow:hidden;
-    box-shadow:0 22px 60px rgba(7,28,44,.18), 0 2px 0 rgba(201,154,74,.25);
-    border:1px solid var(--line-gold);
-    transition:opacity .35s var(--ease), transform .35s var(--ease)}
-  .cart.ancorat .cart-h{padding-block:16px 13px}
-  .cart.ancorat .cart-h .x{display:none}       /* nu ai ce inchide */
-  .cart.ancorat .cart-body{padding-block:18px}
-  .cart.ancorat .cart-empty{padding:18px 0 14px}
-  .cart.ancorat .cart-empty img{width:54px}
-  /* cardurile se dau la o parte, ca sa nu intre sub panou */
-  body.meniu-activ .menu-sect .wrap{padding-right:392px}
-  /* butonul rotund de cos nu mai are rost cat panoul e la vedere */
-  body.meniu-activ .cart-btn{opacity:0;pointer-events:none;transform:scale(.85)}
+    top:auto;left:auto;right:0;
+    bottom:clamp(20px,7vh,72px);
+    width:min(312px,24vw);
+    max-height:min(60vh,520px);
+    border-radius:18px 0 0 18px;
+    border:1px solid var(--line-gold);border-right:0;
+    box-shadow:-22px 24px 58px rgba(7,28,44,.16);
+    opacity:0;transform:translateX(16px);pointer-events:none;
+    transition:opacity .36s var(--ease),transform .36s var(--ease);
+    overflow:hidden}
+  .cart.ancorat.vizibil{opacity:1;transform:none;pointer-events:auto}
+  .cart.ancorat .cart-h{padding:15px 18px 12px}
+  .cart.ancorat .cart-h .x{display:none}
+  .cart.ancorat .cart-body{padding:16px 18px}
+  .cart.ancorat .cart-empty{padding:10px 0 6px;gap:8px}
+  .cart.ancorat .cart-empty img{width:44px}
+  .cart.ancorat .cart-empty b{font-size:18px}
+  .cart.ancorat .quick{margin-top:16px}
+  .cart.ancorat .cart-foot{padding:14px 18px}
 }
-/* apare fin, nu dintr-o data */
-@media (min-width:1200px) and (prefers-reduced-motion:no-preference){
-  .cart.ancorat{animation:cosIntra .4s var(--ease) both}
-  @keyframes cosIntra{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .cart.ancorat{transition:none}
 }
 </style>
 </head>
@@ -1704,7 +1704,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='6.7';
+window.BAFFI_VERSIUNE='6.8';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1816,6 +1816,17 @@ function evDate(iso){
   const d=new Date(iso);
   return `${ZI[d.getDay()]} · ${d.getDate()} ${LUNI[d.getMonth()]} · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
+/* Viteza benzii se masoara, nu se ghiceste. Continutul difera - un eveniment
+   sau patru mesaje - iar cu o durata fixa banda ar merge de doua ori mai
+   repede cand are de dus de doua ori mai mult. Viteza ramane constanta:
+   circa 62 de pixeli pe secunda, cat se citeste comod din mers. */
+function ritmBanda(){
+  const t=document.getElementById('tkTrack'); if(!t) return;
+  requestAnimationFrame(()=>{
+    const drum=t.scrollWidth/2;
+    if(drum>40) t.style.setProperty('--tk-dur', Math.round(drum/62)+'s');
+  });
+}
 function paintEvents(){
   const up=upcoming(), tk=document.getElementById('ticker');
   if(up.length){
@@ -1828,6 +1839,7 @@ function paintEvents(){
       +`<em>Vezi evenimentul →</em><i class="tk-d">◆</i>`
       +`</div>`;
     document.getElementById('tkTrack').innerHTML=grp.repeat(4);
+    ritmBanda();
     tk.querySelector('a').setAttribute('href','#evenimente');
     tk.hidden=false;
   } else {
@@ -1840,6 +1852,7 @@ function paintEvents(){
       +`<em>${m.cta} →</em><i class="tk-d">◆</i>`
       +`</div>`).join('');
     document.getElementById('tkTrack').innerHTML=grp.repeat(2);
+    ritmBanda();
     tk.querySelector('a').setAttribute('href','#meniu');
     tk.hidden=false;
   }
@@ -2150,6 +2163,7 @@ function addItem(ci,ii,silent){
   const ex=cart.find(x=>x.k===key);
   if(ex) ex.q++; else cart.push({k:key,n:it[0],p:it[1],c:c.c,q:1});
   save(); paintCart();
+  document.dispatchEvent(new Event('baffi:cos-schimbat'));
   const btn=document.getElementById('cartBtn');
   btn.classList.remove('bump'); void btn.offsetWidth; btn.classList.add('bump');
   if(!silent) toast(it[0]+' · adăugat în coș');
@@ -2215,24 +2229,57 @@ document.getElementById('cartBody').addEventListener('click',e=>{
 
 /* ---------- SERTAR + MODALE ---------- */
 const scrim=document.getElementById('scrim'), cartEl=document.getElementById('cart');
-function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat');document.body.classList.remove('meniu-activ');scrim.classList.add('on');document.body.classList.add('locked');document.dispatchEvent(new Event('baffi:cos'))}
+function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat','vizibil');scrim.classList.add('on');document.body.classList.add('locked');document.dispatchEvent(new Event('baffi:cos'))}
 
-/* Cosul ancorat: cat timp sectiunea de meniu e pe ecran si ecranul e lat,
-   cosul sta langa meniu in loc sa fie un sertar. Nu blocheaza pagina si
-   nu are scrim - e mobila, nu fereastra modala. */
+/* Panoul de comanda, ancorat la marginea din dreapta.
+   Reguli, in ordinea in care conteaza:
+     - exista doar cat esti in sectiunea de meniu si doar pe ecran lat;
+     - se stinge instant cand intra Experienta Baffi in camp;
+     - apare cand atingi un preparat sau adaugi ceva in cos;
+     - se stinge daca dai click oriunde altundeva.
+   Nu blocheaza pagina si nu are scrim: e mobila, nu fereastra modala. */
 (function(){
   const sect=document.getElementById('meniu');
+  const dupa=document.getElementById('experienta');
+  const lista=document.getElementById('menuList');
   if(!sect||!cartEl||!window.IntersectionObserver) return;
   const lat=matchMedia('(min-width:1200px)');
-  let inMeniu=false;
+  let inMeniu=false, vineDupa=false, cerut=false, ceas=0;
+
+  function poate(){ return lat.matches && inMeniu && !vineDupa
+                        && !cartEl.classList.contains('on'); }
   function aplica(){
-    const vrem = inMeniu && lat.matches && !cartEl.classList.contains('on');
-    document.body.classList.toggle('meniu-activ', vrem);
-    cartEl.classList.toggle('ancorat', vrem);
-    cartEl.hidden = false;
+    const arata = poate() && cerut;
+    cartEl.classList.toggle('ancorat', lat.matches && inMeniu && !vineDupa
+                                       && !cartEl.classList.contains('on'));
+    cartEl.classList.toggle('vizibil', arata);
   }
-  new IntersectionObserver(e=>{ inMeniu=e[0].isIntersecting; aplica(); },
-    {rootMargin:'-20% 0px -20% 0px'}).observe(sect);
+  function cere(){ cerut=true; clearTimeout(ceas); aplica(); }
+  function lasa(){ cerut=false; aplica(); }
+
+  new IntersectionObserver(e=>{ inMeniu=e[0].isIntersecting;
+    if(!inMeniu) cerut=false; aplica(); },
+    {rootMargin:'-15% 0px -15% 0px'}).observe(sect);
+
+  /* Experienta Baffi intra in camp -> panoul se stinge imediat, in fade. */
+  if(dupa) new IntersectionObserver(e=>{ vineDupa=e[0].isIntersecting;
+    if(vineDupa) cerut=false; aplica(); },
+    {rootMargin:'0px'}).observe(dupa);
+
+  /* Atingi un preparat sau adaugi ceva -> apare. */
+  if(lista) lista.addEventListener('click',e=>{
+    if(e.target.closest('.dish')||e.target.closest('.add')) cere();
+  });
+  document.addEventListener('baffi:cos-schimbat', cere);
+
+  /* Click oriunde altundeva -> se stinge. */
+  document.addEventListener('click',e=>{
+    if(!cartEl.classList.contains('ancorat')) return;
+    if(cartEl.contains(e.target)) return;
+    if(lista&&(e.target.closest('.dish')||e.target.closest('.add'))) return;
+    lasa();
+  });
+
   (lat.addEventListener? lat.addEventListener('change',aplica)
                        : lat.addListener(aplica));
   document.addEventListener('baffi:cos', aplica);
