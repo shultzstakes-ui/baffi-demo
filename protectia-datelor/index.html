@@ -1,0 +1,198 @@
+<title>Protecția datelor · Baffi Cafe</title>
+<meta name="description" content="Cum prelucrează Baffi Cafe datele personale: ce primim, de ce, cât le ținem și ce drepturi aveți.">
+<link rel="canonical" href="https://bafficafe.ro/protectia-datelor/">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#071c2c">
+<link rel="icon" href="../img/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<style>
+:root{
+  --navy:#071c2c; --navy-2:#0c2940; --sapphire:#0c4169;
+  --gold:#c99a4a; --gold-lite:#e2c17c; --gold-deep:#a97c33;
+  --paper:#fffdf9; --cream:#f5efe6; --body-bg:#f2ece3; --warm:#fffaf3;
+  --ink:#14212a; --ink-2:#3c4a53; --muted:#6c716f;
+  --line:rgba(7,28,44,.1); --line-2:rgba(7,28,44,.06);
+  --line-gold:rgba(201,154,74,.32);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --serif:Georgia,"Times New Roman",serif;
+  --ease:cubic-bezier(.22,.68,.28,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--body-bg);color:var(--ink);
+  font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{width:100%;max-width:960px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{margin:0;font-family:var(--serif);font-weight:700;line-height:1.14;
+  letter-spacing:-.02em;text-wrap:balance}
+p{margin:0}
+a{color:var(--sapphire)}
+:focus-visible{outline:2.5px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* antet */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+  background:rgba(7,28,44,.97);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(226,193,124,.2)}
+.hdr .wrap{display:flex;align-items:center;gap:16px;min-height:62px;padding-block:9px}
+.inapoi{display:inline-flex;align-items:center;gap:8px;color:var(--gold-lite);
+  text-decoration:none;font:600 13.5px/1 var(--sans);white-space:nowrap}
+.inapoi:hover{color:#fff}
+.inapoi svg{flex:none}
+.hdr .marca{margin-left:auto;font-family:var(--serif);font-weight:700;font-size:17px;
+  color:var(--paper);text-decoration:none;white-space:nowrap}
+.hdr .tel{display:none;color:var(--gold-lite);text-decoration:none;
+  font:700 14px/1 var(--sans);white-space:nowrap}
+@media(min-width:640px){.hdr .tel{display:inline-block}}
+
+/* deschidere */
+.sus{padding-block:44px 30px;border-bottom:1px solid var(--line)}
+.eticheta{display:inline-block;font:800 9.5px/1 var(--sans);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold-deep);margin-bottom:14px}
+.sus h1{font-size:clamp(34px,7.4vw,56px)}
+.sus .sub{margin-top:14px;color:var(--ink-2);font-size:16.5px;max-width:62ch}
+
+/* continut de citit */
+.text{padding-block:34px 18px;max-width:70ch}
+.text h2{font-size:23px;margin:34px 0 10px}
+.text h2:first-child{margin-top:0}
+.text h3{font-size:18px;font-family:var(--sans);font-weight:700;margin:22px 0 7px}
+.text p{margin-bottom:13px;color:var(--ink-2)}
+.text ul{margin:0 0 15px;padding-left:22px;color:var(--ink-2)}
+.text li{margin-bottom:7px}
+.text li::marker{color:var(--gold-deep)}
+.text strong{color:var(--ink);font-weight:700}
+.text a{color:var(--sapphire);text-underline-offset:2px}
+.caseta{background:var(--warm);border:1px solid var(--line-gold);border-radius:14px;
+  padding:18px 20px;margin:20px 0}
+.caseta h3{margin-top:0}
+.caseta p:last-child{margin-bottom:0}
+.date-firma{display:grid;gap:7px;margin:0 0 15px;padding:0;list-style:none}
+.date-firma div{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:15px}
+.date-firma dt{font-weight:700;min-width:11ch;color:var(--ink)}
+.date-firma dd{margin:0;color:var(--ink-2)}
+.actualizat{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--muted)}
+
+/* subsol */
+.foot{margin-top:46px;background:var(--navy);color:rgba(255,253,249,.7);
+  padding-block:30px calc(30px + env(safe-area-inset-bottom,0px))}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;
+  justify-content:space-between;font-size:13.5px}
+.foot a{color:var(--gold-lite);text-decoration:none}
+.foot a:hover{text-decoration:underline}
+.foot .fr{display:flex;flex-wrap:wrap;gap:8px 18px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.demo-bar{background:#14212a;color:rgba(245,240,231,.72);
+  font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
+  text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
+</style>
+
+<header class="hdr">
+  <div class="wrap">
+    <a class="inapoi" href="../"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Înapoi la site</a>
+    <a class="marca" href="../">Baffi Cafe</a>
+    <a class="tel" href="tel:+40756021501">0756 021 501</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="sus">
+    <span class="eticheta">Informare GDPR</span>
+    <h1>Protecția datelor</h1>
+    <p class="sub">Ce date primim de la dumneavoastră, de ce le folosim, cât le ținem și ce drepturi aveți.</p>
+  </div>
+  <main class="text">
+    <h2>Pe scurt</h2>
+    <p>Vă cerem doar ce ne trebuie ca să vă aducem comanda: <strong>numele, numărul de
+    telefon și adresa de livrare</strong>. Nimic mai mult. Nu vindem datele nimănui și nu le
+    folosim pentru reclame.</p>
+
+    <h2>Cine prelucrează datele</h2>
+    <dl class="date-firma">
+      <div><dt>Denumire</dt><dd>S.C. BAFFI CAFE S.R.L.</dd></div>
+      <div><dt>CUI</dt><dd>34492919</dd></div>
+      <div><dt>Reg. Com.</dt><dd>J23/3424/2018</dd></div>
+      <div><dt>Sediu</dt><dd>Bragadiru, județul Ilfov, România</dd></div>
+      <div><dt>E-mail</dt><dd><a href="mailto:office@bafficafe.ro">office@bafficafe.ro</a></dd></div>
+      <div><dt>Telefon</dt><dd><a href="tel:+40756021501">0756 021 501</a></dd></div>
+    </dl>
+
+    <h2>Ce date primim și de unde</h2>
+    <p>Site-ul acesta <strong>nu are formulare care să ne trimită date</strong> și nu are cont
+    de utilizator. Când comandați, se deschide o conversație pe WhatsApp cu mesajul deja
+    scris, iar dumneavoastră decideți ce trimiteți.</p>
+    <p>Deci primim doar ce ne scrieți sau ne spuneți la telefon:</p>
+    <ul>
+      <li>numele, pentru a ști cui aparține comanda;</li>
+      <li>numărul de telefon, ca să vă putem suna dacă ceva nu e clar;</li>
+      <li>adresa, dacă vreți livrare;</li>
+      <li>ce ați comandat și cum plătiți.</li>
+    </ul>
+    <p>La o rezervare de masă sau la un eveniment privat, primim în plus data, ora și numărul
+    de persoane.</p>
+
+    <h2>De ce le folosim</h2>
+    <ul>
+      <li><strong>Ca să executăm comanda</strong> — temeiul legal este contractul dintre noi.</li>
+      <li><strong>Ca să respectăm legea</strong> — obligațiile fiscale și contabile.</li>
+      <li><strong>Ca să răspundem la o reclamație</strong> — interesul nostru legitim de a
+      lămuri o situație.</li>
+    </ul>
+    <p>Nu vă trimitem mesaje comerciale decât dacă ne cereți explicit.</p>
+
+    <h2>Cât le ținem</h2>
+    <p>Conversațiile de comandă rămân în istoricul WhatsApp atât cât are nevoie restaurantul
+    ca să poată lămuri o comandă sau o reclamație. Documentele fiscale se păstrează cât cere
+    legea contabilității.</p>
+
+    <h2>Cui ajung</h2>
+    <p><strong>Nu vindem și nu închiriem date personale nimănui.</strong></p>
+    <p>Livrarea o fac curierii noștri, nu o platformă. Datele pot ajunge doar la:</p>
+    <ul>
+      <li>contabilitatea firmei, pentru documentele fiscale;</li>
+      <li>autorități, dacă legea ne obligă;</li>
+      <li>WhatsApp, prin însăși natura conversației — regulile lor se aplică mesajelor.</li>
+    </ul>
+
+    <h2>Ce drepturi aveți</h2>
+    <p>Potrivit Regulamentului general privind protecția datelor, aveți dreptul:</p>
+    <ul>
+      <li>să aflați ce date avem despre dumneavoastră;</li>
+      <li>să cereți îndreptarea lor, dacă sunt greșite;</li>
+      <li>să cereți ștergerea lor, în limitele obligațiilor legale;</li>
+      <li>să vă opuneți prelucrării;</li>
+      <li>să vă retrageți consimțământul, dacă l-ați dat.</li>
+    </ul>
+    <p>Scrieți-ne la <a href="mailto:office@bafficafe.ro">office@bafficafe.ro</a>.
+    Răspundem în cel mult 30 de zile.</p>
+
+    <div class="caseta">
+      <h3>Dacă nu sunteți mulțumit de răspunsul nostru</h3>
+      <p>Vă puteți adresa <strong>Autorității Naționale de Supraveghere a Prelucrării Datelor
+      cu Caracter Personal</strong> (ANSPDCP), București, B-dul G-ral Gheorghe Magheru 28-30,
+      <a href="https://www.dataprotection.ro/" rel="noopener" target="_blank">dataprotection.ro</a>.</p>
+    </div>
+
+    <h2>Cookie-uri</h2>
+    <p>Site-ul nu pune cookie-uri. Detaliile sunt în
+    <a href="../politica-de-cookie-uri/">politica de cookie-uri</a>.</p>
+    <p class="actualizat">Ultima actualizare: 18.09.2026.</p>
+  </main>
+</div>
+
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© <span id="an">2026</span> Baffi Cafe · Bragadiru</span>
+    <div class="fr">
+      <a href="../">Acasă</a>
+      <a href="../meniu/">Meniu</a>
+      <a href="../termeni-si-conditii/">Termeni</a>
+      <a href="../protectia-datelor/">Protecția datelor</a>
+      <a href="../politica-de-cookie-uri/">Cookie-uri</a>
+      <a href="tel:+40756021501">0756 021 501</a>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById("an").textContent=new Date().getFullYear()</script>
