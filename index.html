@@ -229,7 +229,7 @@ p{margin:0}
   background:linear-gradient(90deg,var(--gold),transparent 4%,transparent 96%,var(--gold))}
 .ticker a{display:block;height:100%}
 .tk-track{display:flex;align-items:center;width:max-content;height:100%;
-  animation:tk var(--tk-dur,46s) linear infinite}
+  animation:tk var(--tk-dur,64s) linear infinite}
 .ticker:hover .tk-track,.ticker:focus-visible .tk-track{animation-play-state:paused}
 @keyframes tk{to{transform:translateX(-50%)}}
 .tk-grp{display:flex;align-items:center;gap:22px;padding-right:22px;flex:none}
@@ -1046,8 +1046,9 @@ p{margin:0}
     border:1px solid var(--line-gold);border-right:0;
     box-shadow:-22px 24px 58px rgba(7,28,44,.16);
     opacity:0;transform:translateX(16px);pointer-events:none;
-    transition:opacity .36s var(--ease),transform .36s var(--ease);
+    transition:none;
     overflow:hidden}
+  .cart.ancorat.fin{transition:opacity .36s var(--ease),transform .36s var(--ease)}
   .cart.ancorat.vizibil{opacity:1;transform:none;pointer-events:auto}
   .cart.ancorat .cart-h{padding:15px 18px 12px}
   .cart.ancorat .cart-h .x{display:none}
@@ -1704,7 +1705,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='6.8';
+window.BAFFI_VERSIUNE='6.9';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -1819,12 +1820,12 @@ function evDate(iso){
 /* Viteza benzii se masoara, nu se ghiceste. Continutul difera - un eveniment
    sau patru mesaje - iar cu o durata fixa banda ar merge de doua ori mai
    repede cand are de dus de doua ori mai mult. Viteza ramane constanta:
-   circa 62 de pixeli pe secunda, cat se citeste comod din mers. */
+   circa 44 de pixeli pe secunda - ritm de citit, nu de fugarit. */
 function ritmBanda(){
   const t=document.getElementById('tkTrack'); if(!t) return;
   requestAnimationFrame(()=>{
     const drum=t.scrollWidth/2;
-    if(drum>40) t.style.setProperty('--tk-dur', Math.round(drum/62)+'s');
+    if(drum>40) t.style.setProperty('--tk-dur', Math.round(drum/44)+'s');
   });
 }
 function paintEvents(){
@@ -2229,7 +2230,7 @@ document.getElementById('cartBody').addEventListener('click',e=>{
 
 /* ---------- SERTAR + MODALE ---------- */
 const scrim=document.getElementById('scrim'), cartEl=document.getElementById('cart');
-function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat','vizibil');scrim.classList.add('on');document.body.classList.add('locked');document.dispatchEvent(new Event('baffi:cos'))}
+function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat','vizibil','fin');scrim.classList.add('on');document.body.classList.add('locked');document.dispatchEvent(new Event('baffi:cos'))}
 
 /* Panoul de comanda, ancorat la marginea din dreapta.
    Reguli, in ordinea in care conteaza:
@@ -2250,8 +2251,16 @@ function openCart(){cartEl.classList.add('on');cartEl.classList.remove('ancorat'
                         && !cartEl.classList.contains('on'); }
   function aplica(){
     const arata = poate() && cerut;
-    cartEl.classList.toggle('ancorat', lat.matches && inMeniu && !vineDupa
-                                       && !cartEl.classList.contains('on'));
+    const ancorat = lat.matches && inMeniu && !vineDupa
+                    && !cartEl.classList.contains('on');
+    if(ancorat && !cartEl.classList.contains('ancorat')){
+      /* se aseaza fara tranzitie, ca sa nu se vada venind din afara */
+      cartEl.classList.add('ancorat');
+      requestAnimationFrame(()=>requestAnimationFrame(
+        ()=>cartEl.classList.add('fin')));
+    } else if(!ancorat){
+      cartEl.classList.remove('ancorat','fin');
+    }
     cartEl.classList.toggle('vizibil', arata);
   }
   function cere(){ cerut=true; clearTimeout(ceas); aplica(); }
