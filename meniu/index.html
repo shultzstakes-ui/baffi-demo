@@ -167,6 +167,7 @@ a{color:var(--sapphire)}
 @media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
 
 /* ---------- LUPA ---------- */
+body.locked{overflow:hidden}
 .foto:not(.gol){cursor:zoom-in}
 .lb{position:fixed;inset:0;z-index:200;display:none;
   background:rgba(7,28,44,.94);backdrop-filter:blur(6px);
@@ -2889,18 +2890,19 @@ a{color:var(--sapphire)}
   });
   var poza=document.getElementById('lbImg'), cap=document.getElementById('lbCap'),
       nr=document.getElementById('lbNr');
-  var idx=0, sus=0;
+  var idx=0;
   function arata(){ var p=set[idx]; poza.src=p.src; poza.alt=p.alt;
     cap.textContent=p.cap; nr.textContent=(idx+1)+' din '+set.length; }
-  function deschide(i){ idx=i; arata(); sus=window.scrollY;
-    document.body.style.cssText+=';position:fixed;left:0;right:0;top:'+(-sus)+'px';
+  function deschide(i){ idx=i; arata();
+    var bara=window.innerWidth-document.documentElement.clientWidth;
+    if(bara>0) document.body.style.paddingRight=bara+'px';
+    document.body.classList.add('locked');
     lb.classList.add('on');
     requestAnimationFrame(function(){ lb.classList.add('vizibil'); }); }
   function inchide(){ lb.classList.remove('vizibil'); setTimeout(function(){
     lb.classList.remove('on'); poza.src='';
-    document.body.style.position=''; document.body.style.top='';
-    document.body.style.left=''; document.body.style.right='';
-    window.scrollTo(0,sus); }, 260); }
+    document.body.classList.remove('locked');
+    document.body.style.paddingRight=''; }, 260); }
   function muta(d){ idx=(idx+d+set.length)%set.length; arata(); }
   cu.forEach(function(f,i){ f.addEventListener('click', function(){ deschide(i); }); });
   document.getElementById('lbX').addEventListener('click', inchide);

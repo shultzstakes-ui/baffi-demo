@@ -456,9 +456,13 @@ p{margin:0}
 /* Zilele cu inchidere mai tarzie primesc auriul brandului pe ora, ca sa se
    vada dintr-o privire ca vineri si sambata se sta mai mult. Clasa se pune
    dupa ora reala de inchidere, nu dupa numele zilei. */
-.hours-row.tarziu{color:var(--gold-lite)}
-.hours-row.tarziu b{font-weight:700}
-.hours-row.tarziu.today{font-weight:600}
+/* Randul cu inchidere mai tarzie: auriu pe tot randul, ingrosat, pe o dunga
+   discreta. Doar culoarea, la 13 pixeli langa un crem la 72%, nu se vedea. */
+.hours-row.tarziu{color:var(--gold-lite);font-weight:600;
+  background:linear-gradient(90deg,rgba(201,154,74,.10),transparent 82%);
+  border-radius:6px;padding-inline:8px;margin-inline:-8px}
+.hours-row.tarziu b{color:var(--gold-lite);font-weight:800}
+.hours-row.tarziu span{color:var(--gold-lite)}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -1876,7 +1880,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='8.2';
+window.BAFFI_VERSIUNE='8.3';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2672,7 +2676,7 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
         nr=document.getElementById('lbNr'),
         prev=document.getElementById('lbPrev'), next=document.getElementById('lbNext');
   const GRUPURI='.pet-galerie, .ev-sir, .carou-track';
-  let set=[], idx=0, sus=0;
+  let set=[], idx=0;
 
   function textul(fig){
     const c=fig.querySelector('figcaption'); if(!c) return '';
@@ -2692,18 +2696,20 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
       return {src:im.currentSrc||im.src, alt:im.alt||'', cap:textul(f)}; });
     idx=Math.max(0, figuri.indexOf(fig));
     arata();
-    /* pagina se blocheaza pe pozitia ei, ca sa nu curga in spate */
-    sus=scrollY;
-    document.body.style.cssText+=';position:fixed;left:0;right:0;top:'+(-sus)+'px';
+    /* Aceeasi metoda ca la celelalte ferestre: se opreste derularea, nu se
+       muta pagina. Cand bara de derulare dispare, continutul s-ar largi cu
+       latimea ei, deci o compensam. */
+    const bara=innerWidth-document.documentElement.clientWidth;
+    if(bara>0) document.body.style.paddingRight=bara+'px';
+    document.body.classList.add('locked');
     lb.classList.add('on'); requestAnimationFrame(()=>lb.classList.add('vizibil'));
   }
   function inchide(){
     lb.classList.remove('vizibil');
     setTimeout(()=>{
       lb.classList.remove('on'); poza.src='';
-      document.body.style.position=''; document.body.style.top='';
-      document.body.style.left=''; document.body.style.right='';
-      scrollTo(0,sus);
+      document.body.classList.remove('locked');
+      document.body.style.paddingRight='';
     }, 260);
   }
   function muta(d){ if(!set.length) return;
