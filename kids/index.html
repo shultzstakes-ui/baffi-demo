@@ -429,6 +429,51 @@ p{margin:0}
 @media (prefers-reduced-motion:reduce){.card-art .traseu{stroke-dashoffset:0;animation:none}}
 
 .fmt{--art-ink:var(--ink);--art-ac:var(--coral);--rim:rgba(18,20,46,.17);--rim2:rgba(18,20,46,.12)}
+
+/* ---------- LUPA ----------
+   Aceeasi ca pe pagina principala: ecran plin, poza incadrata intreg,
+   butoanele jos, la degetul mare. */
+body.locked{overflow:hidden}
+.gal figure,.carou-track figure{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:200;display:none;
+  background:rgba(7,28,44,.94);backdrop-filter:blur(6px);
+  opacity:0;transition:opacity .28s ease}
+.lb.on{display:flex;flex-direction:column}
+.lb.vizibil{opacity:1}
+.lb-poza{flex:1;display:grid;place-items:center;min-height:0;padding:clamp(12px,3vw,40px)}
+.lb-poza img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.45)}
+.lb-jos{flex:none;display:flex;align-items:center;gap:14px;
+  padding:14px clamp(14px,3vw,28px) calc(14px + env(safe-area-inset-bottom,0px));
+  background:rgba(7,28,44,.6);border-top:1px solid rgba(255,255,255,.14)}
+.lb-text{flex:1;min-width:0;color:#fff;font:600 14.5px/1.4 var(--sans,sans-serif)}
+.lb-text span{display:block;font-weight:500;font-size:12px;
+  color:rgba(255,255,255,.55);margin-top:2px;font-variant-numeric:tabular-nums}
+.lb-b{flex:none;width:44px;height:44px;border-radius:50%;border:0;cursor:pointer;
+  display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.1);
+  transition:.2s ease}
+.lb-b:hover{background:rgba(255,255,255,.22)}
+.lb-b:disabled{opacity:.3;cursor:default}
+.lb-x{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:12px;
+  z-index:2;background:rgba(7,28,44,.55)}
+@media (prefers-reduced-motion:reduce){.lb{transition:none}}
+
+/* ---------- DESPRE ---------- */
+.despre-loc{max-width:62ch}
+.despre-loc p{margin-top:14px;font-size:16px;line-height:1.72}
+.despre-loc p.lead{margin-top:18px}
+.despre-loc b{font-weight:700}
+/* Randul de final sta singur: e concluzia, nu inca un paragraf. */
+.despre-final{margin-top:24px!important;padding-top:18px;
+  border-top:1px solid currentColor;
+  font-family:var(--serif,Georgia,serif);font-size:19px;line-height:1.5;
+  font-style:italic;opacity:.92}
+.despre-cifre{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.despre-cifre div{flex:1 1 170px;padding:14px 16px;border-radius:14px;
+  border:1px solid currentColor}
+.despre-cifre b{display:block;font-family:var(--serif,Georgia,serif);
+  font-size:24px;line-height:1;margin-bottom:6px}
+.despre-cifre span{font-size:12.8px;line-height:1.45;opacity:.75}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -601,6 +646,31 @@ p{margin:0}
   </div>
 </section>
 
+<!-- ════════ DESPRE ════════ -->
+<section class="sect" id="despre">
+  <div class="wrap">
+    <div class="sect-head">
+      <span class="eyebrow">Crângași · etajul 5</span>
+      <h2 class="h-lg">Un etaj întreg,<br>unde se poate <span class="it">alerga.</span></h2>
+    </div>
+    <div class="despre-loc">
+      <p class="lead">Baffi Kids e partea din grup unde regulile se schimbă: aici se
+        aleargă, se strigă și se mănâncă tort cu mâna. Un etaj întreg în Itaoui Center,
+        gândit pentru zilele în care sărbătoritul are șase ani și vine cu tot grupul.</p>
+      <p><b>Ce facem noi:</b> spațiul, animatia, mâncarea și curățenia de după.
+        <b>Ce faci tu:</b> alegi ziua și aduci copiii.</p>
+      <p>În restul săptămânii locul nu stă: cursuri de dans și teatru, ateliere,
+        după-amiezi în care părinții își beau cafeaua cât timp copiii se joacă.</p>
+      <p>Bucătăria vine de la Baffi Cafe. Nu se mănâncă altfel la petrecerea unui copil
+        decât la o masă de duminică — doar porțiile sunt pe măsură.</p>
+      <p class="despre-final">Tu vii cu copiii. Noi strângem după.</p>
+      <div class="despre-cifre">
+        <div><b>3</b><span>Locuri Baffi: Bragadiru, Crângași, Berceni</span></div>
+        <div><b>5</b><span>Etajul din Itaoui Center, Calea Crângași 29</span></div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="sect" id="oferta">
   <div class="wrap">
     <div class="offer rv">
@@ -751,10 +821,80 @@ p{margin:0}
       <a href="tel:+40736856880">0736 856 880</a>
       <a data-net="cafe">Baffi Café ↗</a>
       <a data-net="oasis">Baffi Oasis ↗</a>
+      <a href="../termeni-si-conditii/">Termeni</a>
+      <a href="../protectia-datelor/">Protecția datelor</a>
+      <a href="../politica-de-cookie-uri/">Cookie-uri</a>
       <span>© <span id="yr">2026</span> Baffi Kids · <b id="ver" style="font-weight:700;opacity:.75"></b></span>
     </div>
   </div>
 </footer>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Fotografie mărită">
+  <button class="lb-b lb-x" id="lbX" type="button" aria-label="Închide"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  <div class="lb-poza"><img id="lbImg" src="" alt=""></div>
+  <div class="lb-jos">
+    <button class="lb-b" id="lbPrev" type="button" aria-label="Poza anterioară"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+    <div class="lb-text"><b id="lbCap"></b><span id="lbNr"></span></div>
+    <button class="lb-b" id="lbNext" type="button" aria-label="Poza următoare"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+  </div>
+</div>
+
+<script>
+/* Lupa. Se leaga de orice figura care contine o imagine. */
+(function(){
+  var lb=document.getElementById('lb'); if(!lb) return;
+  var figuri=[].slice.call(document.querySelectorAll('.gal figure, .carou-track figure'))
+              .filter(function(f){ return f.querySelector('img'); });
+  if(!figuri.length) return;
+  var set=figuri.map(function(f){
+    var im=f.querySelector('img'), c=f.querySelector('figcaption');
+    return {src:im.currentSrc||im.src, alt:im.alt||'',
+            cap:c?c.textContent.trim():(im.alt||'')};
+  });
+  var poza=document.getElementById('lbImg'), cap=document.getElementById('lbCap'),
+      nr=document.getElementById('lbNr');
+  var idx=0;
+  function arata(){ var p=set[idx]; poza.src=p.src; poza.alt=p.alt;
+    cap.textContent=p.cap; nr.textContent=(idx+1)+' din '+set.length; }
+  function deschide(i){ idx=i; arata();
+    var bara=window.innerWidth-document.documentElement.clientWidth;
+    if(bara>0) document.body.style.paddingRight=bara+'px';
+    document.body.classList.add('locked');
+    lb.classList.add('on');
+    requestAnimationFrame(function(){ lb.classList.add('vizibil'); }); }
+  function inchide(){ lb.classList.remove('vizibil'); setTimeout(function(){
+    lb.classList.remove('on'); poza.src='';
+    document.body.classList.remove('locked');
+    document.body.style.paddingRight=''; }, 260); }
+  function muta(d){ idx=(idx+d+set.length)%set.length; arata(); }
+  /* Un clic care vine dupa o tragere nu e clic. */
+  var apx=0, apy=0;
+  figuri.forEach(function(f,i){
+    f.addEventListener('pointerdown', function(e){ apx=e.clientX; apy=e.clientY; });
+    f.addEventListener('click', function(e){
+      if(Math.hypot(e.clientX-apx, e.clientY-apy)>9) return;
+      if(e.target.closest('a,button')) return;
+      deschide(i);
+    });
+  });
+  document.getElementById('lbX').addEventListener('click', inchide);
+  document.getElementById('lbPrev').addEventListener('click', function(){ muta(-1); });
+  document.getElementById('lbNext').addEventListener('click', function(){ muta(1); });
+  lb.addEventListener('click', function(e){
+    if(!e.target.closest('img,.lb-jos,.lb-x')) inchide(); });
+  window.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('on')) return;
+    if(e.key==='Escape') inchide();
+    else if(e.key==='ArrowLeft') muta(-1);
+    else if(e.key==='ArrowRight') muta(1); });
+  var tx=null;
+  lb.addEventListener('touchstart', function(e){ tx=e.touches[0].clientX; },{passive:true});
+  lb.addEventListener('touchend', function(e){
+    if(tx===null) return;
+    var d=e.changedTouches[0].clientX-tx; tx=null;
+    if(Math.abs(d)>45) muta(d<0?1:-1); },{passive:true});
+})();
+</script>
+
 
 <div class="mobar" id="mobar">
   <a class="btn btn-coral" href="#rezervare">Verifică data</a>
