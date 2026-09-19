@@ -358,7 +358,8 @@ p{margin:0}
   margin:18px 18px 18px 0;border-radius:26px}
 @media(max-width:959px){.hero-media{min-height:540px;margin:0 18px 18px}}
 @media(max-width:680px){.hero-media{min-height:410px;margin:0 9px 9px;border-radius:19px}}
-.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 34%}   /* firma de deasupra usii ramane in cadru */
 .hero-media::after{content:"";position:absolute;inset:0;
   background:linear-gradient(90deg,var(--navy) 0%,rgba(7,28,44,.55) 26%,rgba(7,28,44,0) 62%)}
 @media(max-width:959px){.hero-media{order:2}
@@ -1273,7 +1274,7 @@ p{margin:0}
       </div>
     </div>
     <div class="hero-media">
-      <img src="img/baffi-entrance-premium-v6.webp" alt="Intrarea în Baffi Cafe din Bragadiru" width="1600" height="1499" fetchpriority="high" decoding="async">
+      <img src="img/baffi-entrance-premium-v6.webp" alt="Intrarea în Baffi Cafe din Bragadiru" width="1400" height="1866" fetchpriority="high" decoding="async">
     </div>
   </div>
 </section>
@@ -1445,7 +1446,7 @@ p{margin:0}
       <div class="despre-foto">
         <img src="img/baffi-entrance-premium-v6-900.webp"
              alt="Intrarea în Baffi Cafe, Bragadiru"
-             loading="lazy" decoding="async" width="900" height="600">
+             loading="lazy" decoding="async" width="900" height="1200">
       </div>
       <div class="despre-text">
         <span class="eyebrow">Din 2018, pe Safirului</span>
@@ -1902,7 +1903,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='8.5';
+window.BAFFI_VERSIUNE='8.6';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
