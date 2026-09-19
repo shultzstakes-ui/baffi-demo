@@ -1176,6 +1176,68 @@ p{margin:0}
   display:block;margin-top:6px;font:700 10.5px/1 var(--sans);
   letter-spacing:.1em;text-transform:uppercase;color:var(--gold-lite);opacity:.75}
 .rail figure:hover figcaption::after{opacity:1}
+
+/* ---------- ECRANUL DE CONFIRMARE ----------
+   wa.me nu trimite nimic, doar scrie mesajul. Ecranul asta spune raspicat ca
+   mai e un pas — altfel omul crede ca a comandat si asteapta degeaba. */
+.gata-cod{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:14px 16px;border-radius:var(--r-md,14px);background:var(--navy);color:var(--cream)}
+.gata-cod span{font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold)}
+.gata-cod b{font:700 20px/1 var(--sans);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+/* Pasii: primul e aprins, restul asteapta. Numerotarea vine din CSS, ca sa nu
+   se poata desincroniza de ordinea din pagina. */
+.pasi{list-style:none;margin:18px 0 0;padding:0;counter-reset:p}
+.pasi li{counter-increment:p;position:relative;padding:0 0 18px 42px}
+.pasi li::before{content:counter(p);position:absolute;left:0;top:-1px;
+  width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  font:700 12.5px/1 var(--sans);background:var(--line);color:var(--muted)}
+/* linia care leaga pasii, oprita la ultimul */
+.pasi li::after{content:"";position:absolute;left:13.5px;top:30px;bottom:4px;
+  width:1px;background:var(--line)}
+.pasi li:last-child{padding-bottom:0}
+.pasi li:last-child::after{display:none}
+.pasi li.acum::before{background:var(--gold);color:var(--navy)}
+.pasi b{display:block;font-size:15px;line-height:1.35;margin-bottom:3px}
+.pasi span{display:block;font-size:13.4px;line-height:1.5;color:var(--muted)}
+.gata-sum{margin:18px 0;padding:14px 16px;border:1px solid var(--line);
+  border-radius:var(--r-md,14px);font-size:14px;line-height:1.6}
+.gata-sum div{display:flex;justify-content:space-between;gap:14px}
+.gata-sum div b{font-weight:700}
+.gata-bifa{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(58,140,90,.12);color:#3a8c5a;margin:0 auto 16px}
+.gata-mult{text-align:center}
+.gata-mult h4{font-family:var(--serif,Georgia,serif);font-size:25px;line-height:1.2;
+  font-weight:400;margin-bottom:8px}
+.gata-mult p{font-size:14.5px;line-height:1.6;color:var(--muted);max-width:40ch;
+  margin:0 auto 18px}
+.gata-sp{height:10px}
+
+/* ---------- BANDA DE RECUPERARE ----------
+   Se arata o singura data, la intoarcerea in pagina, daca a ramas o comanda
+   netrimisa. Jos, deasupra dockului de pe telefon, ca sa nu acopere nimic. */
+.reia{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  z-index:95;display:none;align-items:center;gap:10px;
+  padding:12px 14px;border-radius:var(--r-md,14px);
+  background:var(--navy);color:var(--cream);
+  box-shadow:0 18px 44px rgba(7,28,44,.34);
+  transform:translateY(14px);opacity:0;
+  transition:transform .32s var(--ease),opacity .32s var(--ease)}
+.reia.on{display:flex}
+.reia.vizibil{transform:none;opacity:1}
+/* sub 760px exista dockul de jos, deci banda urca deasupra lui */
+@media(max-width:759px){.reia{bottom:calc(80px + env(safe-area-inset-bottom,0px))}}
+@media(min-width:760px){.reia{left:auto;right:20px;bottom:20px;max-width:440px}}
+.reia-t{flex:1;min-width:0;font:600 13.5px/1.4 var(--sans)}
+.reia-t span{display:block;font-weight:500;font-size:12px;color:rgba(255,255,255,.6);
+  margin-top:2px}
+.reia button{flex:none;border:0;cursor:pointer;border-radius:99px;
+  font:700 11px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;
+  padding:11px 14px;transition:filter .2s var(--ease)}
+.reia button:hover{filter:brightness(1.08)}
+.reia .da{background:rgba(255,255,255,.13);color:var(--cream)}
+.reia .din-nou{background:var(--gold);color:var(--navy)}
+@media (prefers-reduced-motion:reduce){.reia{transition:none}}
 </style>
 </head>
 <body>
@@ -1793,6 +1855,51 @@ p{margin:0}
   </div>
 </div>
 
+<!-- ══════════════ CONFIRMAREA ══════════════ -->
+<div class="modal" id="mGata" role="dialog" aria-modal="true" aria-labelledby="gataTit">
+  <div class="modal-card">
+    <div class="modal-h"><h3 id="gataTit">Mai ai un pas</h3>
+      <button class="x" data-close type="button" aria-label="Închide">✕</button></div>
+    <div class="modal-b">
+
+      <!-- starea 1: mesajul e scris, dar nu e trimis -->
+      <div id="gataPas">
+        <div class="gata-cod"><span id="gataEticheta">Comanda ta</span><b id="gataCod"></b></div>
+        <ol class="pasi">
+          <li class="acum"><b>Apasă butonul verde din WhatsApp.</b>
+            <span id="gataP1">Mesajul e deja scris, cu tot ce ai ales. Până nu îl trimiți, comanda nu ajunge la bucătărie.</span></li>
+          <li><b>Te sunăm scurt.</b>
+            <span id="gataP2">Confirmăm ce ai comandat și în cât timp ajunge.</span></li>
+          <li><b>Atât.</b>
+            <span id="gataP3">Restul e treaba noastră.</span></li>
+        </ol>
+        <div class="gata-sum" id="gataSum"></div>
+        <button class="btn btn-gold" id="gataOk">Am trimis mesajul <span class="ar">→</span></button>
+        <div class="gata-sp"></div>
+        <button class="btn btn-ghost" id="gataDinNou" type="button">Deschide WhatsApp din nou</button>
+        <div class="gata-sp"></div>
+        <a class="btn btn-ghost" id="gataTel" href="tel:">Nu merge WhatsApp? Sună-ne</a>
+      </div>
+
+      <!-- starea 2: confirmat -->
+      <div id="gataMult" class="gata-mult" hidden>
+        <div class="gata-bifa"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+        <h4 id="gataMultTit">Am primit-o.</h4>
+        <p id="gataMultTxt"></p>
+        <button class="btn btn-gold" data-close type="button">Închide <span class="ar">→</span></button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- banda care recuperează o comandă rămasă netrimisă -->
+<div class="reia" id="reia" role="status">
+  <div class="reia-t" id="reiaT"></div>
+  <button class="da" id="reiaDa" type="button">Da</button>
+  <button class="din-nou" id="reiaDinNou" type="button">Retrimite</button>
+</div>
+
 <!-- ══════════════ FIȘA PREPARATULUI ══════════════ -->
 <div class="modal" id="mDish" role="dialog" aria-modal="true" aria-labelledby="dishName">
   <div class="modal-card">
@@ -1903,7 +2010,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='8.7';
+window.BAFFI_VERSIUNE='8.8';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2544,6 +2651,134 @@ function err(id,msg){const e=document.getElementById(id);e.textContent=msg;e.cla
 function send(txt){
   window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(txt),'_blank','noopener');
 }
+
+/* ---------- CONFIRMAREA ----------
+   wa.me doar scrie mesajul in WhatsApp; trimiterea ramane in mana omului.
+   Pagina nu are cum sa afle daca a apasat, deci nici nu se preface ca stie:
+   il intreaba. Pana raspunde, cosul lui ramane intreg. */
+const CHEIE_ULTIMA='baffi_ultima_comanda';
+let ultima=null;
+try{ultima=JSON.parse(localStorage.getItem(CHEIE_ULTIMA)||'null')}catch(e){ultima=null}
+const scrieUltima=()=>{try{
+  ultima ? localStorage.setItem(CHEIE_ULTIMA,JSON.stringify(ultima))
+         : localStorage.removeItem(CHEIE_ULTIMA);
+}catch(e){}};
+
+/* Codul e ora la care a intrat: omul de la telefon poate spune „comanda de la
+   19:47". Litera desparte doua intrari in acelasi minut. */
+function codNou(prefix){
+  const a=new Date(), dd=n=>String(n).padStart(2,'0');
+  return prefix+'-'+dd(a.getHours())+dd(a.getMinutes())+'-'
+    +'ABCDEFGHJKLMNPRSTUVXZ'[Math.floor(Math.random()*21)];
+}
+
+/* Numarul, scris o singura data in formatul in care il citeste omul.
+   Pana acum aparea si nedespartit, in textul de confirmare. */
+const TELAFIS=CFG.tel.replace('+40','0').replace(/(\d{4})(\d{3})(\d{3})/,'$1 $2 $3');
+
+const TEXTE_GATA={
+  comanda:{eticheta:'Comanda ta',
+    p1:'Mesajul e deja scris, cu tot ce ai ales. Până nu îl trimiți, comanda nu ajunge la bucătărie.',
+    p2:'Confirmăm ce ai comandat și în cât timp ajunge.',
+    p3:'Restul e treaba noastră. Tu pui masa.',
+    titlu:'Am primit-o.', scurt:'Te sunăm imediat.',
+    gata:'Te sunăm în scurt timp de la '+TELAFIS+' ca să confirmăm. Coșul s-a golit — comanda e la noi.'},
+  rezervare:{eticheta:'Rezervarea ta',
+    p1:'Mesajul e deja scris. Până nu îl trimiți, masa nu e ținută.',
+    p2:'Confirmăm că avem loc la ora aleasă.',
+    p3:'Te așteptăm.',
+    titlu:'Rezervarea e la noi.', scurt:'Confirmăm în scurt timp.',
+    gata:'Confirmăm printr-un mesaj sau un apel scurt. Dacă se schimbă ceva, scrie-ne pe același număr.'},
+  oferta:{eticheta:'Cererea ta',
+    p1:'Mesajul e deja scris. Până nu îl trimiți, nu ajunge la noi.',
+    p2:'Ne uităm peste ce ai cerut și revenim cu o ofertă.',
+    p3:'Fără obligații până nu îți convine prețul.',
+    titlu:'Am primit cererea.', scurt:'Revenim cu oferta.',
+    gata:'Revenim cu oferta după ce punem cifrele cap la cap. Dacă e urgent, sună-ne.'}
+};
+
+const gataMod=document.getElementById('mGata');
+function aratGata(tip, cod, rezumat, txt){
+  ultima={tip:tip, cod:cod, txt:txt, rezumat:rezumat, cand:Date.now(), confirmat:false};
+  scrieUltima();
+  const T=TEXTE_GATA[tip];
+  document.getElementById('gataEticheta').textContent=T.eticheta;
+  document.getElementById('gataCod').textContent=cod;
+  document.getElementById('gataP1').textContent=T.p1;
+  document.getElementById('gataP2').textContent=T.p2;
+  document.getElementById('gataP3').textContent=T.p3;
+  document.getElementById('gataSum').innerHTML=rezumat;
+  document.getElementById('gataSum').hidden=!rezumat;
+  document.getElementById('gataTel').href='tel:'+CFG.tel;
+  document.getElementById('gataTel').textContent='Nu merge WhatsApp? Sună: '+TELAFIS;
+  document.getElementById('gataTit').textContent='Mai ai un pas';
+  document.getElementById('gataPas').hidden=false;
+  document.getElementById('gataMult').hidden=true;
+  ascundeReia();
+  closeAll();
+  gataMod.classList.add('on');
+  document.body.classList.add('locked');
+}
+
+/* Confirmarea vine de la om, nu din cod. Abia acum se goleste cosul. */
+function confirmaTrimis(discret){
+  if(!ultima) return;
+  const T=TEXTE_GATA[ultima.tip]||TEXTE_GATA.comanda;
+  if(ultima.tip==='comanda'){ cart.length=0; save(); paintCart(); }
+  ultima.confirmat=true; scrieUltima();
+  ascundeReia();
+  /* Din banda raspunsul ramane la fel de mic ca intrebarea: o vorba scurta,
+     nu un ecran plin peste pagina. */
+  if(discret===true){ toast(T.titlu+' '+T.scurt); return; }
+  document.getElementById('gataMultTit').textContent=T.titlu;
+  document.getElementById('gataMultTxt').textContent=T.gata;
+  document.getElementById('gataTit').textContent='Gata';
+  document.getElementById('gataPas').hidden=true;
+  document.getElementById('gataMult').hidden=false;
+  if(!gataMod.classList.contains('on')){
+    closeAll(); gataMod.classList.add('on'); document.body.classList.add('locked');
+  }
+}
+document.getElementById('gataOk').addEventListener('click',()=>confirmaTrimis(false));
+document.getElementById('gataDinNou').addEventListener('click',()=>{
+  if(ultima&&ultima.txt) send(ultima.txt);
+});
+
+/* ---------- BANDA DE RECUPERARE ----------
+   O comanda scrisa dar neconfirmata se tine doua ore. La intoarcerea in
+   pagina intrebam o data, scurt. Nu insistam: „Da" o inchide definitiv. */
+const DOUA_ORE=2*60*60*1000;
+const reia=document.getElementById('reia');
+let reiaAratata=false;
+function ascundeReia(){
+  reia.classList.remove('vizibil');
+  /* cronometrul asta apartine ascunderii de ACUM. Daca intre timp banda a
+     fost aratata din nou, nu are voie sa o stinga. */
+  setTimeout(()=>{ if(!reia.classList.contains('vizibil')) reia.classList.remove('on'); },320);
+}
+function poateReia(){
+  return ultima && !ultima.confirmat && ultima.txt
+      && (Date.now()-ultima.cand) < DOUA_ORE;
+}
+function aratReia(){
+  if(reiaAratata || !poateReia() || gataMod.classList.contains('on')) return;
+  reiaAratata=true;
+  const T=TEXTE_GATA[ultima.tip]||TEXTE_GATA.comanda;
+  document.getElementById('reiaT').innerHTML=
+    T.eticheta+' '+ultima.cod+'<span>Ai apucat să o trimiți pe WhatsApp?</span>';
+  reia.classList.add('on');
+  requestAnimationFrame(()=>reia.classList.add('vizibil'));
+}
+document.getElementById('reiaDa').addEventListener('click',()=>confirmaTrimis(true));
+document.getElementById('reiaDinNou').addEventListener('click',()=>{
+  if(ultima&&ultima.txt){ send(ultima.txt); ascundeReia(); }
+});
+/* la intoarcerea din WhatsApp */
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible') setTimeout(aratReia,900);
+});
+/* sau la o vizita noua, in aceeasi fereastra de doua ore */
+if(poateReia()) setTimeout(aratReia,2600);
 /* Pe cine se face bonul. Persoana fizica e starea implicita: majoritatea
    comenzilor sunt personale, iar cine deconteaza pe firma stie sa caute. */
 let fact='fizica';
@@ -2607,27 +2842,40 @@ document.getElementById('sendWa').addEventListener('click',()=>{
     ...firma,
     linie
   ].join('\n');
-  send(t); toast('Îți deschidem WhatsApp cu comanda scrisă.');
+  send(t);
+  /* rezumatul ramane scris pe ecran: omul vede ce a trimis, nu doar ca a trimis */
+  aratGata('comanda', cod,
+    '<div><span>'+count()+' produse</span><b>'+money(total())+'</b></div>'
+    +'<div><span>'+(mode==='livrare'?'Livrare':'Ridicare de la restaurant')+'</span>'
+    +'<span>'+when+'</span></div>', t);
 });
 document.getElementById('sendRez').addEventListener('click',()=>{
   if(val('rName').length<3) return err('errRez','Scrie-ne numele tău.');
   if(!phoneOk(val('rPhone'))) return err('errRez','Numărul de telefon nu pare corect. Exemplu: 0722 333 444.');
   if(!val('rDate')) return err('errRez','Alege ziua rezervării.');
-  const t=['*Rezervare de pe site — Baffi Cafe*','',
+  const cod=codNou('#R');
+  const t=[`*REZERVARE ${cod}*`,'',
     `Nume: ${val('rName')}`,`Telefon: ${val('rPhone')}`,
     `Data: ${val('rDate')} · ora ${val('rHour')||'—'}`,
     `Persoane: ${pax}`,`Preferință: ${zone==='oriunde'?'oriunde e bine':zone}`,
     val('rNote')?`\nMențiuni: ${val('rNote')}`:''].join('\n');
-  send(t); toast('Îți deschidem WhatsApp cu rezervarea.');
+  send(t);
+  aratGata('rezervare', cod,
+    '<div><span>'+val('rDate')+' · ora '+(val('rHour')||'—')+'</span>'
+    +'<b>'+pax+' persoane</b></div>', t);
 });
 document.getElementById('sendOf').addEventListener('click',()=>{
   if(val('oName').length<3) return err('errOf','Scrie-ne numele tău.');
   if(!phoneOk(val('oPhone'))) return err('errOf','Numărul de telefon nu pare corect.');
-  const t=['*Cerere ofertă eveniment — Baffi Cafe*','',
+  const cod=codNou('#E');
+  const t=[`*CERERE OFERTĂ EVENIMENT ${cod}*`,'',
     `Nume: ${val('oName')}`,`Telefon: ${val('oPhone')}`,
     `Tip: ${evType}`,`Data: ${val('oDate')||'nedecisă'}`,`Invitați: ${val('oPax')||'—'}`,
     val('oNote')?`\nDetalii: ${val('oNote')}`:''].join('\n');
-  send(t); toast('Îți deschidem WhatsApp cu cererea.');
+  send(t);
+  aratGata('oferta', cod,
+    '<div><span>'+evType+'</span><b>'+(val('oPax')||'—')+' invitați</b></div>'
+    +'<div><span>Data</span><span>'+(val('oDate')||'nedecisă')+'</span></div>', t);
 });
 
 /* ---------- NAVIGAȚIE / UI ---------- */
