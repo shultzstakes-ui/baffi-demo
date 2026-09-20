@@ -1268,6 +1268,59 @@ p{margin:0}
 .reia .da{background:rgba(255,255,255,.13);color:var(--cream)}
 .reia .din-nou{background:var(--gold);color:var(--navy)}
 @media (prefers-reduced-motion:reduce){.reia{transition:none}}
+
+/* ---------- 01. PRAGUL CARE SE INCHIDE SINGUR ----------
+   Sub bara de progres: doua-trei lucruri care acopera exact diferenta.
+   Nu e o lista de sugestii, e un raspuns la o intrebare pusa cu un rand
+   mai sus. */
+.prag{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.prag button{flex:0 1 auto;display:inline-flex;align-items:baseline;gap:7px;
+  max-width:100%;border:1px solid var(--line-gold,rgba(201,154,74,.32));
+  background:rgba(201,154,74,.09);color:var(--ink);
+  font:600 12.6px/1.2 var(--sans);padding:9px 12px;border-radius:99px;
+  cursor:pointer;transition:background .2s var(--ease),border-color .2s var(--ease)}
+.prag button:hover{background:rgba(201,154,74,.2);border-color:var(--gold)}
+.prag button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.prag .pn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:20ch}
+.prag .pp{flex:none;font-weight:700;color:var(--gold-deep)}
+
+/* ---------- 02. „CA DATA TRECUTA" ----------
+   Primul lucru din cosul gol, pentru cine a mai comandat. Pentru cine n-a
+   mai comandat nu exista deloc. */
+.iar{display:block;width:100%;text-align:left;cursor:pointer;
+  border:1px solid var(--line-gold,rgba(201,154,74,.32));border-radius:var(--r-md,14px);
+  background:linear-gradient(180deg,rgba(201,154,74,.12),rgba(201,154,74,.05));
+  padding:15px 16px;margin-bottom:14px;
+  transition:border-color .2s var(--ease),transform .2s var(--ease)}
+.iar:hover{border-color:var(--gold);transform:translateY(-1px)}
+.iar:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.iar .ih{display:block;font:700 10.5px/1 var(--sans);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold-deep);margin-bottom:7px}
+.iar .it2{display:block;font-family:var(--serif);font-size:18px;line-height:1.25;
+  color:var(--ink);margin-bottom:4px}
+.iar .is{display:block;font-size:13px;line-height:1.45;color:var(--muted);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.iar .ib{display:inline-flex;align-items:center;gap:7px;margin-top:11px;
+  font:700 10.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--navy);background:var(--gold);padding:9px 13px;border-radius:99px}
+
+/* ---------- 03. COSUL TRIMIS MAI DEPARTE ---------- */
+.cart-foot .trimite{width:100%;margin-top:9px;display:inline-flex;align-items:center;
+  justify-content:center;gap:9px;min-height:44px;padding:0 16px;border-radius:99px;
+  border:1px solid var(--line);background:transparent;color:var(--muted);
+  font:700 10.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;transition:border-color .2s var(--ease),color .2s var(--ease)}
+.cart-foot .trimite:hover{border-color:var(--navy);color:var(--ink)}
+.cart-foot .trimite:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+/* butonul de langa cautare */
+.share-meniu{flex:none;display:inline-flex;align-items:center;gap:8px;
+  min-height:46px;padding:0 15px;border-radius:12px;cursor:pointer;
+  border:1px solid var(--line);background:var(--white,#fff);color:var(--muted);
+  font:700 10.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;
+  transition:border-color .2s var(--ease),color .2s var(--ease)}
+.share-meniu:hover{border-color:var(--navy);color:var(--ink)}
+.share-meniu:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+@media(max-width:560px){.share-meniu span{display:none}.share-meniu{padding:0 13px}}
 </style>
 </head>
 <body>
@@ -1487,6 +1540,9 @@ p{margin:0}
           <input id="q" type="search" placeholder="Caută: burger, ciorbă, pizza, vin…" aria-label="Caută în meniu" autocomplete="off">
           <button class="clr" id="qClear" aria-label="Șterge căutarea">×</button>
         </div>
+        <button class="share-meniu" id="shareMeniu" type="button" aria-label="Trimite meniul">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13M8 7l4-4 4 4"/></svg>
+          <span>Trimite meniul</span></button>
         <div class="seg" role="tablist" aria-label="Tip preparate">
           <button class="on" data-kind="food" role="tab" aria-selected="true">Mâncare</button>
           <button data-kind="drink" role="tab" aria-selected="false">Băuturi</button>
@@ -1817,8 +1873,12 @@ p{margin:0}
   <div class="cart-foot" id="cartFoot" hidden>
     <div class="prog"><i id="progBar"></i></div>
     <div class="prog-txt" id="progTxt"></div>
+    <div class="prag" id="prag" hidden></div>
     <div class="tot"><span>Subtotal</span><b id="cartTotal">0 lei</b></div>
     <button class="btn btn-gold" id="toCheckout">Continuă comanda <span class="ar">→</span></button>
+    <button class="trimite" id="trimiteCos" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13M8 7l4-4 4 4"/></svg>
+      Trimite coșul cuiva</button>
     <small>Fără cont · confirmare prin telefon · plată la livrare sau cu cardul</small>
   </div>
 </aside>
@@ -1925,6 +1985,13 @@ p{margin:0}
 
     </div>
   </div>
+</div>
+
+<!-- banda pentru coșul primit de la altcineva -->
+<div class="reia" id="primit" role="status">
+  <div class="reia-t" id="primitT"></div>
+  <button class="da" id="primitNu" type="button">Nu</button>
+  <button class="din-nou" id="primitDa" type="button">Deschide</button>
 </div>
 
 <!-- banda care recuperează o comandă rămasă netrimisă -->
@@ -2044,7 +2111,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.1';
+window.BAFFI_VERSIUNE='9.2';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2559,7 +2626,7 @@ function paintCart(){
     MENU.forEach((c,ci)=>c.i.forEach((it,ii)=>{
       if(['Burger Baffi','Carbonara','Pizza quattro formaggi','Ceafă de porc la grătar (300g)'].some(t=>it[0].startsWith(t.split(' (')[0]))) qs.push({ci,ii,n:it[0],p:it[1],c:c.c});
     }));
-    body.innerHTML=`<div class="cart-empty">
+    body.innerHTML=blocIar()+`<div class="cart-empty">
         <img src="img/logo-navy.webp" alt="" width="760" height="235" loading="lazy">
         <b>Coșul e gol.</b><p>Începe cu ceva bun — sau caută direct în meniu ce ai poftă.</p>
       </div>
@@ -2583,8 +2650,9 @@ function paintCart(){
   const pct=Math.min(100,t/MIN*100);
   document.getElementById('progBar').style.width=pct+'%';
   const pt=document.getElementById('progTxt');
-  if(t>=MIN){pt.className='prog-txt ok';pt.textContent='Livrare gratuită — ai trecut de 70 de lei.';}
-  else{pt.className='prog-txt';pt.innerHTML=`Mai adaugă <b>${money(MIN-t)}</b> pentru livrare gratuită. Sub 70 de lei, comanda se poate doar ridica.`;}
+  if(t>=MIN){pt.className='prog-txt ok';pt.textContent='Livrare gratuită — ai trecut de 70 de lei.';pictPrag(0);}
+  else{pt.className='prog-txt';pt.innerHTML=`Mai adaugă <b>${money(MIN-t)}</b> pentru livrare gratuită. Sub 70 de lei, comanda se poate doar ridica.`;
+    pictPrag(MIN-t);}
 }
 document.getElementById('menuList').addEventListener('click',e=>{
   const b=e.target.closest('.add'); if(!b) return;
@@ -2604,7 +2672,10 @@ document.getElementById('cartBody').addEventListener('click',e=>{
     save(); paintCart(); return;
   }
   const p=e.target.closest('[data-ci]');
-  if(p){ addItem(+p.dataset.ci,+p.dataset.ii); confettiFrom(p) }
+  if(p){ addItem(+p.dataset.ci,+p.dataset.ii); confettiFrom(p); return }
+  /* „Ca data trecuta" se redeseneaza odata cu cosul, deci legatura sta
+     aici, pe cosul intreg, nu pe butonul care dispare. */
+  if(e.target.closest('#iar')) reiaLista();
 });
 
 /* ---------- SERTAR + MODALE ---------- */
@@ -2677,6 +2748,138 @@ function paintSum(){
     +`<div class="sl"><span>Livrare</span><span>${liv}</span></div>`
     +`<div class="sl big"><span>Total</span><span>${money(t)}</span></div>`;
 }
+
+
+/* ═══════════════ 01. PRAGUL CARE SE INCHIDE SINGUR ═══════════════
+   Bara de deasupra spune „mai ai 8 lei". Aici stau doua-trei lucruri care
+   exact acolo te duc. Se cauta numai in categoriile mici - nimeni nu
+   inchide o gaura de 8 lei cu o vita de 195. */
+const CAT_MICI = ['Garnituri','Salate însoțitoare','Desert','Cafea',
+                  'Băuturi răcoritoare','Limonade și shake-uri','Bere și cidru'];
+let INCHIZATORI = null;
+function inchizatori(){
+  if(INCHIZATORI) return INCHIZATORI;
+  INCHIZATORI = [];
+  MENU.forEach((c,ci)=>{ if(CAT_MICI.indexOf(c.c)<0) return;
+    c.i.forEach((it,ii)=>INCHIZATORI.push({ci,ii,n:it[0],p:it[1],c:c.c})); });
+  return INCHIZATORI;
+}
+function pictPrag(lipsa){
+  const box=document.getElementById('prag');
+  if(lipsa<=0){ box.hidden=true; box.innerHTML=''; return; }
+  /* Doar ce ACOPERA diferenta dintr-o singura apasare, cel mai aproape de
+     ea primul. Daca nimic din categoriile mici nu o acopera - adica omul
+     e inca departe de prag, nu langa el - nu propunem nimic: un buton de
+     35 de lei sub un text care cere 42 nu ajuta, doar minte. */
+  const l=inchizatori().filter(x=>x.p>=lipsa).sort((a,b)=>(a.p-lipsa)-(b.p-lipsa));
+  if(!l.length){ box.hidden=true; box.innerHTML=''; return; }
+  const alese=[]; const vazute={};
+  for(const x of l){ if(vazute[x.c]) continue; vazute[x.c]=1; alese.push(x); if(alese.length===3) break; }
+  if(!alese.length){ box.hidden=true; return; }
+  box.hidden=false;
+  box.innerHTML=alese.map(x=>`<button type="button" data-ci="${x.ci}" data-ii="${x.ii}"
+      aria-label="Adaugă ${x.n}, ${money(x.p)}">
+      <span class="pn">${x.n.replace(/ \([^)]*\)$/,'')}</span>
+      <span class="pp">+${money(x.p)}</span></button>`).join('');
+}
+document.getElementById('prag').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-ci]'); if(!b) return;
+  addItem(+b.dataset.ci,+b.dataset.ii);
+});
+
+/* ═══════════════ 02. „CA DATA TRECUTA" ═══════════════
+   Lista ultimei comenzi confirmate, tinuta in telefonul lui. Nu ajunge
+   nicaieri altundeva. */
+const CHEIE_LISTA='baffi_ultima_lista';
+function citesteLista(){
+  try{ const l=JSON.parse(localStorage.getItem(CHEIE_LISTA)||'null');
+       return (l && l.length) ? l : null; }catch(e){ return null; }
+}
+function scrieLista(l){ try{ localStorage.setItem(CHEIE_LISTA,JSON.stringify(l)); }catch(e){} }
+function blocIar(){
+  const l=citesteLista(); if(!l) return '';
+  const buc=l.reduce((s,x)=>s+x.q,0), lei=l.reduce((s,x)=>s+x.p*x.q,0);
+  const ce=l.map(x=>(x.q>1?x.q+'× ':'')+x.n.replace(/ \([^)]*\)$/,'')).join(', ');
+  return `<button class="iar" id="iar" type="button">
+      <span class="ih">Ca data trecută</span>
+      <span class="it2">${buc} ${buc===1?'produs':'produse'} · ${money(lei)}</span>
+      <span class="is">${ce}</span>
+      <span class="ib">Pune-le la loc în coș <span class="ar">→</span></span>
+    </button>`;
+}
+function reiaLista(){
+  const l=citesteLista(); if(!l) return;
+  /* se pun peste ce are deja, nu se sterge nimic */
+  l.forEach(x=>{ const ex=cart.find(y=>y.k===x.k);
+    if(ex) ex.q+=x.q; else cart.push(Object.assign({},x)); });
+  save(); paintCart(); toast('Am pus comanda de data trecută în coș.');
+}
+
+/* ═══════════════ 03. COSUL TRIMIS MAI DEPARTE ═══════════════
+   Cosul incape in adresa: `#cos=6.0.2_20.3.1`. Scurt dinadins - o adresa
+   lunga se rupe in mesaje. */
+function codCos(l){
+  return l.map(x=>x.k.replace('-','.')+'.'+x.q).join('_');
+}
+function desfaCos(cod){
+  const out=[];
+  String(cod||'').split('_').forEach(b=>{
+    const p=b.split('.').map(Number);
+    if(p.length!==3 || p.some(n=>!Number.isInteger(n)||n<0)) return;
+    const [ci,ii,q]=p;
+    const c=MENU[ci]; if(!c) return;
+    const it=c.i[ii]; if(!it) return;
+    out.push({k:ci+'-'+ii, n:it[0], p:it[1], c:c.c, q:Math.min(Math.max(q,1),30)});
+  });
+  return out;
+}
+function linkCos(){
+  return location.origin+location.pathname+'#cos='+codCos(cart);
+}
+/* Butonul nativ al telefonului daca exista; altfel se copiaza linkul. */
+async function trimite(text, url, caz){
+  try{
+    if(navigator.share){ await navigator.share({title:'Baffi Cafe', text:text, url:url}); return; }
+  }catch(e){ if(e && e.name==='AbortError') return; }
+  try{ await navigator.clipboard.writeText(url); toast('Link copiat — lipește-l în WhatsApp.'); return; }catch(e){}
+  prompt(caz, url);
+}
+document.getElementById('trimiteCos').addEventListener('click',()=>{
+  if(!cart.length) return toast('Coșul e gol.');
+  trimite('Uite ce am ales de la Baffi — adaugă și tu ce vrei.',
+          linkCos(), 'Copiază linkul coșului:');
+});
+document.getElementById('shareMeniu').addEventListener('click',()=>{
+  trimite('Meniul Baffi Cafe', location.origin+location.pathname+'#meniu',
+          'Copiază linkul meniului:');
+});
+
+/* Cine primeste un link nu-si pierde cosul lui: intrebam intai si ii
+   spunem ce primeste. */
+const primit=document.getElementById('primit');
+let cosPrimit=null;
+function ascundePrimit(){
+  primit.classList.remove('vizibil');
+  setTimeout(()=>{ if(!primit.classList.contains('vizibil')) primit.classList.remove('on'); },320);
+}
+(function citesteLink(){
+  const m=/[#&]cos=([^&]+)/.exec(location.hash); if(!m) return;
+  cosPrimit=desfaCos(decodeURIComponent(m[1]));
+  history.replaceState(null,'',location.pathname+location.search);
+  if(!cosPrimit.length) return;
+  const buc=cosPrimit.reduce((s,x)=>s+x.q,0), lei=cosPrimit.reduce((s,x)=>s+x.p*x.q,0);
+  document.getElementById('primitT').innerHTML=
+    'Ai primit un coș · '+buc+' '+(buc===1?'produs':'produse')+' · '+money(lei)
+    +'<span>'+(cart.length?'Se adaugă peste ce ai deja.':'Îl deschidem în coșul tău?')+'</span>';
+  setTimeout(()=>{ primit.classList.add('on');
+    requestAnimationFrame(()=>primit.classList.add('vizibil')); }, 1200);
+})();
+document.getElementById('primitNu').addEventListener('click',ascundePrimit);
+document.getElementById('primitDa').addEventListener('click',()=>{
+  if(cosPrimit) cosPrimit.forEach(x=>{ const ex=cart.find(y=>y.k===x.k);
+    if(ex) ex.q+=x.q; else cart.push(Object.assign({},x)); });
+  save(); paintCart(); ascundePrimit(); openCart();
+});
 
 /* ---------- TRIMITERE ---------- */
 const val=id=>document.getElementById(id).value.trim();
@@ -2758,7 +2961,11 @@ function aratGata(tip, cod, rezumat, txt){
 function confirmaTrimis(discret){
   if(!ultima) return;
   const T=TEXTE_GATA[ultima.tip]||TEXTE_GATA.comanda;
-  if(ultima.tip==='comanda'){ cart.length=0; save(); paintCart(); }
+  if(ultima.tip==='comanda'){
+    /* inainte de golire, lista ramane in telefonul lui pentru „ca data trecuta" */
+    if(cart.length) scrieLista(cart.map(x=>({k:x.k,n:x.n,p:x.p,c:x.c,q:x.q})));
+    cart.length=0; save(); paintCart();
+  }
   ultima.confirmat=true; scrieUltima();
   ascundeReia();
   /* Din banda raspunsul ramane la fel de mic ca intrebarea: o vorba scurta,
