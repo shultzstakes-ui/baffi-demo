@@ -2236,7 +2236,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.9';
+window.BAFFI_VERSIUNE='9.10';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3472,7 +3472,12 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
     const bara=innerWidth-document.documentElement.clientWidth;
     if(bara>0) document.body.style.paddingRight=bara+'px';
     document.body.classList.add('locked');
+    /* Lupa era maturata la pornire odata cu ferestrele, dar nimeni nu o
+       scotea din inert cand se deschidea - deci nici X-ul, nici clicul in
+       gol nu faceau nimic. Un element inert nu primeste niciun clic. */
+    inert(lb,false); fundalInert(true);
     lb.classList.add('on'); requestAnimationFrame(()=>lb.classList.add('vizibil'));
+    try{ document.getElementById('lbX').focus({preventScroll:true}); }catch(e){}
   }
   function inchide(){
     lb.classList.remove('vizibil');
@@ -3480,6 +3485,8 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
       lb.classList.remove('on'); poza.src='';
       document.body.classList.remove('locked');
       document.body.style.paddingRight='';
+      inert(lb,true); fundalInert(false);
+      inapoiDeUndeAmVenit();
     }, 260);
   }
   function muta(d){ if(!set.length) return;
