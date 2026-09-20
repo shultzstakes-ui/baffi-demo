@@ -2236,7 +2236,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.10';
+window.BAFFI_VERSIUNE='9.11';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3439,7 +3439,7 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
         nr=document.getElementById('lbNr'),
         prev=document.getElementById('lbPrev'), next=document.getElementById('lbNext');
   const GRUPURI='.pet-galerie, .ev-sir, .carou-track';
-  let set=[], idx=0;
+  let set=[], idx=0, dinCeFotografie=null;
 
   /* Fotografia intreaga, nu bucata taiata pentru caseta din pagina:
      intai `data-plin`, daca exista; altfel fisierul mare, nu varianta de
@@ -3475,6 +3475,9 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
     /* Lupa era maturata la pornire odata cu ferestrele, dar nimeni nu o
        scotea din inert cand se deschidea - deci nici X-ul, nici clicul in
        gol nu faceau nimic. Un element inert nu primeste niciun clic. */
+    /* tinem minte fotografia din care s-a deschis, ca focusul sa se
+       intoarca fix acolo - nu pe ultimul buton apasat prin pagina */
+    dinCeFotografie=fig;
     inert(lb,false); fundalInert(true);
     lb.classList.add('on'); requestAnimationFrame(()=>lb.classList.add('vizibil'));
     try{ document.getElementById('lbX').focus({preventScroll:true}); }catch(e){}
@@ -3486,7 +3489,11 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
       document.body.classList.remove('locked');
       document.body.style.paddingRight='';
       inert(lb,true); fundalInert(false);
-      inapoiDeUndeAmVenit();
+      if(dinCeFotografie){
+        try{ dinCeFotografie.setAttribute('tabindex','-1');
+             dinCeFotografie.focus({preventScroll:true}); }catch(e){}
+        dinCeFotografie=null;
+      } else inapoiDeUndeAmVenit();
     }, 260);
   }
   function muta(d){ if(!set.length) return;
