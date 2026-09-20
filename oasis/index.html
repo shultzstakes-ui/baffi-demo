@@ -443,6 +443,16 @@ body.locked{overflow:hidden}
 .despre-cifre b{display:block;font-family:var(--serif,Georgia,serif);
   font-size:24px;line-height:1;margin-bottom:6px}
 .despre-cifre span{font-size:12.8px;line-height:1.45;opacity:.75}
+
+/* ---------- `hidden` chiar ascunde ----------
+   Regula implicita a browserului, `[hidden]{display:none}`, e mai slaba
+   decat orice clasa. `.f-row{display:flex}` o batea, deci `el.hidden=true`
+   punea atributul si nu se intampla nimic pe ecran: adresa de livrare
+   ramanea in fata cand omul alegea ridicarea, iar campul de ora ramanea
+   cand alegea „cat de repede se poate".
+
+   Linia asta rezolva toate cazurile deodata, si pe cele viitoare. */
+[hidden]{display:none!important}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -847,13 +857,39 @@ document.getElementById('aMinus').addEventListener('click',()=>{adulti=Math.max(
 document.getElementById('aPlus').addEventListener('click',()=>{adulti=Math.min(40,adulti+1);paintEst()});
 document.getElementById('cMinus').addEventListener('click',()=>{copii=Math.max(0,copii-1);paintEst()});
 document.getElementById('cPlus').addEventListener('click',()=>{copii=Math.min(40,copii+1);paintEst()});
+/* ---------- TIPUL ZILEI SE IA DIN DATA ----------
+   Pana acum butoanele „Luni-Vineri / Weekend" erau manuale si data nu le
+   atingea: alegeai sambata, ramanea tariful de zi lucratoare, si pleca asa
+   pe WhatsApp - 100 de lei in loc de 140. Un pret gresit trimis clientului,
+   nu o greseala de afisare.
+
+   Acum data hotaraste. Butoanele raman apasabile (cineva poate vrea sa
+   compare), dar orice schimbare de data le rescrie. */
+const ZILE_SAPT=['duminică','luni','marți','miercuri','joi','vineri','sâmbătă'];
+function tipulZilei(v){
+  if(!v) return null;
+  const d=new Date(v+'T12:00'); if(isNaN(d)) return null;
+  const n=d.getDay();
+  return {zi:(n===0||n===6)?'Weekend':'Luni–Vineri', nume:ZILE_SAPT[n]};
+}
+function ziDinData(){
+  const t=tipulZilei(val('oData'));
+  if(!t) return;
+  zi=t.zi;
+  document.querySelectorAll('#pickZi button').forEach(b=>
+    b.classList.toggle('on', b.dataset.z===zi));
+  paintEst();
+}
+document.getElementById('oData').addEventListener('change',ziDinData);
+
 ['oData','oNume','oTel'].forEach(id=>document.getElementById(id).addEventListener('input',paintEst));
 
 const LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
 function dataFrumoasa(v){
   if(!v) return 'nedecisă';
   const d=new Date(v+'T12:00'); if(isNaN(d)) return v;
-  return d.getDate()+' '+LUNI[d.getMonth()]+' '+d.getFullYear();
+  /* cu ziua saptamanii in fata: omul vede de ce iese tariful de weekend */
+  return ZILE_SAPT[d.getDay()]+', '+d.getDate()+' '+LUNI[d.getMonth()]+' '+d.getFullYear();
 }
 const val=id=>document.getElementById(id).value.trim();
 const total=()=>{const t=CFG.tarif[zi];return adulti*t.adult+copii*t.copil};

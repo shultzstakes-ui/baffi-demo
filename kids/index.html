@@ -479,6 +479,16 @@ body.locked{overflow:hidden}
 .despre-cifre b{display:block;font-family:var(--serif,Georgia,serif);
   font-size:24px;line-height:1;margin-bottom:6px}
 .despre-cifre span{font-size:12.8px;line-height:1.45;opacity:.75}
+
+/* ---------- `hidden` chiar ascunde ----------
+   Regula implicita a browserului, `[hidden]{display:none}`, e mai slaba
+   decat orice clasa. `.f-row{display:flex}` o batea, deci `el.hidden=true`
+   punea atributul si nu se intampla nimic pe ecran: adresa de livrare
+   ramanea in fata cand omul alegea ridicarea, iar campul de ora ramanea
+   cand alegea „cat de repede se poate".
+
+   Linia asta rezolva toate cazurile deodata, si pe cele viitoare. */
+[hidden]{display:none!important}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}

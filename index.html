@@ -557,6 +557,16 @@ p{margin:0}
   border-radius:6px;padding-inline:8px;margin-inline:-8px}
 .hours-row.tarziu b{color:var(--gold-lite);font-weight:800}
 .hours-row.tarziu span{color:var(--gold-lite)}
+
+/* ---------- `hidden` chiar ascunde ----------
+   Regula implicita a browserului, `[hidden]{display:none}`, e mai slaba
+   decat orice clasa. `.f-row{display:flex}` o batea, deci `el.hidden=true`
+   punea atributul si nu se intampla nimic pe ecran: adresa de livrare
+   ramanea in fata cand omul alegea ridicarea, iar campul de ora ramanea
+   cand alegea „cat de repede se poate".
+
+   Linia asta rezolva toate cazurile deodata, si pe cele viitoare. */
+[hidden]{display:none!important}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -1817,7 +1827,7 @@ p{margin:0}
         <figure data-preparat="Platou cald"><img src="img/bcf-event-buffet.webp" alt="Bufet pentru eveniment privat" loading="lazy" width="1000" height="587"><figcaption><div class="fc-k">De împărțit</div><div class="fc-t">Servire generoasă, prezentare atentă</div></figcaption></figure>
         <figure data-preparat="Grigliata frutti di mare"><img src="img/bcf-event-seafood.webp" alt="Preparate din pește pentru eveniment" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Selecția mării</div><div class="fc-t">Farfurii care impresionează din prima</div></figcaption></figure>
         <figure data-preparat="Platou fructe de mare pane"><img src="img/bcf-seafood-platter.webp" alt="Platou cu fructe de mare" loading="lazy" width="1000" height="750"><figcaption><div class="fc-k">Platou</div><div class="fc-t">Pentru masa care stă mult</div></figcaption></figure>
-        <figure data-preparat="Burger Baffi"><img src="img/bcf-burger-baffi.webp" alt="Burger Baffi" loading="lazy" width="1000" height="753"><figcaption><div class="fc-k">Semnătura casei</div><div class="fc-t">Burger Baffi, 600 g</div></figcaption></figure>
+        <figure data-preparat="Burger Baffi"><img src="img/bcf-burger-baffi.webp" alt="Burger Baffi" loading="lazy" width="1000" height="753"><figcaption><div class="fc-k">Semnătura casei</div><div class="fc-t">Burger Baffi, 800 g</div></figcaption></figure>
       </div>
       <p class="rail-hint" style="color:rgba(245,240,231,.5)">Trage ca să vezi tot →</p>
     </div>
@@ -2213,7 +2223,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.5';
+window.BAFFI_VERSIUNE='9.6';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2983,6 +2993,26 @@ document.getElementById('primitDa').addEventListener('click',()=>{
   save(); paintCart(); ascundePrimit(); openCart();
 });
 
+
+/* ---------- ORA, VERIFICATA FATA DE PROGRAM ----------
+   Programul e scris o singura data in pagina, in HOURS, si de acolo se ia.
+   Daca se schimba programul, se schimba si verificarea - nu exista doua
+   adevaruri. Ultima jumatate de ora inainte de inchidere nu se accepta:
+   o comanda intrata la fix nu mai are cand sa fie facuta. */
+function oraInProgram(hhmm, dataISO){
+  const m=/^(\d{1,2}):(\d{2})$/.exec(hhmm||'');
+  if(!m) return {ok:false, mesaj:'Ora nu pare scrisă corect. Exemplu: 19:30.'};
+  const minute=+m[1]*60+ +m[2];
+  const d = dataISO ? new Date(dataISO+'T12:00') : new Date();
+  const zi = isNaN(d) ? new Date().getDay() : d.getDay();
+  const [o,c]=HOURS[zi];
+  if(minute < o*60 || minute > c*60-30){
+    return {ok:false, mesaj:'În ziua aleasă suntem deschiși între '
+      +fmtH(o)+' și '+fmtH(c)+'. Alege o oră din interval.'};
+  }
+  return {ok:true};
+}
+
 /* ---------- TRIMITERE ---------- */
 const val=id=>document.getElementById(id).value.trim();
 const phoneOk=p=>/^(\+?4)?0?7\d{8}$/.test(p.replace(/[\s.-]/g,''));
@@ -3142,6 +3172,15 @@ document.getElementById('sendWa').addEventListener('click',()=>{
   if(!phoneOk(val('fPhone'))) return err('errCk','Numărul de telefon nu pare corect. Exemplu: 0722 333 444.');
   if(mode==='livrare'&&val('fAddr').length<8) return err('errCk','Avem nevoie de adresa completă, cu reper dacă se poate.');
   if(mode==='livrare'&&total()<MIN) return err('errCk','Comanda minimă pentru livrare e 70 de lei. Poți ridica și de la restaurant.');
+  /* Pana acum, „la o ora anume" fara ora completata trimitea „la ora —".
+     Programul il stim deja in pagina (HOURS), deci il si folosim: n-are
+     rost sa ceri livrare la 8 dimineata cand se deschide la 10. */
+  if(timeMode==='ora'){
+    const h=val('fHour');
+    if(!h) return err('errCk','Ai ales o oră anume — scrie și ora, te rugăm.');
+    const p=oraInProgram(h);
+    if(!p.ok) return err('errCk',p.mesaj);
+  }
   if(fact==='juridica'){
     if(val('fCompany').length<3) return err('errCk','Scrie denumirea firmei pe care se face bonul.');
     if(!cuiOk(val('fCui')))      return err('errCk','CUI-ul nu pare corect. Exemplu: RO12345678.');
@@ -3196,6 +3235,11 @@ document.getElementById('sendRez').addEventListener('click',()=>{
   if(val('rName').length<3) return err('errRez','Scrie-ne numele tău.');
   if(!phoneOk(val('rPhone'))) return err('errRez','Numărul de telefon nu pare corect. Exemplu: 0722 333 444.');
   if(!val('rDate')) return err('errRez','Alege ziua rezervării.');
+  if(!val('rHour')) return err('errRez','Alege și ora rezervării.');
+  {
+    const p=oraInProgram(val('rHour'), val('rDate'));
+    if(!p.ok) return err('errRez',p.mesaj);
+  }
   const cod=codNou('#R');
   const t=[`*REZERVARE ${cod}*`,'',
     `Nume: ${val('rName')}`,`Telefon: ${val('rPhone')}`,
