@@ -51,7 +51,7 @@
 <!-- se incarca din timp exact varianta pe care o va folosi, nu alta -->
 <link rel="preload" as="image" href="img/baffi-entrance-premium-v6.webp"
       imagesrcset="img/baffi-entrance-premium-v6-900.webp 900w, img/baffi-entrance-premium-v6.webp 1400w"
-      imagesizes="(min-width:960px) 57vw, 100vw" fetchpriority="high">
+      imagesizes="(min-width:960px) min(46vw, 720px), 100vw" fetchpriority="high">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","@id":"https://bafficafe.ro/#restaurant",
 "name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-entrance-premium-v6.webp",
@@ -327,13 +327,27 @@ p{margin:0}
    rotunjite o faceau sa pluteasca pe crem, ca o cartela; fotografia avea
    atunci patru margini vizibile in loc de una. */
 .hero{background:var(--navy);color:var(--paper);position:relative;overflow:hidden;
-  margin:0;border-radius:0;min-height:700px}
+  margin:0;border-radius:0;min-height:clamp(700px, 44vw, 880px)}
+/* Latimea si inaltimea cresc IMPREUNA cu ecranul, ca raportul casetei sa
+   ramana langa raportul fotografiei (0,685) la orice marime:
+     1024 -> 470x700 = 0,67   nu se taie nimic
+     1440 -> 490x700 = 0,70   nu se taie nimic
+     1920 -> 653x845 = 0,77   se taie 11% de jos, varfurile ghivecelor
+   Podeaua de 470px exista ca sa nu se ingusteze pe ecrane mici pana cand
+   caseta devine mai verticala decat fotografia si incepe sa taie din
+   firma. Plafonul de 720px, ca sa nu inghita pagina pe monitoare mari. */
 @media(max-width:680px){.hero{min-height:0}}
 .hero-grid{display:grid;grid-template-columns:1fr;align-items:stretch}
-@media(min-width:960px){.hero-grid{grid-template-columns:43% 57%}}
-/* între 960 și 1200 coloana de text e strâmtă: îi dăm mai mult loc, altfel
-   titlul se rupe pe alt rând la fiecare schimbare de cuvânt. */
-@media(min-width:960px) and (max-width:1199px){.hero-grid{grid-template-columns:52% 48%}}
+/* Coloana fotografiei NU mai creste la infinit cu ecranul. Asta era
+   greseala de fond: pe procente, la 1440 caseta ajungea 763x660 - adica
+   orizontala (1,16) - in timp ce fotografia e verticala (0,66). `cover` o
+   umfla pana umplea latimea si se mai vedea doar treimea de sus. De aici
+   senzatia de „prea mare si intr-o parte": un colt marit dintr-o poza
+   verticala, intr-o gaura orizontala.
+
+   Acum coloana e cel mult 465px. Caseta ramane 465x700, adica 0,66 - fix
+   forma fotografiei - la orice latime de ecran. */
+@media(min-width:960px){.hero-grid{grid-template-columns:minmax(0,1fr) min(46%, clamp(470px, 34vw, 720px))}}
 .hero-copy{container-type:inline-size;padding:76px clamp(26px,4.2vw,64px) 72px;width:100%;
   display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,2.2vw,26px);position:relative;z-index:2}
 @media(max-width:680px){.hero-copy{padding:48px 22px 46px}}
@@ -400,11 +414,15 @@ p{margin:0}
    sunt aproape bleumarin plin, acolo se ascunde cusatura; restul e doar
    fotografia care revine incet la ea insasi. */
 .hero-media::after{content:"";position:absolute;inset:0;pointer-events:none;
+  /* Se termina la 20%. Cand fotografia tinea jumatate de ecran, un
+     degrade lung era loc gol pe care il umplea frumos. Acum fotografia
+     are 465px si usa tine toata latimea ei: un degrade de 46% inghitea
+     jumatate din usa. Cele 12 opriri raman - doar distanta se strange. */
   background:linear-gradient(90deg,
-    var(--navy) 0%, rgba(7,28,44,.985) 6%, rgba(7,28,44,.945) 12%,
-    rgba(7,28,44,.875) 18%, rgba(7,28,44,.775) 24%, rgba(7,28,44,.645) 30%,
-    rgba(7,28,44,.495) 37%, rgba(7,28,44,.345) 44%, rgba(7,28,44,.21) 51%,
-    rgba(7,28,44,.105) 59%, rgba(7,28,44,.035) 66%, rgba(7,28,44,0) 74%)}
+    var(--navy) 0%, rgba(7,28,44,.975) 2%, rgba(7,28,44,.925) 4%,
+    rgba(7,28,44,.85) 6%, rgba(7,28,44,.75) 8%, rgba(7,28,44,.625) 10%,
+    rgba(7,28,44,.485) 12%, rgba(7,28,44,.34) 14%, rgba(7,28,44,.205) 16%,
+    rgba(7,28,44,.1) 18%, rgba(7,28,44,.03) 19%, rgba(7,28,44,0) 20%)}
 @media(max-width:959px){
   /* fotografia urca deasupra titlului - vezi motivul de mai sus */
   .hero-media{order:-1}
@@ -1505,9 +1523,9 @@ p{margin:0}
     <div class="hero-media">
       <img src="img/baffi-entrance-premium-v6.webp"
            srcset="img/baffi-entrance-premium-v6-900.webp 900w, img/baffi-entrance-premium-v6.webp 1400w"
-           sizes="(min-width:960px) 57vw, 100vw"
+           sizes="(min-width:960px) min(46vw, 720px), 100vw"
            data-plin="img/baffi-intrare-plin.webp" alt="Intrarea în Baffi Cafe din Bragadiru"
-           width="1400" height="1996" fetchpriority="high" decoding="async">
+           width="1400" height="2127" fetchpriority="high" decoding="async">
     </div>
   </div>
 </section>
@@ -2195,7 +2213,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.4';
+window.BAFFI_VERSIUNE='9.5';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
