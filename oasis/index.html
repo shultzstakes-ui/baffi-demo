@@ -404,7 +404,12 @@ body.locked{overflow:hidden}
   opacity:0;transition:opacity .28s ease}
 .lb.on{display:flex;flex-direction:column}
 .lb.vizibil{opacity:1}
-.lb-poza{flex:1;display:grid;place-items:center;min-height:0;padding:clamp(12px,3vw,40px)}
+/* Flex, nu grila: intr-o grila cu place-items:center randul creste dupa
+   continut, iar `max-height:100%` de pe imagine nu are la ce sa se
+   raporteze si e ignorat - fotografiile inalte ieseau din caseta si se
+   pierdea capul si baza lor. */
+.lb-poza{flex:1;display:flex;align-items:center;justify-content:center;
+  min-height:0;overflow:hidden;padding:clamp(12px,3vw,40px)}
 .lb-poza img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
   border-radius:10px;box-shadow:0 24px 70px rgba(0,0,0,.45)}
 .lb-jos{flex:none;display:flex;align-items:center;gap:14px;
@@ -736,9 +741,16 @@ body.locked{overflow:hidden}
   if(!figuri.length) return;
   var set=figuri.map(function(f){
     var im=f.querySelector('img'), c=f.querySelector('figcaption');
-    return {src:im.currentSrc||im.src, alt:im.alt||'',
+    return {src:sursaMare(im), alt:im.alt||'',
             cap:c?c.textContent.trim():(im.alt||'')};
   });
+  /* Fotografia intreaga, nu bucata taiata pentru caseta din pagina:
+     intai `data-plin`, daca exista; altfel fisierul mare, nu varianta de
+     telefon pe care a ales-o browserul pentru caseta. */
+  function sursaMare(im){
+    return im.dataset.plin || (im.getAttribute('src')||'').replace(/-900(\.\w+)$/, '$1')
+           || im.currentSrc || im.src;
+  }
   var poza=document.getElementById('lbImg'), cap=document.getElementById('lbCap'),
       nr=document.getElementById('lbNr');
   var idx=0;
