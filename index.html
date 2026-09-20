@@ -244,7 +244,11 @@ p{margin:0}
   animation:tk var(--tk-dur,64s) linear infinite}
 .ticker:hover .tk-track,.ticker:focus-visible .tk-track{animation-play-state:paused}
 @keyframes tk{to{transform:translateX(-50%)}}
-.tk-grp{display:flex;align-items:center;gap:22px;padding-right:22px;flex:none}
+/* Grupul e acum un link, nu un simplu container: isi ia culoarea si
+   lipsa de subliniere de la banda, ca sa arate exact ca inainte. */
+.tk-grp{display:flex;align-items:center;gap:22px;padding-right:22px;flex:none;
+  color:inherit;text-decoration:none}
+.tk-grp:focus-visible{outline:2px solid var(--navy);outline-offset:-2px}
 .tk-grp b,.tk-grp strong,.tk-grp span,.tk-grp em{
   font:700 10px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;font-style:normal}
 .tk-grp b{background:var(--navy);color:var(--gold-lite);padding:6px 10px}
@@ -392,7 +396,11 @@ p{margin:0}
      verticala, iar firma sta in varful fotografiei: daca ar sta sub text,
      cusatura ar cadea exact peste firma. Asa, sus e marginea panoului
      (curata) si degradeul lucreaza jos, unde nu e nimic de pierdut. */
-  .hero-media{min-height:clamp(300px,64vw,430px)}}
+  /* 224px, nu 300: fiecare pixel de aici impinge butonul de comanda sub
+     marginea ecranului. Firma se vede in continuare intreaga - caseta e
+     mai lata decat fotografia, deci se taie de jos, de unde nu se pierde
+     nimic. */
+  .hero-media{min-height:clamp(224px,52vw,340px)}}
 .hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   object-position:center top}   /* orice ar prisosi se taie de jos: sus e firma */
 /* Caseta isi schimba forma cu ecranul: inalta pe ecran mic (0,67), lata pe
@@ -1441,7 +1449,7 @@ p{margin:0}
 <div class="network-bar" aria-label="Locațiile Baffi">
   <span>BAFFI PLACES</span>
   <div aria-label="Navigare între locațiile Baffi">
-    <a class="active" href="#acasa" aria-current="page"><i>B</i><b>CAFÉ</b></a>
+    <a class="active" href="#top" aria-current="page"><i>B</i><b>CAFÉ</b></a>
     <a data-net="kids"><i>B</i><b>KIDS</b></a>
     <a data-net="oasis"><i>B</i><b>OASIS</b></a>
   </div>
@@ -1450,13 +1458,13 @@ p{margin:0}
 
 <!-- ══════════════ TICKER EVENIMENT (se stinge singur) ══════════════ -->
 <div class="ticker" id="ticker" hidden>
-  <a href="#evenimente"><div class="tk-track" id="tkTrack"></div></a>
+  <div class="tk-track" id="tkTrack"></div>
 </div>
 
 <!-- ══════════════ HEADER ══════════════ -->
 <header class="hdr" id="hdr">
   <div class="wrap">
-    <a class="brand" href="#acasa" aria-label="Baffi Cafe — Acasă">
+    <a class="brand" href="#top" aria-label="Baffi Cafe — Acasă">
       <span class="brand-lockup" aria-hidden="true">
         <img class="brand-chef" src="img/baffi-chef-official.webp" alt=""
              width="684" height="575" fetchpriority="high" decoding="async">
@@ -1512,7 +1520,11 @@ p{margin:0}
     <div class="hero-copy">
       <span class="eyebrow on-navy">Gust · Atmosferă · Oameni</span>
       <h1>Tot la Baffi<span class="l2">e mai <span class="it" id="heroWord">bine.</span></span></h1>
-      <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate. Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei în Bragadiru și pe o rază de circa 8 km — Cornetu, Domnești, Măgurele, Clinceni, Ghencea, Militari.</p>
+      <!-- Localitatile au iesit de aici: aceleasi nume apar in sectiunea de
+           zone si in datele pentru Google, deci nu se pierde nimic la
+           cautari - dar se castiga patru randuri, iar butonul de comanda
+           urca pe primul ecran al telefonului. -->
+      <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate. Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei.</p>
       <div class="hero-cta" id="heroCta">
         <a class="btn btn-gold btn-trace" href="#meniu">Comandă acum <span class="ar">→</span></a>
         <button class="btn btn-ghost-gold btn-trace" data-open="rez">Rezervă o masă</button>
@@ -1526,7 +1538,7 @@ p{margin:0}
         <span class="score"><b data-cfg="nota">4,5</b><span class="spark" aria-hidden="true"></span></span>
         <div>
           <div class="stars" aria-hidden="true"></div>
-          <p>Peste <span data-cfg="recenzii">479</span> de recenzii pe Google</p>
+          <p>Peste <span data-cfg="recenzii">480</span> de recenzii pe Google</p>
         </div>
       </div>
     </div>
@@ -1627,7 +1639,7 @@ p{margin:0}
       <span class="eyebrow">Ne găsești aici</span>
       <b>Str. Safirului 69R</b>
       <span>Bragadiru, Ilfov · parcare chiar vizavi</span>
-      <a class="line" href="https://www.google.com/maps/search/?api=1&amp;query=Baffi+Cafe+Strada+Safirului+69R+Bragadiru" target="_blank" rel="noopener">Deschide harta →</a>
+      <a class="line" href="https://www.google.com/maps/place/?cid=3513225936531386183" target="_blank" rel="noopener">Deschide harta →</a>
     </div>
     <div class="info-cell">
       <span class="eyebrow">Comenzi &amp; rezervări</span>
@@ -1759,7 +1771,7 @@ p{margin:0}
           <div class="tick"><b>03</b><span>Aceeași bucătărie, același meniu, alt aer</span></div>
         </div>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
-          <button class="btn btn-navy" data-open="rez">Rezervă pe terasă</button>
+          <button class="btn btn-navy" data-open="rez" data-zona="terasa">Rezervă pe terasă</button>
           <a class="btn btn-ghost" href="#meniu">Vezi meniul <span class="ar">→</span></a>
         </div>
       </div>
@@ -1845,17 +1857,18 @@ p{margin:0}
       <div class="rev-score">
         <b data-cfg="nota">4,5</b>
         <div class="stars" aria-hidden="true"></div>
-        <span>Peste <span data-cfg="recenzii">479</span> de experiențe împărtășite pe Google</span>
+        <span>Peste <span data-cfg="recenzii">480</span> de experiențe împărtășite pe Google</span>
       </div>
+      <!-- O singură recenzie, dar adevărată: citită de pe fișa Google,
+           cu numele și vechimea așa cum apar acolo, și cu legătură către
+           fișă. Cele două de dinainte erau scrise de mine ca text de
+           machetă și semnate „Oaspete Baffi" — pe un site public, un
+           citat inventat lângă o notă reală strică exact încrederea pe
+           care o aduce nota. -->
       <div class="rev-card">
         <div class="stars" aria-hidden="true"></div>
-        <p>„Atmosferă plăcută, mâncare gustoasă, porții generoase și servire rapidă.”</p>
-        <span class="who">Oaspete Baffi</span>
-      </div>
-      <div class="rev-card">
-        <div class="stars" aria-hidden="true"></div>
-        <p>„Un loc primitor, cu oameni amabili și preparate la care revii cu drag.”</p>
-        <span class="who">Oaspete Baffi</span>
+        <p>„Locație perfectă, familiară, aproape de casă. Mâncarea este foarte bună, o să revenim cu drag.”</p>
+        <span class="who">Corina Alexandra Șerbănescu · <a id="revSursa" href="#" target="_blank" rel="noopener">pe Google</a></span>
       </div>
     </div>
 
@@ -1942,7 +1955,7 @@ p{margin:0}
         </div>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           <a class="btn btn-gold" href="tel:+40756021501">Sună acum</a>
-          <a class="btn btn-ghost-gold" href="https://www.google.com/maps/search/?api=1&amp;query=Baffi+Cafe+Strada+Safirului+69R+Bragadiru" target="_blank" rel="noopener">Deschide harta <span class="ar">↗</span></a>
+          <a class="btn btn-ghost-gold" href="https://www.google.com/maps/place/?cid=3513225936531386183" target="_blank" rel="noopener">Deschide harta <span class="ar">↗</span></a>
         </div>
       </div>
       <div class="map-card">
@@ -2001,56 +2014,56 @@ p{margin:0}
     <div class="modal-h"><h3>Trimite comanda</h3><button class="x" data-close aria-label="Închide">✕</button></div>
     <div class="modal-b">
       <div class="f-row">
-        <label>Cum o vrei?</label>
-        <div class="pick" id="pickMode">
+        <label id="lbl-cum-o-vrei">Cum o vrei?</label>
+        <div class="pick" role="radiogroup" aria-labelledby="lbl-cum-o-vrei" id="pickMode">
           <button class="on" data-mode="livrare">Livrare</button>
           <button data-mode="ridicare">Ridicare de la restaurant</button>
         </div>
       </div>
       <div class="f-2">
-        <div class="f-row"><label>Numele tău</label><input id="fName" placeholder="Andrei Popescu" autocomplete="name"></div>
-        <div class="f-row"><label>Telefon</label><input id="fPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
+        <div class="f-row"><label for="fName">Numele tău</label><input id="fName" placeholder="Andrei Popescu" autocomplete="name"></div>
+        <div class="f-row"><label for="fPhone">Telefon</label><input id="fPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
       </div>
-      <div class="f-row" id="rowAddr"><label>Adresa de livrare</label><input id="fAddr" placeholder="Strada, număr, bloc, apartament, reper" autocomplete="street-address"></div>
+      <div class="f-row" id="rowAddr"><label id="lbl-adresa-de-livrare" for="fAddr">Adresa de livrare</label><input id="fAddr" placeholder="Strada, număr, bloc, apartament, reper" autocomplete="street-address"></div>
       <div class="f-row">
         <label id="lblTime">Când?</label>
-        <div class="pick" id="pickTime">
+        <div class="pick" role="radiogroup" aria-labelledby="lblTime" id="pickTime">
           <button class="on" data-t="asap">Cât de repede se poate</button>
           <button data-t="ora">La o oră anume</button>
         </div>
       </div>
-      <div class="f-row" id="rowHour" hidden><label>Ora</label><input id="fHour" type="time"></div>
+      <div class="f-row" id="rowHour" hidden><label id="lbl-ora" for="fHour">Ora</label><input id="fHour" type="time"></div>
       <div class="f-row">
-        <label>Plata</label>
-        <div class="pick" id="pickPay">
+        <label id="lbl-plata">Plata</label>
+        <div class="pick" role="radiogroup" aria-labelledby="lbl-plata" id="pickPay">
           <button class="on" data-p="cash">Cash</button>
           <button data-p="card">Card la livrare</button>
         </div>
       </div>
       <div class="f-row">
-        <label>Pe cine se face bonul</label>
-        <div class="pick" id="pickFact">
+        <label id="lbl-pe-cine-se-face-bonul">Pe cine se face bonul</label>
+        <div class="pick" role="radiogroup" aria-labelledby="lbl-pe-cine-se-face-bonul" id="pickFact">
           <button class="on" data-f="fizica" type="button">Persoană fizică</button>
           <button data-f="juridica" type="button">Persoană juridică</button>
         </div>
       </div>
       <div id="boxFirma" hidden>
         <div class="f-2">
-          <div class="f-row"><label>Denumirea firmei</label><input id="fCompany" placeholder="Exemplu S.R.L." autocomplete="organization"></div>
-          <div class="f-row"><label>CUI / CIF</label><input id="fCui" placeholder="RO12345678" inputmode="text"></div>
+          <div class="f-row"><label for="fCompany">Denumirea firmei</label><input id="fCompany" placeholder="Exemplu S.R.L." autocomplete="organization"></div>
+          <div class="f-row"><label for="fCui">CUI / CIF</label><input id="fCui" placeholder="RO12345678" inputmode="text"></div>
         </div>
         <div class="f-2">
-          <div class="f-row"><label>Nr. Reg. Comerțului</label><input id="fReg" placeholder="J23/1234/2020"></div>
-          <div class="f-row"><label>Persoana care preia (opțional)</label><input id="fDeleg" placeholder="Nume delegat"></div>
+          <div class="f-row"><label for="fReg">Nr. Reg. Comerțului</label><input id="fReg" placeholder="J23/1234/2020"></div>
+          <div class="f-row"><label for="fDeleg">Persoana care preia (opțional)</label><input id="fDeleg" placeholder="Nume delegat"></div>
         </div>
-        <div class="f-row"><label>Sediul social</label><input id="fSediu" placeholder="Strada, număr, oraș, județ"></div>
+        <div class="f-row"><label for="fSediu">Sediul social</label><input id="fSediu" placeholder="Strada, număr, oraș, județ"></div>
         <div class="f-2">
-          <div class="f-row"><label>Banca (opțional)</label><input id="fBank" placeholder="ING Bank"></div>
-          <div class="f-row"><label>IBAN (opțional)</label><input id="fIban" placeholder="RO00 XXXX 0000 0000 0000 0000"></div>
+          <div class="f-row"><label for="fBank">Banca (opțional)</label><input id="fBank" placeholder="ING Bank"></div>
+          <div class="f-row"><label for="fIban">IBAN (opțional)</label><input id="fIban" placeholder="RO00 XXXX 0000 0000 0000 0000"></div>
         </div>
         <p class="fine" style="margin:2px 0 0">Factura se emite pe firmă și vine odată cu comanda. Dacă ai nevoie de ea în avans, scrie-ne la mențiuni.</p>
       </div>
-      <div class="f-row"><label>Mențiuni (opțional)</label><textarea id="fNote" placeholder="Fără ceapă, sunați la poartă, tacâmuri pentru 3…"></textarea></div>
+      <div class="f-row"><label for="fNote">Mențiuni (opțional)</label><textarea id="fNote" placeholder="Fără ceapă, sunați la poartă, tacâmuri pentru 3…"></textarea></div>
       <div class="sum" id="sumBox"></div>
       <div class="err" id="errCk"></div>
       <button class="btn btn-gold" id="sendWa">Trimite comanda pe WhatsApp <span class="ar">→</span></button>
@@ -2138,29 +2151,29 @@ p{margin:0}
     <div class="modal-h"><h3>Rezervă o masă</h3><button class="x" data-close aria-label="Închide">✕</button></div>
     <div class="modal-b">
       <div class="f-2">
-        <div class="f-row"><label>Numele tău</label><input id="rName" placeholder="Andrei Popescu" autocomplete="name"></div>
-        <div class="f-row"><label>Telefon</label><input id="rPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
+        <div class="f-row"><label for="rName">Numele tău</label><input id="rName" placeholder="Andrei Popescu" autocomplete="name"></div>
+        <div class="f-row"><label for="rPhone">Telefon</label><input id="rPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
       </div>
       <div class="f-2">
-        <div class="f-row"><label>Ziua</label><input id="rDate" type="date"></div>
-        <div class="f-row"><label>Ora</label><input id="rHour" type="time" value="19:30"></div>
+        <div class="f-row"><label for="rDate">Ziua</label><input id="rDate" type="date"></div>
+        <div class="f-row"><label for="rHour">Ora</label><input id="rHour" type="time" value="19:30"></div>
       </div>
       <div class="f-row">
-        <label>Câți sunteți?</label>
-        <div class="pick" id="pickPax">
+        <label id="lbl-c-i-sunte-i">Câți sunteți?</label>
+        <div class="pick" role="radiogroup" aria-labelledby="lbl-c-i-sunte-i" id="pickPax">
           <button data-n="2">2</button><button class="on" data-n="4">4</button>
           <button data-n="6">6</button><button data-n="8">8</button><button data-n="10+">10+</button>
         </div>
       </div>
       <div class="f-row">
-        <label>Unde preferați?</label>
-        <div class="pick" id="pickZone">
+        <label id="lbl-unde-prefera-i">Unde preferați?</label>
+        <div class="pick" role="radiogroup" aria-labelledby="lbl-unde-prefera-i" id="pickZone">
           <button class="on" data-z="oriunde">Oriunde e bine</button>
           <button data-z="terasa">Terasă</button>
           <button data-z="interior">Interior</button>
         </div>
       </div>
-      <div class="f-row"><label>Ocazie sau mențiuni (opțional)</label><textarea id="rNote" placeholder="Aniversare, tort adus de noi, scaun pentru copil…"></textarea></div>
+      <div class="f-row"><label for="rNote">Ocazie sau mențiuni (opțional)</label><textarea id="rNote" placeholder="Aniversare, tort adus de noi, scaun pentru copil…"></textarea></div>
       <div class="err" id="errRez"></div>
       <button class="btn btn-gold" id="sendRez">Trimite rezervarea <span class="ar">→</span></button>
       <div style="height:10px"></div>
@@ -2176,12 +2189,12 @@ p{margin:0}
     <div class="modal-h"><h3>Cere o ofertă</h3><button class="x" data-close aria-label="Închide">✕</button></div>
     <div class="modal-b">
       <div class="f-2">
-        <div class="f-row"><label>Numele tău</label><input id="oName" placeholder="Andrei Popescu" autocomplete="name"></div>
-        <div class="f-row"><label>Telefon</label><input id="oPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
+        <div class="f-row"><label for="oName">Numele tău</label><input id="oName" placeholder="Andrei Popescu" autocomplete="name"></div>
+        <div class="f-row"><label for="oPhone">Telefon</label><input id="oPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
       </div>
       <div class="f-row">
-        <label>Ce sărbătorim?</label>
-        <div class="pick" id="pickEv">
+        <label id="lbl-ce-s-rb-torim">Ce sărbătorim?</label>
+        <div class="pick" role="radiogroup" aria-labelledby="lbl-ce-s-rb-torim" id="pickEv">
           <button class="on" data-e="aniversare">Aniversare</button>
           <button data-e="botez">Botez / cumetrie</button>
           <button data-e="firma">Eveniment de firmă</button>
@@ -2189,10 +2202,10 @@ p{margin:0}
         </div>
       </div>
       <div class="f-2">
-        <div class="f-row"><label>Data (aproximativ)</label><input id="oDate" type="date"></div>
-        <div class="f-row"><label>Câți invitați?</label><input id="oPax" type="number" min="5" step="1" placeholder="40"></div>
+        <div class="f-row"><label for="oDate">Data (aproximativ)</label><input id="oDate" type="date"></div>
+        <div class="f-row"><label for="oPax">Câți invitați?</label><input id="oPax" type="number" min="5" step="1" placeholder="40"></div>
       </div>
-      <div class="f-row"><label>Ce ai vrea să știm?</label><textarea id="oNote" placeholder="Buget aproximativ per persoană, meniu dorit, muzică, tort…"></textarea></div>
+      <div class="f-row"><label for="oNote">Ce ai vrea să știm?</label><textarea id="oNote" placeholder="Buget aproximativ per persoană, meniu dorit, muzică, tort…"></textarea></div>
       <div class="err" id="errOf"></div>
       <button class="btn btn-gold" id="sendOf">Trimite cererea <span class="ar">→</span></button>
       <div style="height:10px"></div>
@@ -2223,7 +2236,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.6';
+window.BAFFI_VERSIUNE='9.9';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2242,7 +2255,7 @@ const CFG = {
   // Când se schimbă pe Google, schimbi aici și se actualizează în toate
   // cele 3 locuri din pagină + în datele pentru Google (schema.org).
   nota:       '4,5',
-  recenzii:   479,             // se afișează ca „peste 450"
+  recenzii:   480,             // se afișează ca „peste 450"
 
   // Adresele celorlalte două locații Baffi. Când se mută pe domeniul lor,
   // se schimbă AICI, o singură dată, și se actualizează peste tot în pagină.
@@ -2274,7 +2287,13 @@ let railTras=false;
    ÎNLOCUIEȘTE-L cu linkul scurt din Google Business Profile → „Cere recenzii"
    (arată ca https://g.page/r/XXXXXXXX/review) — acela deschide direct
    fereastra de scris, fără pași intermediari, și dublează rata de răspuns. */
-const REVIEW_URL='https://www.google.com/maps/search/?api=1&query=Baffi+Cafe+Strada+Safirului+69R+Bragadiru';
+/* Fisa are un numar propriu care nu se schimba: CID, citit de pe ea pe
+   20.09.2026. O cautare dupa nume poate intoarce alt local sau o lista;
+   asta duce exact la fisa Baffi Cafe Bragadiru - verificat.
+   Formularul de recenzie in sine cere Place ID-ul in forma `ChIJ...`,
+   care nu e expus public; se ia din panoul fisei, de la „Cere recenzii". */
+const FISA_GOOGLE='https://www.google.com/maps/place/?cid=3513225936531386183';
+const REVIEW_URL=FISA_GOOGLE;
 /* Meniul - cele 204 preparate - sta in meniu-date.js, incarcat mai sus.
    Se editeaza acolo, nu aici. */
 
@@ -2322,7 +2341,7 @@ function paintHours(){
 const MESAJE=[
   {b:'Livrare gratuită', t:'peste 70 de lei', d:'curierii noștri, fără comision de aplicație', cta:'Vezi meniul', la:'#meniu'},
   {b:'208 preparate', t:'în meniu', d:'cu gramaje și ingrediente, la vedere', cta:'Deschide meniul', la:'#meniu'},
-  {b:'Comenzi', t:'0756 021 501', d:'sau pe WhatsApp, în două minute', cta:'Comandă acum', la:'#meniu'},
+  {b:'Comenzi', t:'0756 021 501', d:'sau pe WhatsApp, în două minute', cta:'Sună acum', la:'tel:+40756021501'},
   {b:'Petreceri și platouri', t:'ne ocupăm noi de tot', d:'botez, aniversare, masă de firmă', cta:'Cere o ofertă', la:'#private'}
 ];
 /* ---------- ZONA DE LIVRARE ----------
@@ -2393,15 +2412,17 @@ function paintEvents(){
   } else {
     /* Fara eveniment anuntat, banda nu dispare - spune altceva adevarat.
        Aceeasi forma vizuala, ca miscarea sa arate identic. */
-    const grp=MESAJE.map(m=>`<div class="tk-grp">`
+    /* Fiecare grup e propriul lui link. Pana acum banda intreaga era
+       invelita intr-un singur <a> si codul ii punea peste tot `#meniu`:
+       „Cere o ofertă" ducea la meniu, iar numarul de telefon nu suna. */
+    const grp=MESAJE.map(m=>`<a class="tk-grp" href="${m.la}">`
       +`<b>${m.b}</b><i class="tk-d">◆</i>`
       +`<strong>${m.t}</strong><i class="tk-d">◆</i>`
       +`<span>${m.d}</span><i class="tk-d">◆</i>`
       +`<em>${m.cta} →</em><i class="tk-d">◆</i>`
-      +`</div>`).join('');
+      +`</a>`).join('');
     document.getElementById('tkTrack').innerHTML=grp.repeat(2);
     ritmBanda();
-    tk.querySelector('a').setAttribute('href','#meniu');
     tk.hidden=false;
   }
 
@@ -2790,15 +2811,68 @@ document.getElementById('cartBody').addEventListener('click',e=>{
   if(e.target.closest('#iar')) reiaLista();
 });
 
+
+/* ---------- FERESTRELE SI RESTUL PAGINII ----------
+   O fereastra inchisa era doar transparenta si neapasabila. Pentru
+   tastatura si pentru cititorul de ecran ramanea acolo: apasai Tab de
+   destule ori si completai un formular pe care nu-l vedeai.
+
+   `inert` le scoate din amandoua deodata. Si invers: cat timp o fereastra
+   e deschisa, restul paginii devine inert - asa Tab-ul ramane inauntru
+   fara nicio captura de focus scrisa de mana. */
+const FUNDAL=['hdr','top','ticker','mobar'].map(id=>document.getElementById(id))
+  .concat([document.querySelector('footer.foot')])
+  .filter(Boolean);
+let deUndeAmVenit=null;
+
+function inert(el, da){ if(el) el.toggleAttribute('inert', !!da); }
+
+/* `scapa` e elementul care NU trebuie stins. Meniul de pe telefon se
+   inchide numai din butonul-burger, care sta in antet: daca antetul ar
+   deveni inert odata cu restul paginii, omul ar ramane inchis inauntru
+   fara nicio cale de iesire. Prins inainte de a ajunge in pagina. */
+function fundalInert(da, scapa){
+  FUNDAL.forEach(el=>{ if(el!==scapa) inert(el, da); });
+}
+
+/* Fereastra deschisa primeste focusul; la inchidere se intoarce de unde
+   a plecat. Altfel omul care navigheaza cu tastatura o ia de la capul
+   paginii dupa fiecare fereastra. */
+function focusInauntru(container){
+  if(!container) return;
+  const t=container.querySelector(
+    'input:not([type=hidden]), select, textarea, button:not([data-close]), [href]');
+  if(t) try{ t.focus({preventScroll:true}); }catch(e){}
+}
+function inapoiDeUndeAmVenit(){
+  if(deUndeAmVenit) try{ deUndeAmVenit.focus({preventScroll:true}); }catch(e){}
+  deUndeAmVenit=null;
+}
+/* tinem minte ce a fost apasat, ca sa stim unde intoarcem focusul */
+document.addEventListener('pointerdown', e=>{
+  const b=e.target.closest('button, a'); if(b) deUndeAmVenit=b;
+}, true);
+
+/* La pornire, tot ce e inchis iese din pagina. */
+document.querySelectorAll('.modal, #cart, #mnav, #lb').forEach(el=>{
+  if(!el.classList.contains('on')) inert(el, true);
+});
+
 /* ---------- SERTAR + MODALE ---------- */
 const scrim=document.getElementById('scrim'), cartEl=document.getElementById('cart');
-function openCart(){cartEl.classList.add('on');scrim.classList.add('on');document.body.classList.add('locked')}
+function openCart(){cartEl.classList.add('on');scrim.classList.add('on');document.body.classList.add('locked');
+  inert(cartEl,false); fundalInert(true); focusInauntru(cartEl);}
 
 
 function closeAll(){
   cartEl.classList.remove('on');scrim.classList.remove('on');
   document.querySelectorAll('.modal').forEach(m=>m.classList.remove('on'));
   document.body.classList.remove('locked');
+  /* tot ce s-a inchis iese din tastatura si din cititorul de ecran */
+  inert(cartEl,true);
+  document.querySelectorAll('.modal').forEach(m=>inert(m,true));
+  fundalInert(false);
+  inapoiDeUndeAmVenit();
 }
 document.getElementById('cartBtn').addEventListener('click',openCart);
 /* butonul auriu din dockul mobil: dacă are ceva în coș îl deschide,
@@ -2808,15 +2882,36 @@ document.getElementById('mobarCart').addEventListener('click',e=>{
 });
 document.getElementById('cartClose').addEventListener('click',closeAll);
 scrim.addEventListener('click',closeAll);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape') return;
+  /* Escape inchide si meniul de pe telefon, nu doar ferestrele: pana acum
+     meniul se inchidea numai din burger. */
+  if(mnav.classList.contains('on')){ closeMnav(); burger.focus(); return; }
+  closeAll();
+});
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',closeAll));
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeAll()}));
 
 const MODALS={rez:'mRez',oferta:'mOferta',checkout:'mCheckout'};
-function openModal(id){
+function openModal(id, zonaCeruta){
+  const venitDe=deUndeAmVenit;
   closeAll();
-  document.getElementById(MODALS[id]).classList.add('on');
+  deUndeAmVenit=venitDe;          /* closeAll l-ar fi consumat */
+  const f=document.getElementById(MODALS[id]);
+  f.classList.add('on');
   document.body.classList.add('locked');
+  inert(f,false); fundalInert(true); focusInauntru(f);
+  /* Cine apasa pe „Rezervă pe terasă" a spus deja unde vrea sa stea:
+     formularul nu-l mai intreaba inca o data. Cine deschide de oriunde
+     altundeva porneste curat, de la „oriunde e bine" - altfel alegerea
+     ramane lipita de la o deschidere la alta si omul trimite o rezervare
+     pe terasa fara sa fi cerut-o. */
+  if(id==='rez'){
+    zone = zonaCeruta || 'oriunde';
+    document.querySelectorAll('#pickZone button').forEach(b=>{
+      const ales=(b.dataset.z===zone);
+      b.classList.toggle('on',ales); b.setAttribute('aria-checked',ales?'true':'false');});
+  }
   if(id==='rez'){
     const d=document.getElementById('rDate');
     if(!d.value){const n=new Date();d.value=n.toISOString().slice(0,10);d.min=n.toISOString().slice(0,10)}
@@ -2826,7 +2921,7 @@ function openModal(id){
 function bindOpeners(){
   document.querySelectorAll('[data-open]').forEach(b=>{
     if(b._b) return; b._b=1;
-    b.addEventListener('click',()=>{closeMnav();openModal(b.dataset.open)});
+    b.addEventListener('click',()=>{closeMnav();openModal(b.dataset.open,b.dataset.zona)});
   });
 }
 bindOpeners();
@@ -2835,10 +2930,17 @@ document.getElementById('toCheckout').addEventListener('click',()=>openModal('ch
 /* alegeri (pick) */
 function pick(id,cb){
   const box=document.getElementById(id);
+  /* Butoanele care se exclud reciproc SUNT butoane radio. Pana acum
+     alegerea se vedea doar din culoare - un cititor de ecran citea patru
+     butoane identice, fara sa spuna care e apasat. */
+  const toate=[...box.querySelectorAll('button')];
+  toate.forEach(x=>{ x.setAttribute('role','radio');
+    x.setAttribute('aria-checked', x.classList.contains('on')?'true':'false'); });
   box.addEventListener('click',e=>{
     const b=e.target.closest('button'); if(!b) return;
-    box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on'); cb&&cb(b);
+    toate.forEach(x=>{ const ales=(x===b);
+      x.classList.toggle('on',ales); x.setAttribute('aria-checked',ales?'true':'false'); });
+    cb&&cb(b);
   });
 }
 let mode='livrare',timeMode='asap',pay='cash',pax='4',zone='oriunde',evType='aniversare';
@@ -3268,12 +3370,15 @@ document.getElementById('sendOf').addEventListener('click',()=>{
 /* ---------- NAVIGAȚIE / UI ---------- */
 const burger=document.getElementById('burger'), mnav=document.getElementById('mnav');
 function closeMnav(){burger.classList.remove('on');mnav.classList.remove('on');
-  burger.setAttribute('aria-expanded','false');document.body.classList.remove('locked')}
+  burger.setAttribute('aria-expanded','false');document.body.classList.remove('locked');
+  inert(mnav,true); fundalInert(false, hdr);}
 burger.addEventListener('click',()=>{
   const on=!mnav.classList.contains('on');
   burger.classList.toggle('on',on);mnav.classList.toggle('on',on);
   burger.setAttribute('aria-expanded',String(on));
   document.body.classList.toggle('locked',on);
+  inert(mnav,!on); fundalInert(on, hdr);
+  if(on) focusInauntru(mnav);
 });
 mnav.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMnav));
 document.querySelectorAll('.intent[data-mode]').forEach(a=>a.addEventListener('click',()=>{
@@ -3884,6 +3989,7 @@ function paintCfg(){
     if(el.dataset.cfg==='recenzii') el.textContent=CFG.recenzii;
   });
   const rb=document.getElementById('revBtn'); if(rb) rb.href=REVIEW_URL;
+  const rs=document.getElementById('revSursa'); if(rs) rs.href=FISA_GOOGLE;
   document.querySelectorAll('[data-net="kids"]').forEach(a=>a.href=CFG.linkKids);
   document.querySelectorAll('[data-net="oasis"]').forEach(a=>a.href=CFG.linkOasis);
   document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+CFG.tel);

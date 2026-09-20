@@ -585,15 +585,15 @@ body.locked{overflow:hidden}
           <div style="display:grid;gap:14px;margin-top:12px">
             <div class="f-row"><label for="oData">Data vizitei</label><input id="oData" type="date"></div>
           </div>
-          <div class="pick" id="pickOra">
+          <div class="pick" role="radiogroup" aria-label="Ora sosirii" id="pickOra">
             <button class="on" data-o="09:00 – 11:00">09:00 – 11:00</button>
             <button data-o="11:00 – 13:00">11:00 – 13:00</button>
             <button data-o="După 13:00">După 13:00</button>
           </div>
         </div>
         <div>
-          <div class="pl-h">02 · Când vii?</div>
-          <div class="pick" id="pickZi">
+          <div id="lbl-pickZi" class="pl-h">02 · Când vii?</div>
+          <div class="pick" role="radiogroup" aria-labelledby="lbl-pickZi" id="pickZi">
             <button class="on" data-z="Luni–Vineri">Luni–Vineri</button>
             <button data-z="Weekend">Weekend</button>
           </div>
@@ -978,6 +978,18 @@ reveal(); setTimeout(reveal,80); setTimeout(reveal,600);
 /* pornire */
 document.getElementById('oData').min=new Date().toISOString().slice(0,10);
 paintEst();
+</script>
+<script>
+/* Butoanele care se exclud reciproc SUNT butoane radio. Pana acum alegerea
+   se vedea doar din culoare. */
+document.querySelectorAll('.pick[role=radiogroup]').forEach(box=>{
+  const toate=[...box.querySelectorAll('button')];
+  const marcheaza=()=>toate.forEach(b=>
+    b.setAttribute('aria-checked', b.classList.contains('on')?'true':'false'));
+  toate.forEach(b=>b.setAttribute('role','radio'));
+  marcheaza();
+  box.addEventListener('click', ()=>setTimeout(marcheaza,0));
+});
 </script>
 </body>
 </html>

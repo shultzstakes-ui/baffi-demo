@@ -715,8 +715,8 @@ body.locked{overflow:hidden}
     <div class="bld rv">
       <div class="bld-box">
         <div>
-          <div class="bld-h">1. Ce pregătim?</div>
-          <div class="pick" id="pickFmt" style="margin-top:12px">
+          <div id="lbl-pickFmt" class="bld-h">1. Ce pregătim?</div>
+          <div class="pick" role="radiogroup" aria-labelledby="lbl-pickFmt" id="pickFmt" style="margin-top:12px">
             <button class="on" data-f="Aniversare">Aniversare</button>
             <button data-f="Serbare">Serbare</button>
             <button data-f="Atelier">Atelier</button>
@@ -1069,6 +1069,18 @@ reveal(); setTimeout(reveal,80); setTimeout(reveal,600);
 /* pornire */
 document.getElementById('kData').min=new Date().toISOString().slice(0,10);
 paintSum();
+</script>
+<script>
+/* Butoanele care se exclud reciproc SUNT butoane radio. Pana acum alegerea
+   se vedea doar din culoare. */
+document.querySelectorAll('.pick[role=radiogroup]').forEach(box=>{
+  const toate=[...box.querySelectorAll('button')];
+  const marcheaza=()=>toate.forEach(b=>
+    b.setAttribute('aria-checked', b.classList.contains('on')?'true':'false'));
+  toate.forEach(b=>b.setAttribute('role','radio'));
+  marcheaza();
+  box.addEventListener('click', ()=>setTimeout(marcheaza,0));
+});
 </script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Politica de cookie-uri · Baffi Cafe</title>
 <meta name="description" content="Site-ul Baffi Cafe nu folosește cookie-uri de urmărire. Ce reține browserul și cum ștergeți datele.">
 <link rel="canonical" href="https://bafficafe.ro/politica-de-cookie-uri/">
@@ -5,9 +7,8 @@
 <meta name="theme-color" content="#071c2c">
 <link rel="icon" href="../img/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../img/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../fonturi/inter-latin.woff2">
 <style>
 :root{
   --navy:#071c2c; --navy-2:#0c2940; --sapphire:#0c4169;
@@ -83,6 +84,13 @@ a{color:var(--sapphire)}
 .foot a:hover{text-decoration:underline}
 .foot .fr{display:flex;flex-wrap:wrap;gap:8px 18px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 900;font-display:swap;
+  src:url(../fonturi/inter-latin-ext.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 900;font-display:swap;
+  src:url(../fonturi/inter-latin.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 .demo-bar{background:#14212a;color:rgba(245,240,231,.72);
   font:600 10px/1 "Inter",system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;
   text-align:center;padding:9px 16px;border-bottom:1px solid rgba(201,154,74,.22)}
@@ -155,7 +163,7 @@ a{color:var(--sapphire)}
       <div><dt>E-mail</dt><dd><a href="mailto:office@bafficafe.ro">office@bafficafe.ro</a></dd></div>
       <div><dt>Telefon</dt><dd><a href="tel:+40756021501">0756 021 501</a></dd></div>
     </dl>
-    <p class="actualizat">Ultima actualizare: 18.09.2026.</p>
+    <p class="actualizat">Ultima actualizare: 20.09.2026.</p>
   </main>
 </div>
 
