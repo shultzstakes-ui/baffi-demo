@@ -51,7 +51,7 @@
 <!-- se incarca din timp exact varianta pe care o va folosi, nu alta -->
 <link rel="preload" as="image" href="img/baffi-entrance-premium-v6.webp"
       imagesrcset="img/baffi-entrance-premium-v6-900.webp 900w, img/baffi-entrance-premium-v6.webp 1400w"
-      imagesizes="(min-width:960px) 440px, 340px" fetchpriority="high">
+      imagesizes="(min-width:960px) 57vw, 100vw" fetchpriority="high">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","@id":"https://bafficafe.ro/#restaurant",
 "name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-entrance-premium-v6.webp",
@@ -357,26 +357,19 @@ p{margin:0}
    fără el, poza mărită iese din cadru, iar degradeul rămâne în urmă —
    se vede o dungă din poză, nedarkuită, peste bleumarinul paginii. */
 /* rama fotografiei: colț 26px, lipită de marginile panoului mai puțin stânga */
-/* Un cadru, nu un fundal.
-
-   Cadrul are EXACT forma fotografiei (7:10, cat e fisierul). Cand cele doua
-   forme coincid, `object-fit:cover` nu mai are ce arunca - nu se taie nimic,
-   la nicio latime de ecran. Pana acum forma casetei o dadea textul de
-   alaturi si se schimba cu ecranul (0,67 la 1024, 1,14 la 1440), deci
-   fotografia era mereu o bucata din ea insasi.
-
-   Si nu mai e lipita de marginea panoului: sta in mijlocul coloanei ei,
-   cel mult 470px lata, cu bleumarin in jur. */
-.hero-media{position:relative;overflow:hidden;
-  align-self:center;justify-self:center;
-  width:min(100% - 72px, 440px);aspect-ratio:7/10;
-  margin-block:28px;border-radius:18px;
-  box-shadow:0 34px 64px -28px rgba(0,0,0,.55);
-  outline:1px solid rgba(201,154,74,.20);outline-offset:-1px}
+/* Fotografia umple coloana ei cap-coada. Sus, jos si dreapta sunt
+   marginile panoului: acolo nu exista nicio cusatura de ascuns. Singura
+   cusatura e marginea din stanga, unde fotografia intalneste bleumarinul
+   pe care sta textul - si aia o rezolva degradeul de mai jos. */
+.hero-media{position:relative;overflow:hidden;min-height:clamp(320px,46vw,664px)}
 @media(max-width:959px){
-  .hero-media{width:min(100% - 44px, 340px);margin-block:4px 36px;border-radius:16px}}
+  /* Pe telefon fotografia urca DEASUPRA textului. Acolo se taie pe
+     verticala, iar firma sta in varful fotografiei: daca ar sta sub text,
+     cusatura ar cadea exact peste firma. Asa, sus e marginea panoului
+     (curata) si degradeul lucreaza jos, unde nu e nimic de pierdut. */
+  .hero-media{min-height:clamp(300px,64vw,430px)}}
 .hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  object-position:center top}   /* forma coincide, deci `cover` nu taie nimic */
+  object-position:center top}   /* orice ar prisosi se taie de jos: sus e firma */
 /* Caseta isi schimba forma cu ecranul: inalta pe ecran mic (0,67), lata pe
    ecran mare (1,20 la 1440px). Cand e lata, fotografia prisoseste pe
    inaltime - la 1920px cu 62% din ea. `top` spune limpede din ce parte se
@@ -384,10 +377,33 @@ p{margin:0}
    Se pierde trotuarul si ghivecele. Un procent fix (era 16%) lua mereu o
    felie si de sus, iar felia crestea cu ecranul: 2,4% la 1152px, 9,9% la
    1920px - adica taia tocmai capul firmei, pe ecranele mari. */
-/* Voalul a disparut. Exista ca sa topeasca marginea fotografiei in panou,
-   pe vremea cand fotografia nu avea margine. Acum are cadru: colturi
-   rotunjite, umbra si un fir auriu. Un voal peste el ar fi doar murdarie. */
-@media(max-width:959px){.hero-media{order:2}}
+/* DEGRADEUL CARE TOPESTE FOTOGRAFIA IN PANOU.
+
+   Douasprezece opriri, nu trei. Un degrade lung cu putine opriri se vede:
+   ochiul prinde locurile unde panta isi schimba brusc unghiul si apare o
+   dunga. Cu opriri dese, asezate pe o curba lina, aceeasi distanta se
+   parcurge fara niciun prag. Asta e toata diferenta dintre „are un
+   gradient" si „nu se vede unde se termina fotografia".
+
+   Merge pana la 74% din latimea fotografiei. Pare mult, si e: primii 20%
+   sunt aproape bleumarin plin, acolo se ascunde cusatura; restul e doar
+   fotografia care revine incet la ea insasi. */
+.hero-media::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,
+    var(--navy) 0%, rgba(7,28,44,.985) 6%, rgba(7,28,44,.945) 12%,
+    rgba(7,28,44,.875) 18%, rgba(7,28,44,.775) 24%, rgba(7,28,44,.645) 30%,
+    rgba(7,28,44,.495) 37%, rgba(7,28,44,.345) 44%, rgba(7,28,44,.21) 51%,
+    rgba(7,28,44,.105) 59%, rgba(7,28,44,.035) 66%, rgba(7,28,44,0) 74%)}
+@media(max-width:959px){
+  /* fotografia urca deasupra titlului - vezi motivul de mai sus */
+  .hero-media{order:-1}
+  /* sus e marginea panoului, deci nimic. Jos, fotografia se stinge in
+     bleumarinul pe care incepe textul - tot cu opriri dese. */
+  .hero-media::after{background:linear-gradient(180deg,
+    rgba(7,28,44,.14) 0%, rgba(7,28,44,.06) 18%, rgba(7,28,44,.03) 36%,
+    rgba(7,28,44,.09) 52%, rgba(7,28,44,.22) 64%, rgba(7,28,44,.40) 74%,
+    rgba(7,28,44,.60) 82%, rgba(7,28,44,.78) 88%, rgba(7,28,44,.91) 93%,
+    rgba(7,28,44,.975) 97%, var(--navy) 100%)}}
 
 /* ---------- 3 intentii ---------- */
 .intents{background:var(--cream);border-block:1px solid var(--line-2)}
@@ -1421,7 +1437,7 @@ p{margin:0}
     <div class="hero-media">
       <img src="img/baffi-entrance-premium-v6.webp"
            srcset="img/baffi-entrance-premium-v6-900.webp 900w, img/baffi-entrance-premium-v6.webp 1400w"
-           sizes="(min-width:960px) 440px, 340px"
+           sizes="(min-width:960px) 57vw, 100vw"
            data-plin="img/baffi-intrare-plin.webp" alt="Intrarea în Baffi Cafe din Bragadiru"
            width="1400" height="1996" fetchpriority="high" decoding="async">
     </div>
@@ -2111,7 +2127,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.2';
+window.BAFFI_VERSIUNE='9.3';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
