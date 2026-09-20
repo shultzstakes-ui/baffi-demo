@@ -164,7 +164,15 @@ p{margin:0}
 .h-md{font-size:clamp(24px,2.7vw,36px)}
 .it{font-style:italic;font-weight:600;color:var(--gold)}
 /* ritmul Human: 110px/7vw pe desktop, 78px/5vw sub 980, 14px lateral pe telefon */
-.sect{padding:110px 7vw}
+/* --iesire = distanta de la marginea continutului pana la marginea
+   ferestrei. Se calculeaza din marginea sectiunii plus jumatate din cat
+   prisoseste cand continutul e mai ingust decat spatiul dintre margini.
+   O valoare fixa ar fi corecta la o singura latime de ecran. */
+.sect{padding:110px 7vw;--gut:7vw;
+  --iesire:calc(var(--gut) + max(0px, (100vw - 2 * var(--gut) - var(--maxw)) / 2));
+  overflow-x:clip}
+@media(max-width:980px){.sect{--gut:5vw}}
+@media(max-width:680px){.sect{--gut:14px}}
 .sect>.wrap{padding-inline:0}
 @media(max-width:980px){.sect{padding:78px 5vw}}
 @media(max-width:680px){.sect{padding-inline:14px}}
@@ -315,9 +323,12 @@ p{margin:0}
 /* ---------- hero ---------- */
 /* Hero-ul Human e un PANOU care plutește, nu o bandă lipită de margini:
    margine 18px, colț 32px, 43%/57% și fotografia cu rama ei de 26px. */
+/* Deschiderea atinge marginile ferestrei. Rama de 18px si colturile
+   rotunjite o faceau sa pluteasca pe crem, ca o cartela; fotografia avea
+   atunci patru margini vizibile in loc de una. */
 .hero{background:var(--navy);color:var(--paper);position:relative;overflow:hidden;
-  margin:18px;border-radius:var(--r-xl);min-height:700px;box-shadow:0 24px 70px rgba(7,28,44,.18)}
-@media(max-width:680px){.hero{margin:9px;border-radius:24px;min-height:0}}
+  margin:0;border-radius:0;min-height:700px}
+@media(max-width:680px){.hero{min-height:0}}
 .hero-grid{display:grid;grid-template-columns:1fr;align-items:stretch}
 @media(min-width:960px){.hero-grid{grid-template-columns:43% 57%}}
 /* între 960 și 1200 coloana de text e strâmtă: îi dăm mai mult loc, altfel
@@ -406,7 +417,19 @@ p{margin:0}
     rgba(7,28,44,.975) 97%, var(--navy) 100%)}}
 
 /* ---------- 3 intentii ---------- */
-.intents{background:var(--cream);border-block:1px solid var(--line-2)}
+/* Intre doua benzi de culoare era o linie de un pixel. O linie spune
+   „aici se termina una si incepe alta". 90 de pixeli de degrade nu spun
+   nimic - si exact asta vrem. */
+.intents{background:var(--cream);position:relative}
+.intents::before,.intents::after{content:"";position:absolute;left:0;right:0;
+  height:90px;pointer-events:none;z-index:0}
+.intents::before{top:-90px;background:linear-gradient(180deg,
+  rgba(244,236,224,0) 0%, rgba(244,236,224,.18) 34%, rgba(244,236,224,.46) 58%,
+  rgba(244,236,224,.74) 76%, rgba(244,236,224,.92) 90%, var(--cream) 100%)}
+.intents::after{bottom:-90px;background:linear-gradient(0deg,
+  rgba(244,236,224,0) 0%, rgba(244,236,224,.18) 34%, rgba(244,236,224,.46) 58%,
+  rgba(244,236,224,.74) 76%, rgba(244,236,224,.92) 90%, var(--cream) 100%)}
+.intents>*{position:relative;z-index:1}
 /* Banda nu mai tine toata latimea: incadrata si centrata, se citeste ca un
    obiect asezat pe pagina, nu ca o dunga peste tot ecranul. */
 .intent-grid{display:grid;gap:1px;background:var(--line);
@@ -796,10 +819,50 @@ p{margin:0}
 @media(min-width:900px){.split{grid-template-columns:1fr 1fr}
   .split.rev .s-media{order:2}}
 .s-media{position:relative;border-radius:var(--r-lg);overflow:hidden;background:var(--cream);aspect-ratio:4/3}
+/* Peste 900px fotografia iese din pagina pe partea ei si colturile de
+   acolo se indreapta: nu mai are margine unde o cauta ochiul. Marginea
+   dinspre text ramane dreapta si curata - acolo e oricum spatiu gol, iar
+   o fotografie stinsa intr-un spatiu gol arata a greseala, nu a topire.
+
+   Partea in care iese NU se ia din clasa `.rev`, ci din locul real al
+   fotografiei in rand: doua sectiuni au fotografia in dreapta fara sa
+   aiba clasa aia. Se citeste din pozitia in DOM, cum o citeste si grila.
+
+   Se aplica la toate cele trei feluri de fotografie mare: cea simpla,
+   caruselul si cea din „Despre noi". */
+@media(min-width:900px){
+  .split > :is(.s-media,.carou,.despre-foto){max-height:min(78vh,700px)}
+  /* fotografia in coloana din stanga: iese spre stanga */
+  .split:not(.rev) > :is(.s-media,.carou,.despre-foto):first-child{
+    margin-inline-start:calc(var(--iesire) * -1);
+    width:calc(100% + var(--iesire));
+    border-start-start-radius:0;border-end-start-radius:0}
+  /* fotografia in coloana din dreapta: iese spre dreapta */
+  .split:not(.rev) > :is(.s-media,.carou,.despre-foto):last-child,
+  .split.rev > :is(.s-media,.carou,.despre-foto):first-child{
+    margin-inline-end:calc(var(--iesire) * -1);
+    width:calc(100% + var(--iesire));
+    border-start-end-radius:0;border-end-end-radius:0}
+}
 .s-media img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s var(--ease)}
 .s-media:hover img{transform:scale(1.04)}
-.s-media .cap{position:absolute;left:16px;bottom:16px;right:16px;color:var(--cream);
-  font:600 10.5px/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;text-shadow:0 2px 14px rgba(7,28,44,.7)}
+/* Eticheta statea pe fotografia goala, cu o umbra sub litere - se citea
+   prost pe pozele deschise. Acum creste din josul imaginii un degrade pe
+   care sta. Nu acopera nimic: sus e transparent de tot. */
+.s-media::after{content:"";position:absolute;inset:auto 0 0 0;height:42%;
+  pointer-events:none;background:linear-gradient(180deg,
+    rgba(7,28,44,0) 0%, rgba(7,28,44,.04) 22%, rgba(7,28,44,.12) 40%,
+    rgba(7,28,44,.26) 56%, rgba(7,28,44,.44) 70%, rgba(7,28,44,.62) 82%,
+    rgba(7,28,44,.76) 92%, rgba(7,28,44,.84) 100%)}
+.s-media .cap{position:absolute;left:22px;bottom:18px;right:22px;z-index:1;color:var(--cream);
+  font:600 10.5px/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase}
+@media(min-width:900px){
+  /* eticheta sta pe partea dinspre text, departe de marginea care iese */
+  .split:not(.rev) > .s-media:first-child .cap{
+    left:auto;right:22px;text-align:right;max-width:62%}
+  .split:not(.rev) > .s-media:last-child .cap,
+  .split.rev > .s-media:first-child .cap{
+    left:22px;right:auto;text-align:left;max-width:62%}}
 .s-copy{display:flex;flex-direction:column;gap:20px}
 .ticks{display:flex;flex-direction:column;gap:2px;margin-top:4px}
 .tick{display:flex;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line-2)}
@@ -845,6 +908,11 @@ p{margin:0}
   background:linear-gradient(90deg,var(--gold),var(--gold-lite))}
 
 /* galerie orizontala */
+/* Banda se stinge la capete in loc sa reteze fotografiile drept. Spune
+   ochiului ca mai e ceva acolo, fara niciun text si fara nicio sageata.
+   Masca lucreaza pe transparenta, deci merge pe orice fundal. */
+.rail{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 4.5%,#000 95.5%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 4.5%,#000 95.5%,transparent 100%)}
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:14px;
   scrollbar-width:none}
 .rail::-webkit-scrollbar{display:none}
@@ -2127,7 +2195,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.3';
+window.BAFFI_VERSIUNE='9.4';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
