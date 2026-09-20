@@ -359,11 +359,14 @@ p{margin:0}
 @media(max-width:959px){.hero-media{min-height:540px;margin:0 18px 18px}}
 @media(max-width:680px){.hero-media{min-height:410px;margin:0 9px 9px;border-radius:19px}}
 .hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  object-position:center 16%}
-/* Fotografia e taiata la 0,70, cat e caseta pe calculator: acolo nu
-   prisoseste nimic pe latime. Pe telefon caseta e mai lata (0,83), deci
-   prisoseste pe inaltime - iar 16% spune sa se pastreze partea de sus,
-   cea cu firma. */
+  object-position:center top}
+/* Caseta isi schimba forma cu ecranul: inalta pe ecran mic (0,67), lata pe
+   ecran mare (1,20 la 1440px). Cand e lata, fotografia prisoseste pe
+   inaltime - la 1920px cu 62% din ea. `top` spune limpede din ce parte se
+   taie: de jos. Sus ramane intotdeauna firma, oricat de lat ar fi ecranul.
+   Se pierde trotuarul si ghivecele. Un procent fix (era 16%) lua mereu o
+   felie si de sus, iar felia crestea cu ecranul: 2,4% la 1152px, 9,9% la
+   1920px - adica taia tocmai capul firmei, pe ecranele mari. */
 .hero-media::after{content:"";position:absolute;inset:0;
   /* Voalul are o singura treaba: sa ascunda cusatura dintre fotografie si
      panou. Textul sta in coloana lui, nu peste poza, deci nu are de aparat
@@ -2027,7 +2030,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='8.9';
+window.BAFFI_VERSIUNE='9.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
