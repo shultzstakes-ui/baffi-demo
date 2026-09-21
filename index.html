@@ -1731,9 +1731,12 @@ p{margin:0}
    Toate stau in aceeasi celula de grila, una peste alta: chenarul ia
    inaltimea celei mai lungi si nu mai sare la fiecare schimbare. */
 .rev-card{display:grid;padding-bottom:44px}
+/* Cea care pleaca se stinge intai, cea care vine intra dupa: altfel se
+   suprapun la mijlocul trecerii si se citeste un text peste altul. */
 .rev-una{grid-area:1/1;margin:0;display:flex;flex-direction:column;gap:12px;
-  opacity:0;visibility:hidden;transition:opacity .55s var(--ease),visibility .55s}
-.rev-una.pe{opacity:1;visibility:visible}
+  opacity:0;visibility:hidden;transition:opacity .32s var(--ease),visibility .32s}
+.rev-una.pe{opacity:1;visibility:visible;
+  transition:opacity .42s var(--ease) .3s,visibility 0s}
 .rev-una p{font-family:var(--serif);font-size:19px;font-weight:600;
   line-height:1.45;font-style:italic;margin:0}
 .rev-una .who{margin-top:auto;font:600 10.5px/1.4 var(--sans);letter-spacing:.18em;
