@@ -17,7 +17,7 @@
      nu una relativă — altfel linkul apare fără imagine). -->
 <meta property="og:title" content="Baffi Cafe Bragadiru — tot la Baffi e mai bine">
 <meta property="og:description" content="Grătar, terasă și evenimente în Bragadiru. Comanzi direct de la noi: fără aplicație, fără comision, livrare gratuită de la 70 de lei.">
-<meta property="og:image" content="https://bafficafe.ro/img/baffi-intrare-lata.webp">
+<meta property="og:image" content="https://bafficafe.ro/img/baffi-intrare-2.webp">
 <meta property="og:image:alt" content="Intrarea în Baffi Cafe din Bragadiru">
 <meta property="og:url" content="https://bafficafe.ro/">
 <meta property="og:site_name" content="Baffi Cafe">
@@ -49,12 +49,12 @@
 })();
 </script>
 <!-- se incarca din timp exact varianta pe care o va folosi, nu alta -->
-<link rel="preload" as="image" href="img/baffi-intrare-lata.webp"
-      imagesrcset="img/baffi-intrare-lata-900.webp 900w, img/baffi-intrare-lata.webp 1400w"
+<link rel="preload" as="image" href="img/baffi-intrare-2.webp"
+      imagesrcset="img/baffi-intrare-2-900.webp 900w, img/baffi-intrare-2.webp 1400w"
       imagesizes="(min-width:960px) min(54vw, 860px), 100vw" fetchpriority="high">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","@id":"https://bafficafe.ro/#restaurant",
-"name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-intrare-lata.webp",
+"name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-intrare-2.webp",
 "url":"https://bafficafe.ro/","hasMenu":"https://bafficafe.ro/#meniu",
 "description":"Restaurant și grătar în Bragadiru, cu terasă, comenzi directe fără comision de aplicație și evenimente private.",
 "address":{"@type":"PostalAddress","streetAddress":"Strada Safirului 69R","addressLocality":"Bragadiru","addressRegion":"Ilfov","addressCountry":"RO"},
@@ -1490,23 +1490,31 @@ p{margin:0}
 .s-media::before, .carou::before, .despre-foto::before{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 30%,
-                    rgba(7,28,44,0) 72%, rgba(7,28,44,.17))}
+    /* umbra, mai fina decat inainte (era 13/17%) */
+    linear-gradient(rgba(7,28,44,.08), rgba(7,28,44,0) 26%,
+                    rgba(7,28,44,0) 76%, rgba(7,28,44,.11)),
+    /* si stingere in culoarea sectiunii SUS si JOS, nu doar pe laturi */
+    linear-gradient(var(--fond), rgba(0,0,0,0) 9%,
+                    rgba(0,0,0,0) 91%, var(--fond))}
 @media(min-width:900px){
   /* marginea dinspre text se stinge in culoarea sectiunii; cea care iese
      din pagina ramane taiata drept, ca la referinta */
   .split:not(.rev) > :is(.s-media,.carou,.despre-foto):first-child::before{
     background:
-      linear-gradient(90deg, rgba(7,28,44,.10), rgba(7,28,44,0) 26%),
-      linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 30%,
-                      rgba(7,28,44,0) 72%, rgba(7,28,44,.17)),
+      linear-gradient(90deg, rgba(7,28,44,.08), rgba(7,28,44,0) 22%),
+      linear-gradient(rgba(7,28,44,.08), rgba(7,28,44,0) 26%,
+                      rgba(7,28,44,0) 76%, rgba(7,28,44,.11)),
+      linear-gradient(var(--fond), rgba(0,0,0,0) 9%,
+                      rgba(0,0,0,0) 91%, var(--fond)),
       linear-gradient(90deg, transparent 72%, var(--fond))}
   .split:not(.rev) > :is(.s-media,.carou,.despre-foto):last-child::before,
   .split.rev > :is(.s-media,.carou,.despre-foto):first-child::before{
     background:
-      linear-gradient(270deg, rgba(7,28,44,.10), rgba(7,28,44,0) 26%),
-      linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 30%,
-                      rgba(7,28,44,0) 72%, rgba(7,28,44,.17)),
+      linear-gradient(270deg, rgba(7,28,44,.08), rgba(7,28,44,0) 22%),
+      linear-gradient(rgba(7,28,44,.08), rgba(7,28,44,0) 26%,
+                      rgba(7,28,44,0) 76%, rgba(7,28,44,.11)),
+      linear-gradient(var(--fond), rgba(0,0,0,0) 9%,
+                      rgba(0,0,0,0) 91%, var(--fond)),
       linear-gradient(270deg, transparent 72%, var(--fond))}}
 
 /* --- P4. FOTOGRAFIILE SE TAIE DREPT -------------------------------
@@ -1529,7 +1537,10 @@ p{margin:0}
    vede o felie), cursorul e mana care apuca, iar jos sunt buline care
    spun cate mai sunt. */
 .tras{position:relative;overflow:hidden}
-.tras-banda{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+/* Fara spatiu intre diapozitive: dunga de fundal dintre fotografii e
+   semnatura unui carusel de sablon. La site-urile bune fotografiile curg
+   una in alta. */
+.tras-banda{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;
   scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
   touch-action:pan-y pinch-zoom;         /* degetul trage lateral, pagina merge vertical */
   overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
@@ -1577,8 +1588,11 @@ p{margin:0}
 .map-card::before, .pet-galerie figure::before, .rail figure::before,
 .ev-poster::before, .ev-foto::before{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 28%,
-                             rgba(7,28,44,0) 70%, rgba(7,28,44,.17))}
+  background:
+    linear-gradient(rgba(7,28,44,.08), rgba(7,28,44,0) 24%,
+                    rgba(7,28,44,0) 74%, rgba(7,28,44,.11)),
+    linear-gradient(var(--fond,transparent), rgba(0,0,0,0) 8%,
+                    rgba(0,0,0,0) 92%, var(--fond,transparent))}
 /* scrisul de pe ele ramane deasupra umbrei */
 .map-card .mc-b, .pet-galerie figcaption, .rail figcaption,
 .ev-poster > *:not(img), .ev-foto figcaption{position:relative;z-index:2}
@@ -1602,6 +1616,20 @@ p{margin:0}
     rgba(var(--sus-rgb),.035) 89%, rgba(var(--sus-rgb),0) 100%)}
 .punte > *{position:relative;z-index:1}
 @media(max-width:680px){.punte::before{--punte-h:72px}}
+
+/* ---------- DOUA FOTOGRAFII CARE SE SCHIMBA SINGURE ----------
+   Se sting una in alta. Stau una peste alta, deci caseta nu-si schimba
+   inaltimea la schimbare. */
+.s-media.singur{aspect-ratio:16/10!important;max-height:none!important}
+.s-media.singur img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:0;transition:opacity 1.1s var(--ease)}
+.s-media.singur img.pe{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .s-media.singur img{transition:none}}
+.singur-buline{position:absolute;right:16px;bottom:16px;z-index:2;display:flex;gap:6px}
+.singur-buline i{width:6px;height:6px;border-radius:50%;background:rgba(245,240,231,.45);
+  transition:background .3s var(--ease),width .3s var(--ease)}
+.singur-buline i.pe{width:18px;border-radius:99px;background:var(--gold)}
 </style>
 </head>
 <body>
@@ -1637,7 +1665,6 @@ p{margin:0}
     </a>
     <nav class="nav">
       <a href="#meniu">Meniu</a>
-      <a href="#experienta">Experiența</a>
       <a href="#despre">Despre noi</a>
       <a href="#evenimente">Evenimente</a>
       <a href="#private">Petreceri</a>
@@ -1663,11 +1690,10 @@ p{margin:0}
 
 <nav class="mnav" id="mnav">
   <a href="#meniu"><span class="n">01</span>Meniu</a>
-  <a href="#experienta"><span class="n">02</span>Experiența</a>
-  <a href="#evenimente"><span class="n">03</span>Evenimente</a>
-  <a href="#private"><span class="n">04</span>Petreceri</a>
-  <a href="#locatii"><span class="n">05</span>Locații</a>
-  <a href="#contact"><span class="n">06</span>Contact</a>
+  <a href="#evenimente"><span class="n">02</span>Evenimente</a>
+  <a href="#private"><span class="n">03</span>Petreceri</a>
+  <a href="#locatii"><span class="n">04</span>Locații</a>
+  <a href="#contact"><span class="n">05</span>Contact</a>
   <div class="m-foot">
     <a class="btn btn-gold" href="tel:+40756021501">Sună: 0756 021 501</a>
     <button class="btn btn-ghost-gold" data-open="rez">Rezervă o masă</button>
@@ -1704,8 +1730,8 @@ p{margin:0}
       </div>
     </div>
     <div class="hero-media">
-      <img src="img/baffi-intrare-lata.webp"
-           srcset="img/baffi-intrare-lata-900.webp 900w, img/baffi-intrare-lata.webp 1400w"
+      <img src="img/baffi-intrare-2.webp"
+           srcset="img/baffi-intrare-2-900.webp 900w, img/baffi-intrare-2.webp 1400w"
            sizes="(min-width:960px) min(54vw, 860px), 100vw"
            alt="Intrarea în Baffi Cafe din Bragadiru, cu terasa alături"
            width="1400" height="1050" fetchpriority="high" decoding="async">
@@ -1840,65 +1866,29 @@ p{margin:0}
   </div>
 </section>
 
-<!-- ══════════════ EXPERIENȚA ══════════════ -->
-<section class="sect dark" id="experienta">
-  <div class="wrap">
-    <div class="split rv">
-      <!-- Caruselul merge singur, dar se lasă condus: săgeți, buline, glisare.
-           Bara subțire de jos arată cât mai stă pe poza curentă. -->
-      <div class="carou" id="carouExp" aria-roledescription="carusel" aria-label="Interiorul Baffi Cafe">
-        <div class="carou-track" id="carouTrack">
-          <figure><img src="img/baffi-sala-01.webp" alt="Sala mare — Baffi Cafe" loading="lazy" decoding="async"><figcaption><small>Sala mare</small><strong>Mese pentru grupuri</strong></figcaption></figure>
-          <figure><img src="img/baffi-bar-detaliu.webp" alt="Barul — Baffi Cafe" loading="lazy" decoding="async"><figcaption><small>Barul</small><strong>Cocktailuri, bere la halbă</strong></figcaption></figure>
-          <figure><img src="img/baffi-sala-02.webp" alt="Lângă geam — Baffi Cafe" loading="lazy" decoding="async"><figcaption><small>Lângă geam</small><strong>Lumină toată ziua</strong></figcaption></figure>
-          <figure><img src="img/baffi-veranda-masa.webp" alt="Veranda — Baffi Cafe" loading="lazy" decoding="async"><figcaption><small>Veranda</small><strong>Separată, pentru mese lungi</strong></figcaption></figure>
-          <figure><img src="img/baffi-sala-03.webp" alt="Spre intrare — Baffi Cafe" loading="lazy" decoding="async"><figcaption><small>Spre intrare</small><strong>Meciurile pe ecran</strong></figcaption></figure>
-          <figure><img src="img/baffi-bar-sapphire-uhd-v2.webp" alt="Seara — Baffi Cafe" loading="lazy" decoding="async"><figcaption><small>Seara</small><strong>Lumină joasă, ritm liniștit</strong></figcaption></figure>
-        </div>
-        <button class="carou-nav prev" type="button" aria-label="Poza anterioară"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
-        <button class="carou-nav next" type="button" aria-label="Poza următoare"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
-        <div class="carou-dots" id="carouDots"></div>
-        <i class="carou-bar" id="carouBar" aria-hidden="true"></i>
-      </div>
-      <div class="s-copy">
-        <span class="eyebrow on-navy">Experiența Baffi</span>
-        <h2 class="h-lg">Mai mult decât<br>o masă <span class="it">în oraș.</span></h2>
-        <p class="lead on-navy">Vii pentru mâncare și rămâi pentru atmosferă. Un spațiu cald, cu personalitate, în care încap și prânzul de miercuri, și seara care se termină târziu.</p>
-        <div class="ticks">
-          <div class="tick"><b>01</b><span>Atmosferă industrial-caldă, lumină joasă seara</span></div>
-          <div class="tick"><b>02</b><span>Bar cu identitate — cocktailuri, vinuri românești, bere la halbă</span></div>
-          <div class="tick"><b>03</b><span>Seri tematice, muzică live și meciuri pe ecran</span></div>
-        </div>
-      </div>
-    </div>
-    <!-- Galeria de interior a fost mutată în caruselul de sus: aceleași poze
-         de două ori pe același ecran nu ajută pe nimeni. -->
-  </div>
-</section>
-
-<!-- ══════════════ DESPRE NOI ══════════════ -->
+<!-- ══════════ DESPRE NOI ══════════
+     „Despre noi" si „Experienta Baffi" erau doua sectiuni care spuneau
+     acelasi lucru din doua unghiuri, una sub alta, fiecare cu
+     fotografiile ei. Acum sunt una: povestea locului, cele trei lucruri
+     care fac atmosfera, si un singur carusel - numai cu fotografii de
+     zi cu zi. Cele cu mese in randuri lungi s-au mutat la evenimente,
+     fiindca arata un local pregatit de petrecere, nu unul in care intri
+     marti seara. -->
 <section class="sect" id="despre" style="background:var(--warm);--fond:var(--warm)">
   <div class="wrap">
     <div class="split rv">
       <div class="tras" id="trasDespre" aria-roledescription="carusel" aria-label="Interiorul Baffi Cafe, de zi cu zi">
         <div class="tras-banda">
-        <figure><img src="img/baffi-interior-sala.webp" srcset="img/baffi-interior-sala-900.webp 900w, img/baffi-interior-sala.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Sala mare, într-o zi obișnuită" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Sala mare, într-o zi obișnuită</figcaption></figure>
-        <figure><img src="img/baffi-interior-bar.webp" srcset="img/baffi-interior-bar-900.webp 900w, img/baffi-interior-bar.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Barul și mesele dinspre stradă" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Barul și mesele dinspre stradă</figcaption></figure>
-        <figure><img src="img/baffi-sala-01-lat.webp" srcset="img/baffi-sala-01-lat-900.webp 900w, img/baffi-sala-01-lat.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Mese pentru grupuri" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Mese pentru grupuri</figcaption></figure>
-        <figure><img src="img/baffi-sala-03-lat.webp" srcset="img/baffi-sala-03-lat-900.webp 900w, img/baffi-sala-03-lat.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Colțul de lângă geam" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Colțul de lângă geam</figcaption></figure>
-        <figure><img src="img/baffi-sala-02-lat.webp" srcset="img/baffi-sala-02-lat-900.webp 900w, img/baffi-sala-02-lat.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Seara, cu lumina caldă" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Seara, cu lumina caldă</figcaption></figure>
+          <figure><img src="img/baffi-interior-sala.webp" srcset="img/baffi-interior-sala-900.webp 900w, img/baffi-interior-sala.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Sala, într-o marți seara" loading="lazy" decoding="async" width="1400" height="875"><figcaption>Sala, într-o marți seara</figcaption></figure>
+          <figure><img src="img/baffi-interior-bar.webp" srcset="img/baffi-interior-bar-900.webp 900w, img/baffi-interior-bar.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Mesele dinspre stradă" loading="lazy" decoding="async" width="1400" height="875"><figcaption>Mesele dinspre stradă</figcaption></figure>
+          <figure><img src="img/baffi-bar-sigla-lat.webp" srcset="img/baffi-bar-sigla-lat-900.webp 900w, img/baffi-bar-sigla-lat.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Tejgheaua din capăt" loading="lazy" decoding="async" width="1400" height="875"><figcaption>Tejgheaua din capăt</figcaption></figure>
         </div>
         <div class="tras-jos">
           <span class="tras-semn" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Trage</span>
           <div class="tras-buline" id="trasBuline" role="tablist" aria-label="Fotografii"></div>
         </div>
       </div>
-      <div class="despre-foto" hidden>
-        <img src="img/baffi-intrare-inalta-900.webp" data-plin="img/baffi-intrare-plin.webp"
-             alt="Intrarea în Baffi Cafe, Bragadiru"
-             loading="lazy" decoding="async" width="900" height="1238">
-      </div>
-      <div class="despre-text">
+<div class="despre-text">
         <span class="eyebrow">Din 2018, pe Safirului</span>
         <h2 class="h-lg">Am deschis un loc<br>unde ne-ar fi plăcut<br>să <span class="it">mâncăm noi.</span></h2>
         <p class="lead">În 2018 am deschis o singură ușă, în Bragadiru. Ideea era simplă
@@ -1922,6 +1912,11 @@ p{margin:0}
           <div class="tick"><b>3</b><span>Locuri: Bragadiru, Crângași, Berceni</span></div>
           <div class="tick"><b id="despreRec">479</b><span>Păreri pe Google, <b id="despreNota">4,5</b> din 5</span></div>
         </div>
+        <div class="ticks" style="margin-top:22px">
+          <div class="tick"><b>01</b><span>Atmosferă industrial-caldă, lumină joasă seara</span></div>
+          <div class="tick"><b>02</b><span>Bar cu identitate — cocktailuri, vinuri românești, bere la halbă</span></div>
+          <div class="tick"><b>03</b><span>Seri tematice, muzică live și meciuri pe ecran</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1931,9 +1926,15 @@ p{margin:0}
 <section class="sect" style="background:var(--terasa);--fond:var(--terasa)">
   <div class="wrap">
     <div class="split rev rv">
-      <div class="s-media" style="aspect-ratio:3/4">
-        <img src="img/baffi-terrace-premium.webp" data-plin="img/baffi-terasa-plin.webp" alt="Terasa Baffi Cafe" loading="lazy" decoding="async" width="1100" height="1467">
+      <!-- Doua fotografii ale aceluiasi loc, din unghiuri diferite: nu
+           ai ce alege, doar ce privi - de aceea aici se schimba singure,
+           spre deosebire de caruselul din „Despre noi", unde sunt
+           incaperi diferite si omul vrea sa aleaga. -->
+      <div class="s-media singur" id="terasaRand" aria-roledescription="carusel" aria-label="Terasa Baffi Cafe">
+        <img class="pe" src="img/baffi-terasa-2.webp" srcset="img/baffi-terasa-2-900.webp 900w, img/baffi-terasa-2.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Terasa Baffi Cafe, privită în lungul ei" loading="lazy" decoding="async" width="1400" height="874">
+        <img src="img/baffi-terasa-1-lat.webp" srcset="img/baffi-terasa-1-lat-900.webp 900w, img/baffi-terasa-1-lat.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Terasa Baffi Cafe, cu mesele pregătite" loading="lazy" decoding="async" width="1400" height="873">
         <span class="cap">Terasa din față</span>
+        <div class="singur-buline" id="terasaBuline" aria-hidden="true"></div>
       </div>
       <div class="s-copy">
         <span class="eyebrow">Terasa Baffi</span>
@@ -2133,7 +2134,7 @@ p{margin:0}
         </div>
       </div>
       <div class="map-card">
-        <img src="img/baffi-parking-premium-v2.webp" data-plin="img/baffi-parcare-plin.webp" alt="Parcarea de vizavi de Baffi Cafe" loading="lazy" width="1400" height="785">
+        <img src="img/baffi-parcare-2.webp" alt="Parcarea de vizavi de Baffi Cafe" loading="lazy" width="1400" height="785">
         <div class="mc-b">
           <b>Parcare vizavi</b>
           <span>Ajungi ușor și parchezi aproape — chiar peste drum de intrare.</span>
@@ -2410,7 +2411,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='10.1';
+window.BAFFI_VERSIUNE='11.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2537,12 +2538,18 @@ const ZONE={
    Cate o linie pe fotografie. Prima ocupa doua coloane.
    Cand vin poze noi, se adauga aici si apar singure in pagina. */
 const PETRECERI=[
+  /* Cele trei cu mese in randuri lungi au venit aici din sectiunea „de zi
+     cu zi": acolo aratau un local pregatit de petrecere, nu unul in care
+     intri marti seara. Aici sunt exact ce vinde sectiunea. */
+  {f:'baffi-sala-01.webp', c:'Sala, pregătită pentru un grup'},
   {f:'baffi-arcada-masa.webp', c:'Masa și fundalul'},
   {f:'baffi-candybar.webp', c:'Candy bar'},
   {f:'baffi-bufet-larg.webp', c:'Bufetul'},
   {f:'baffi-masa-cadou.webp', c:'Masa așezată'},
   {f:'baffi-masa-turcoaz.webp', c:'Sala mică'},
-  {f:'baffi-dulciuri.webp', c:'Prăjituri'}
+  {f:'baffi-dulciuri.webp', c:'Prăjituri'},
+  {f:'baffi-sala-02.webp', c:'Mesele lungi, pe două rânduri'},
+  {f:'baffi-sala-03.webp', c:'Spre intrare, cu mesele puse'}
 ];
 const EVENTS=[
   {t:'Seară grecească',sub:'Mihalis Greek Show · farfuriile le aducem noi',
@@ -3324,25 +3331,98 @@ function oraInProgram(hhmm, dataISO){
   }
   banda.addEventListener('scroll',()=>{ clearTimeout(banda._t);
     banda._t=setTimeout(pictează,90); },{passive:true});
-  bul.forEach((b,i)=>b.addEventListener('click',()=>
-    figuri[i].scrollIntoView({behavior:MOTION?'smooth':'auto',block:'nearest',inline:'center'})));
+  bul.forEach((b,i)=>b.addEventListener('click',()=>alunecaLa(stangaLui(i),420)));
 
-  /* tragerea cu mouse-ul */
-  let jos=false, x0=0, s0=0, mutat=0;
+  /* ---------- TRAGEREA, CU INERTIE ----------
+     Prima varianta muta bara direct si, la ridicarea degetului, sarea pe
+     cel mai apropiat diapozitiv. Nu exista inertie: tragi, dai drumul, se
+     opreste. Se simte ca un sertar intepenit.
+
+     Acum se masoara VITEZA cu care a fost lasat - din ultimele patru
+     pozitii, in pixeli pe milisecunda - si se calculeaza unde ar ajunge
+     daca ar aluneca liber. De acolo se alege diapozitivul. Un fleac dat
+     repede trece mai departe; unul lenes se intoarce.
+
+     Alunecarea o facem noi, ca sa aiba incetinire la capat: `scrollIntoView`
+     nu are curba proprie si ajunge tot brusc. */
+  let jos=false, x0=0, s0=0, mutat=0, urme=[];
+
+  function alunecaLa(tinta, durata, gata){
+    const de_la=banda.scrollLeft, dist=tinta-de_la;
+    if(!MOTION || Math.abs(dist)<2){ banda.scrollLeft=tinta; gata&&gata(); return; }
+    const t0=performance.now();
+    /* incetinire la capat, fara sa porneasca brusc */
+    const curba=t=>1-Math.pow(1-t,3);
+    let terminat=false;
+    const inchide=()=>{ if(terminat) return; terminat=true;
+      banda.scrollLeft=tinta; gata&&gata(); };
+    (function pas(acum){
+      if(terminat) return;
+      const t=Math.min(1,(acum-t0)/durata);
+      banda.scrollLeft=de_la+dist*curba(t);
+      if(t<1) requestAnimationFrame(pas); else inchide();
+    })(t0);
+    /* Plasa: daca fereastra ajunge ascunsa intre timp, browserul nu mai da
+       cadre si alunecarea ar ramane in aer, cu lipirea oprita si banda la
+       jumatate de drum. Probat: intr-o fereastra ascunsa, rAF da zero
+       cadre. Asa se duce la capat oricum. */
+    setTimeout(inchide, durata+140);
+  }
+  function celDeLa(x){
+    let cel=0, cred=Infinity;
+    figuri.forEach((f,i)=>{ const m=f.offsetLeft+f.offsetWidth/2-banda.clientWidth/2;
+      const d=Math.abs(m-x); if(d<cred){cred=d;cel=i} });
+    return cel;
+  }
+  function stangaLui(i){
+    return figuri[i].offsetLeft+figuri[i].offsetWidth/2-banda.clientWidth/2;
+  }
+
   banda.addEventListener('pointerdown',e=>{
     if(e.pointerType==='touch') return;      /* pe telefon merge nativ */
     jos=true; mutat=0; x0=e.clientX; s0=banda.scrollLeft;
+    urme=[{x:e.clientX, t:performance.now()}];
     cutie.classList.add('se-trage');
+    banda.setPointerCapture&&banda.setPointerCapture(e.pointerId);
   });
   banda.addEventListener('pointermove',e=>{
     if(!jos) return;
     const d=e.clientX-x0; mutat=Math.max(mutat,Math.abs(d));
     banda.scrollLeft=s0-d;
+    urme.push({x:e.clientX, t:performance.now()});
+    if(urme.length>10) urme.shift();
   });
   function sus(){
-    if(!jos) return; jos=false; cutie.classList.remove('se-trage');
-    /* dupa tragere, se aseaza pe cel mai apropiat */
-    figuri[laCare()].scrollIntoView({behavior:MOTION?'smooth':'auto',block:'nearest',inline:'center'});
+    if(!jos) return; jos=false;
+    /* NU se scoate inca `.se-trage`: clasa tine `scroll-snap-type:none`,
+       iar fara ea browserul lipeste banda de cel mai apropiat punct pe loc
+       - masurat, de la 160 px la 0 - si toate socotelile de mai jos ar
+       lucra pe zero. Se scoate abia dupa ce alunecarea s-a terminat. */
+    /* Viteza, in pixeli pe milisecunda. Se cauta inapoi pana la o urma
+       mai veche de cel putin 25 ms: cand browserul trimite mai multe
+       pozitii in acelasi cadru, intre ele sunt sub o milisecunda, iar un
+       fleac rapid ar iesi ca tragere lenesa. */
+    let v=0;
+    if(urme.length>1){
+      const b=urme[urme.length-1];
+      let a=urme[0];
+      for(let k=urme.length-2;k>=0;k--){ a=urme[k]; if(b.t-a.t>=25) break; }
+      const dt=b.t-a.t;
+      if(dt>0 && dt<260) v=-(b.x-a.x)/dt;     /* semnul: invers fata de deget */
+    }
+    /* unde ar ajunge daca ar aluneca liber, cu frecare */
+    const prezis=banda.scrollLeft + v*170;
+    let i=celDeLa(prezis);
+    /* Un sfert de diapozitiv e de ajuns ca sa treaca mai departe: omul a
+       aratat limpede incotro vrea. Sub un sfert si fara viteza se
+       intoarce - altfel ar sari la fiecare atingere gresita. */
+    const dus=banda.scrollLeft-s0, prag=figuri[0].offsetWidth*0.25;
+    if(Math.abs(dus)>prag && i===celDeLa(s0)){
+      i=Math.max(0, Math.min(figuri.length-1, i+(dus>0?1:-1)));
+    }
+    /* cu cat a fost lasat mai tare, cu atat alunecarea e mai scurta */
+    alunecaLa(stangaLui(i), Math.max(260, Math.min(520, 520-Math.abs(v)*90)),
+      ()=>{ cutie.classList.remove('se-trage'); pictează(); });
   }
   banda.addEventListener('pointerup',sus);
   banda.addEventListener('pointercancel',sus);
@@ -3356,7 +3436,7 @@ function oraInProgram(hhmm, dataISO){
     if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
     e.preventDefault();
     const i=Math.min(figuri.length-1,Math.max(0,laCare()+(e.key==='ArrowRight'?1:-1)));
-    figuri[i].scrollIntoView({behavior:MOTION?'smooth':'auto',block:'nearest',inline:'center'});
+    alunecaLa(stangaLui(i),380);
   });
 
   /* semnul „trage" se misca o singura data, cand ajunge in ecran */
@@ -3399,6 +3479,43 @@ function oraInProgram(hhmm, dataISO){
     el.style.setProperty('--sus-rgb', t);
     el.classList.add('punte');
   }
+})();
+
+
+/* ---------- TERASA: DOUA FOTOGRAFII CARE SE SCHIMBA SINGURE ----------
+   Se opresc cand pui mouse-ul pe ele - te uiti la una anume - si cand
+   fereastra nu e in fata, ca sa nu consume bateria degeaba. Nu pornesc
+   deloc daca omul si-a cerut mai putina miscare in sistem. */
+(function(){
+  const cutie=document.getElementById('terasaRand'); if(!cutie) return;
+  const poze=[...cutie.querySelectorAll('img')];
+  const buline=document.getElementById('terasaBuline');
+  if(poze.length<2) return;
+  buline.innerHTML=poze.map((_,i)=>`<i${i===0?' class="pe"':''}></i>`).join('');
+  const bul=[...buline.querySelectorAll('i')];
+  let la=0, ceas=null, stat=false;
+
+  function arata(i){
+    la=i%poze.length;
+    poze.forEach((p,j)=>p.classList.toggle('pe',j===la));
+    bul.forEach((b,j)=>b.classList.toggle('pe',j===la));
+  }
+  function porneste(){
+    if(!MOTION || ceas || stat) return;
+    ceas=setInterval(()=>arata(la+1), 6000);
+  }
+  function opreste(){ if(ceas){ clearInterval(ceas); ceas=null; } }
+
+  cutie.addEventListener('pointerenter',()=>{ stat=true; opreste(); });
+  cutie.addEventListener('pointerleave',()=>{ stat=false; porneste(); });
+  document.addEventListener('visibilitychange',()=>
+    document.hidden ? opreste() : porneste());
+
+  /* nu se invarte cat timp nu e pe ecran */
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(is=>is.forEach(x=>
+      x.isIntersecting ? porneste() : opreste()),{threshold:.25}).observe(cutie);
+  } else porneste();
 })();
 
 /* ---------- TRIMITERE ---------- */
