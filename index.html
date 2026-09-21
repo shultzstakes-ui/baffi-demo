@@ -2591,7 +2591,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='13.0';
+window.BAFFI_VERSIUNE='13.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2601,6 +2601,20 @@ window.BAFFI_VERSIUNE='13.0';
    │  PANOUL DE EDITARE — tot ce se schimbă, se schimbă AICI. │
    │  Nu e nevoie de programator pentru niciuna dintre ele.   │
    └──────────────────────────────────────────────────────────┘ */
+
+/* ---------- TINTA UNUI EVENIMENT NU E MEREU UN ELEMENT ----------
+   `e.target` poate fi documentul insusi (cand evenimentul e trimis din
+   cod) sau un nod de text. Atunci `.closest` nu exista, ascultatorul
+   crapa, si cu el se opreste tot ce urma in el.
+
+   Erau saisprezece locuri care il chemau direct. Se repara o data, aici:
+   in cazurile normale rezultatul e identic; in cel anormal, in loc sa
+   crape, nu face nimic. */
+function cel(e, sel){
+  const t = e && e.target;
+  return (t && t.nodeType === 1 && t.closest) ? t.closest(sel) : null;
+}
+
 const CFG = {
   tel:       '+40756021501',   // numărul afișat și apelat peste tot
   wa:        '40756021501',    // același număr, format WhatsApp (fără + și fără 0)
@@ -3097,7 +3111,7 @@ function duLaLista(){
   },400);
 }
 document.getElementById('catRail').addEventListener('click',e=>{
-  const b=e.target.closest('.chip'); if(!b) return;
+  const b=cel(e, '.chip'); if(!b) return;
   /* Steagul se CONSUMĂ aici, o singură dată. Dacă l-am lăsa să se stingă
      printr-un temporizator, s-ar suprapune peste click (ordinea reală e
      pointerup → click → temporizator) și apăsarea s-ar pierde: butonul
@@ -3106,9 +3120,9 @@ document.getElementById('catRail').addEventListener('click',e=>{
   alegeCat(b.dataset.cat,true);
 });
 document.getElementById('menuList').addEventListener('click',e=>{
-  const t=e.target.closest('[data-go]');
+  const t=cel(e, '[data-go]');
   if(t){alegeCat(t.dataset.go,true);return}
-  if(e.target.closest('[data-toate]')) alegeCat('toate',true);
+  if(cel(e, '[data-toate]')) alegeCat('toate',true);
 });
 document.getElementById('catRail').addEventListener('scroll',()=>railFades(),{passive:true});
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
@@ -3162,7 +3176,7 @@ document.getElementById('dishAdd').addEventListener('click',e=>{
   closeAll();
 });
 document.getElementById('menuList').addEventListener('click',e=>{
-  const d=e.target.closest('[data-open-dish]'); if(!d) return;
+  const d=cel(e, '[data-open-dish]'); if(!d) return;
   const art=d.closest('.dish'); if(!art) return;
   openDish(+art.dataset.ci,+art.dataset.ii);
 });
@@ -3225,7 +3239,7 @@ function paintCart(){
     pictPrag(MIN-t);}
 }
 document.getElementById('menuList').addEventListener('click',e=>{
-  const b=e.target.closest('.add'); if(!b) return;
+  const b=cel(e, '.add'); if(!b) return;
   addItem(+b.dataset.ci,+b.dataset.ii);
   confettiFrom(b);
   b.classList.add('done');
@@ -3234,18 +3248,18 @@ document.getElementById('menuList').addEventListener('click',e=>{
     b.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>';},1100);
 });
 document.getElementById('cartBody').addEventListener('click',e=>{
-  const q=e.target.closest('[data-m]');
+  const q=cel(e, '[data-m]');
   if(q){
     const it=cart.find(x=>x.k===q.dataset.k); if(!it) return;
     it.q+=+q.dataset.m;
     if(it.q<1) cart=cart.filter(x=>x.k!==it.k);
     save(); paintCart(); return;
   }
-  const p=e.target.closest('[data-ci]');
+  const p=cel(e, '[data-ci]');
   if(p){ addItem(+p.dataset.ci,+p.dataset.ii); confettiFrom(p); return }
   /* „Ca data trecuta" se redeseneaza odata cu cosul, deci legatura sta
      aici, pe cosul intreg, nu pe butonul care dispare. */
-  if(e.target.closest('#iar')) reiaLista();
+  if(cel(e, '#iar')) reiaLista();
 });
 
 
@@ -3287,7 +3301,7 @@ function inapoiDeUndeAmVenit(){
 }
 /* tinem minte ce a fost apasat, ca sa stim unde intoarcem focusul */
 document.addEventListener('pointerdown', e=>{
-  const b=e.target.closest('button, a'); if(b) deUndeAmVenit=b;
+  const b=cel(e, 'button, a'); if(b) deUndeAmVenit=b;
 }, true);
 
 /* La pornire, tot ce e inchis iese din pagina. */
@@ -3374,7 +3388,7 @@ function pick(id,cb){
   toate.forEach(x=>{ x.setAttribute('role','radio');
     x.setAttribute('aria-checked', x.classList.contains('on')?'true':'false'); });
   box.addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b) return;
+    const b=cel(e, 'button'); if(!b) return;
     toate.forEach(x=>{ const ales=(x===b);
       x.classList.toggle('on',ales); x.setAttribute('aria-checked',ales?'true':'false'); });
     cb&&cb(b);
@@ -3434,7 +3448,7 @@ function pictPrag(lipsa){
       <span class="pp">+${money(x.p)}</span></button>`).join('');
 }
 document.getElementById('prag').addEventListener('click',e=>{
-  const b=e.target.closest('button[data-ci]'); if(!b) return;
+  const b=cel(e, 'button[data-ci]'); if(!b) return;
   addItem(+b.dataset.ci,+b.dataset.ii);
 });
 
@@ -3647,7 +3661,12 @@ document.querySelectorAll('.tras').forEach(function(cutie){
     jos=true; mutat=0; x0=e.clientX; s0=banda.scrollLeft;
     urme=[{x:e.clientX, t:performance.now()}];
     cutie.classList.add('se-trage');
-    banda.setPointerCapture&&banda.setPointerCapture(e.pointerId);
+    /* Captura e un lux, nu o conditie: fara ea tragerea merge oricum,
+       doar ca se opreste daca degetul iese din banda. Cand degetul a
+       fost deja ridicat - sau cand evenimentul vine din cod - nu mai
+       exista niciun indicator activ cu acel numar si apelul arunca. */
+    try{ banda.setPointerCapture && banda.setPointerCapture(e.pointerId); }
+    catch(err){ /* mergem mai departe fara captura */ }
   });
   banda.addEventListener('pointermove',e=>{
     if(!jos) return;
@@ -3922,7 +3941,7 @@ if(poateReia()) setTimeout(aratReia,2600);
    comenzilor sunt personale, iar cine deconteaza pe firma stie sa caute. */
 let fact='fizica';
 document.getElementById('pickFact').addEventListener('click',e=>{
-  const b=e.target.closest('button[data-f]'); if(!b) return;
+  const b=cel(e, 'button[data-f]'); if(!b) return;
   fact=b.dataset.f;
   [...b.parentNode.children].forEach(x=>x.classList.toggle('on',x===b));
   document.getElementById('boxFirma').hidden = fact!=='juridica';
@@ -4171,16 +4190,16 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
   document.addEventListener('pointerdown',e=>{ apx=e.clientX; apy=e.clientY; }, true);
   document.addEventListener('click',e=>{
     if(Math.hypot(e.clientX-apx, e.clientY-apy)>9) return;
-    const fig=e.target.closest('figure'); if(!fig) return;
+    const fig=cel(e, 'figure'); if(!fig) return;
     if(!fig.closest(GRUPURI)) return;
-    if(e.target.closest('a,button')) return;
+    if(cel(e, 'a,button')) return;
     e.preventDefault(); deschide(fig);
   });
 
   document.getElementById('lbX').addEventListener('click',inchide);
   prev.addEventListener('click',()=>muta(-1));
   next.addEventListener('click',()=>muta(1));
-  lb.addEventListener('click',e=>{ if(!e.target.closest('img,.lb-jos,.lb-x')) inchide(); });
+  lb.addEventListener('click',e=>{ if(!cel(e, 'img,.lb-jos,.lb-x')) inchide(); });
   addEventListener('keydown',e=>{
     if(!lb.classList.contains('on')) return;
     if(e.key==='Escape') inchide();
@@ -4220,7 +4239,7 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
   banda.addEventListener('pointerdown', e=>{ apx=e.clientX; apy=e.clientY; });
   banda.addEventListener('click', e=>{
     if(Math.hypot(e.clientX-apx, e.clientY-apy)>9) return;
-    const fig=e.target.closest('figure'); if(!fig) return;
+    const fig=cel(e, 'figure'); if(!fig) return;
 
     const sect=fig.dataset.sectiune;
     if(sect){
@@ -4515,7 +4534,7 @@ const railEl=()=>document.getElementById('catRail');
   /* ATENȚIE, aici a fost un defect care a costat: NU folosim
      setPointerCapture pe bandă. Când banda captează indicatorul, browserul
      redirecționează evenimentul către ea, iar clicul nu mai ajunge la
-     bulina apăsată — `e.target.closest('.chip')` întoarce null și apăsarea
+     bulina apăsată — `cel(e, '.chip')` întoarce null și apăsarea
      se pierde în tăcere. Apăsarea programatică mergea, cea cu mâna nu.
      Urmărim mișcarea pe fereastră, nu prin captură. */
   function mutare(e){

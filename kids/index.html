@@ -854,6 +854,16 @@ body.locked{overflow:hidden}
 </div>
 
 <script>
+
+/* ---------- TINTA UNUI EVENIMENT NU E MEREU UN ELEMENT ----------
+   `e.target` poate fi documentul insusi (cand evenimentul e trimis din
+   cod) sau un nod de text. Atunci `.closest` nu exista si ascultatorul
+   crapa, iar cu el se opreste tot ce urma in el. Aceeasi usa ca la
+   Baffi Cafe, din acelasi motiv. */
+function cel(e, sel){
+  const t = e && e.target;
+  return (t && t.nodeType === 1 && t.closest) ? t.closest(sel) : null;
+}
 /* Lupa. Se leaga de orice figura care contine o imagine. */
 (function(){
   var lb=document.getElementById('lb'); if(!lb) return;
@@ -894,7 +904,7 @@ body.locked{overflow:hidden}
     f.addEventListener('pointerdown', function(e){ apx=e.clientX; apy=e.clientY; });
     f.addEventListener('click', function(e){
       if(Math.hypot(e.clientX-apx, e.clientY-apy)>9) return;
-      if(e.target.closest('a,button')) return;
+      if(cel(e, 'a,button')) return;
       deschide(i);
     });
   });
@@ -902,7 +912,7 @@ body.locked{overflow:hidden}
   document.getElementById('lbPrev').addEventListener('click', function(){ muta(-1); });
   document.getElementById('lbNext').addEventListener('click', function(){ muta(1); });
   lb.addEventListener('click', function(e){
-    if(!e.target.closest('img,.lb-jos,.lb-x')) inchide(); });
+    if(!cel(e, 'img,.lb-jos,.lb-x')) inchide(); });
   window.addEventListener('keydown', function(e){
     if(!lb.classList.contains('on')) return;
     if(e.key==='Escape') inchide();
@@ -957,12 +967,12 @@ let format='Aniversare', copii=12;
 let extras=new Set(['Meniu pentru copii','Spațiu pentru adulți']);
 
 document.getElementById('pickFmt').addEventListener('click',e=>{
-  const b=e.target.closest('button'); if(!b) return;
+  const b=cel(e, 'button'); if(!b) return;
   e.currentTarget.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on'); format=b.dataset.f; paintSum();
 });
 document.getElementById('extras').addEventListener('click',e=>{
-  const b=e.target.closest('button'); if(!b) return;
+  const b=cel(e, 'button'); if(!b) return;
   const x=b.dataset.x;
   if(extras.has(x)){extras.delete(x);b.classList.remove('on');b.querySelector('i').textContent='+'}
   else{extras.add(x);b.classList.add('on');b.querySelector('i').textContent='✓'}
