@@ -1518,6 +1518,90 @@ p{margin:0}
 .pet-galerie figure, .rail figure, .ev-poster{border-radius:0}
 .s-media img, .carou img, .despre-foto img, .map-card img,
 .pet-galerie img, .rail img{border-radius:0}
+
+/* ---------- CARUSELUL TRAS CU MANA ----------
+   Nu merge singur, si asta e cerut anume: unul care se misca singur fura
+   atentia de la text si ii ia omului controlul - apesi sa te uiti la o
+   fotografie, iar ea pleaca.
+
+   Ca sa se vada ca trebuie tras, fara sa scrie nimeni „trage", lucreaza
+   trei lucruri: un diapozitiv tine 88% din latime (deci din urmatorul se
+   vede o felie), cursorul e mana care apuca, iar jos sunt buline care
+   spun cate mai sunt. */
+.tras{position:relative;overflow:hidden}
+.tras-banda{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
+  touch-action:pan-y pinch-zoom;         /* degetul trage lateral, pagina merge vertical */
+  overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.tras-banda::-webkit-scrollbar{display:none}
+.tras.se-trage .tras-banda{cursor:grabbing;scroll-snap-type:none}
+.tras.se-trage img{pointer-events:none}
+.tras-banda figure{flex:0 0 88%;margin:0;position:relative;scroll-snap-align:center;
+  aspect-ratio:16/10;overflow:hidden;background:var(--navy-2)}
+@media(min-width:900px){.tras-banda figure{flex:0 0 92%}}
+.tras-banda img{width:100%;height:100%;object-fit:cover;display:block}
+/* umbra de jos, pe care sta scrisul */
+.tras-banda figure::after{content:"";position:absolute;inset:auto 0 0 0;height:46%;
+  pointer-events:none;background:linear-gradient(180deg,
+    rgba(7,28,44,0), rgba(7,28,44,.06) 24%, rgba(7,28,44,.18) 44%,
+    rgba(7,28,44,.36) 62%, rgba(7,28,44,.56) 78%, rgba(7,28,44,.74) 92%,
+    rgba(7,28,44,.82))}
+.tras-banda figcaption{position:absolute;left:18px;right:18px;bottom:14px;z-index:1;
+  color:var(--cream);font:600 11px/1.4 var(--sans);letter-spacing:.16em;
+  text-transform:uppercase}
+.tras-jos{display:flex;align-items:center;gap:14px;margin-top:12px}
+.tras-semn{display:inline-flex;align-items:center;gap:7px;
+  font:700 10px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;
+  color:var(--muted)}
+.tras-semn svg{opacity:.75}
+.tras-buline{display:flex;gap:7px;margin-left:auto}
+.tras-buline button{width:7px;height:7px;padding:0;border:0;border-radius:50%;
+  background:var(--line);cursor:pointer;transition:background .25s var(--ease),
+  width .25s var(--ease)}
+.tras-buline button.on{width:22px;border-radius:99px;background:var(--gold-deep)}
+.tras-buline button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+/* semnul „trage" respira o data, la prima intrare in ecran - o singura
+   data, ca sa nu devina o miscare care distrage */
+@keyframes trage-o-data{
+  0%,72%{transform:translateX(0)} 80%{transform:translateX(7px)}
+  88%{transform:translateX(0)} 94%{transform:translateX(4px)} 100%{transform:translateX(0)}}
+.tras-semn.arata svg{animation:trage-o-data 2.4s var(--ease) 1}
+@media (prefers-reduced-motion:reduce){.tras-semn.arata svg{animation:none}}
+
+/* ---------- G1. UMBRA PE FIECARE FOTOGRAFIE ----------
+   Aceeasi tratare peste tot, nu doar pe fotografiile mari: o umbra foarte
+   usoara sus si jos, care da adancime si desprinde fotografia de fundal.
+   Valorile sunt mici dinadins - peste o fotografie mica, un degrade tare
+   o face murdara. */
+.map-card, .pet-galerie figure, .rail figure, .ev-poster, .ev-foto{position:relative}
+.map-card::before, .pet-galerie figure::before, .rail figure::before,
+.ev-poster::before, .ev-foto::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 28%,
+                             rgba(7,28,44,0) 70%, rgba(7,28,44,.17))}
+/* scrisul de pe ele ramane deasupra umbrei */
+.map-card .mc-b, .pet-galerie figcaption, .rail figcaption,
+.ev-poster > *:not(img), .ev-foto figcaption{position:relative;z-index:2}
+
+/* ---------- G2. PUNTE LA FIECARE IMBINARE DE CULOARE ----------
+   `--sus-rgb` e culoarea sectiunii de DEASUPRA, scrisa de cod la
+   incarcare. De aici se construieste degradeul, cu douasprezece opriri,
+   ca sa nu se vada unde se termina una si incepe alta.
+
+   Puntea sta in pernuta de sus a sectiunii, deci nu acopera niciun text,
+   si trece sub continut. */
+.punte{position:relative}
+.punte::before{content:"";position:absolute;top:0;left:0;right:0;
+  height:var(--punte-h,104px);pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,
+    rgba(var(--sus-rgb),1) 0%,    rgba(var(--sus-rgb),.985) 6%,
+    rgba(var(--sus-rgb),.945) 13%, rgba(var(--sus-rgb),.875) 21%,
+    rgba(var(--sus-rgb),.775) 29%, rgba(var(--sus-rgb),.645) 38%,
+    rgba(var(--sus-rgb),.495) 47%, rgba(var(--sus-rgb),.345) 57%,
+    rgba(var(--sus-rgb),.21) 67%,  rgba(var(--sus-rgb),.105) 78%,
+    rgba(var(--sus-rgb),.035) 89%, rgba(var(--sus-rgb),0) 100%)}
+.punte > *{position:relative;z-index:1}
+@media(max-width:680px){.punte::before{--punte-h:72px}}
 </style>
 </head>
 <body>
@@ -1796,7 +1880,20 @@ p{margin:0}
 <section class="sect" id="despre" style="background:var(--warm);--fond:var(--warm)">
   <div class="wrap">
     <div class="split rv">
-      <div class="despre-foto">
+      <div class="tras" id="trasDespre" aria-roledescription="carusel" aria-label="Interiorul Baffi Cafe, de zi cu zi">
+        <div class="tras-banda">
+        <figure><img src="img/baffi-interior-sala.webp" srcset="img/baffi-interior-sala-900.webp 900w, img/baffi-interior-sala.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Sala mare, într-o zi obișnuită" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Sala mare, într-o zi obișnuită</figcaption></figure>
+        <figure><img src="img/baffi-interior-bar.webp" srcset="img/baffi-interior-bar-900.webp 900w, img/baffi-interior-bar.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Barul și mesele dinspre stradă" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Barul și mesele dinspre stradă</figcaption></figure>
+        <figure><img src="img/baffi-sala-01-lat.webp" srcset="img/baffi-sala-01-lat-900.webp 900w, img/baffi-sala-01-lat.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Mese pentru grupuri" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Mese pentru grupuri</figcaption></figure>
+        <figure><img src="img/baffi-sala-03-lat.webp" srcset="img/baffi-sala-03-lat-900.webp 900w, img/baffi-sala-03-lat.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Colțul de lângă geam" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Colțul de lângă geam</figcaption></figure>
+        <figure><img src="img/baffi-sala-02-lat.webp" srcset="img/baffi-sala-02-lat-900.webp 900w, img/baffi-sala-02-lat.webp 1400w" sizes="(min-width:900px) 44vw, 88vw" alt="Seara, cu lumina caldă" loading="lazy" decoding="async" width="1400" height="874"><figcaption>Seara, cu lumina caldă</figcaption></figure>
+        </div>
+        <div class="tras-jos">
+          <span class="tras-semn" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Trage</span>
+          <div class="tras-buline" id="trasBuline" role="tablist" aria-label="Fotografii"></div>
+        </div>
+      </div>
+      <div class="despre-foto" hidden>
         <img src="img/baffi-intrare-inalta-900.webp" data-plin="img/baffi-intrare-plin.webp"
              alt="Intrarea în Baffi Cafe, Bragadiru"
              loading="lazy" decoding="async" width="900" height="1238">
@@ -2313,7 +2410,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='10.0';
+window.BAFFI_VERSIUNE='10.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3191,6 +3288,118 @@ function oraInProgram(hhmm, dataISO){
   }
   return {ok:true};
 }
+
+
+/* ---------- CARUSELUL TRAS CU MANA ----------
+   Fara pornire automata, dinadins. Tragerea cu mouse-ul o facem noi -
+   pe telefon glisarea merge nativ prin overflow.
+
+   Pragul de 9 pixeli intre tragere si apasare e luat de la caruselul din
+   „Experienta": browserul trimite oricum un clic la ridicarea degetului
+   dupa o tragere, iar fara prag fiecare tragere ar deschide lupa. */
+(function(){
+  const cutie=document.getElementById('trasDespre'); if(!cutie) return;
+  const banda=cutie.querySelector('.tras-banda');
+  const figuri=[...banda.querySelectorAll('figure')];
+  const buline=document.getElementById('trasBuline');
+  const semn=cutie.querySelector('.tras-semn');
+  if(!figuri.length) return;
+
+  buline.innerHTML=figuri.map((f,i)=>
+    `<button type="button" role="tab" aria-label="Fotografia ${i+1} din ${figuri.length}"
+      aria-selected="${i===0}"${i===0?' class="on"':''}></button>`).join('');
+  const bul=[...buline.querySelectorAll('button')];
+
+  function laCare(){
+    const c=banda.scrollLeft+banda.clientWidth/2;
+    let cel=0, cred=Infinity;
+    figuri.forEach((f,i)=>{ const m=f.offsetLeft+f.offsetWidth/2;
+      const d=Math.abs(m-c); if(d<cred){cred=d;cel=i} });
+    return cel;
+  }
+  function pictează(){
+    const i=laCare();
+    bul.forEach((b,j)=>{ b.classList.toggle('on',j===i);
+      b.setAttribute('aria-selected', j===i?'true':'false'); });
+  }
+  banda.addEventListener('scroll',()=>{ clearTimeout(banda._t);
+    banda._t=setTimeout(pictează,90); },{passive:true});
+  bul.forEach((b,i)=>b.addEventListener('click',()=>
+    figuri[i].scrollIntoView({behavior:MOTION?'smooth':'auto',block:'nearest',inline:'center'})));
+
+  /* tragerea cu mouse-ul */
+  let jos=false, x0=0, s0=0, mutat=0;
+  banda.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='touch') return;      /* pe telefon merge nativ */
+    jos=true; mutat=0; x0=e.clientX; s0=banda.scrollLeft;
+    cutie.classList.add('se-trage');
+  });
+  banda.addEventListener('pointermove',e=>{
+    if(!jos) return;
+    const d=e.clientX-x0; mutat=Math.max(mutat,Math.abs(d));
+    banda.scrollLeft=s0-d;
+  });
+  function sus(){
+    if(!jos) return; jos=false; cutie.classList.remove('se-trage');
+    /* dupa tragere, se aseaza pe cel mai apropiat */
+    figuri[laCare()].scrollIntoView({behavior:MOTION?'smooth':'auto',block:'nearest',inline:'center'});
+  }
+  banda.addEventListener('pointerup',sus);
+  banda.addEventListener('pointercancel',sus);
+  banda.addEventListener('pointerleave',sus);
+  /* un clic care vine dupa o tragere nu e clic */
+  banda.addEventListener('click',e=>{ if(mutat>9){ e.stopPropagation(); e.preventDefault(); } },true);
+
+  /* sagetile de la tastatura */
+  banda.setAttribute('tabindex','0');
+  banda.addEventListener('keydown',e=>{
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
+    e.preventDefault();
+    const i=Math.min(figuri.length-1,Math.max(0,laCare()+(e.key==='ArrowRight'?1:-1)));
+    figuri[i].scrollIntoView({behavior:MOTION?'smooth':'auto',block:'nearest',inline:'center'});
+  });
+
+  /* semnul „trage" se misca o singura data, cand ajunge in ecran */
+  if(MOTION && 'IntersectionObserver' in window){
+    const o=new IntersectionObserver(is=>{ is.forEach(x=>{
+      if(x.isIntersecting){ semn.classList.add('arata'); o.disconnect(); } }); },{threshold:.5});
+    o.observe(cutie);
+  }
+  pictează();
+})();
+
+
+/* ---------- PUNTILE DINTRE BENZI ----------
+   Culorile NU se scriu de mana pentru fiecare punte: ar insemna sa le tin
+   minte in doua locuri, iar prima data cand schimb o culoare puntea ar
+   ramane pe cea veche. Se citesc din pagina, la incarcare, si fiecare
+   banda primeste culoarea vecinei de deasupra.
+
+   Se sare peste benzile care au deja o punte facuta de mana, si peste
+   cele in care culoarea nu se schimba. */
+(function(){
+  const benzi=[...document.querySelectorAll('main > section, main > .hero, footer.foot')]
+    .filter(el=>el.getBoundingClientRect().height>40);
+  const culoare=el=>{
+    let n=el;
+    while(n && n!==document.documentElement){
+      const c=getComputedStyle(n).backgroundColor;
+      if(c && c!=='rgba(0, 0, 0, 0)' && c!=='transparent') return c;
+      n=n.parentElement;
+    }
+    return getComputedStyle(document.body).backgroundColor;
+  };
+  const rgb=c=>{ const m=/(\d+),\s*(\d+),\s*(\d+)/.exec(c); return m? m[1]+','+m[2]+','+m[3] : null; };
+  for(let i=1;i<benzi.length;i++){
+    const el=benzi[i];
+    if(el.classList.contains('intents')) continue;   /* are deja punte, facuta de mana */
+    const sus=culoare(benzi[i-1]), a=culoare(el);
+    if(sus===a) continue;                             /* nu se schimba nimic */
+    const t=rgb(sus); if(!t) continue;
+    el.style.setProperty('--sus-rgb', t);
+    el.classList.add('punte');
+  }
+})();
 
 /* ---------- TRIMITERE ---------- */
 const val=id=>document.getElementById(id).value.trim();
