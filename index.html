@@ -168,7 +168,11 @@ p{margin:0}
    ferestrei. Se calculeaza din marginea sectiunii plus jumatate din cat
    prisoseste cand continutul e mai ingust decat spatiul dintre margini.
    O valoare fixa ar fi corecta la o singura latime de ecran. */
-.sect{padding:110px 7vw;--gut:7vw;
+/* 110 px sus si jos inseamna 220 la fiecare banda; cu unsprezece
+   benzi, 2.400 px de derulare numai din pernute. La 72 ramane aer
+   destul cat benzile sa nu se lipeasca - pernuta e tot de doua ori
+   mai mare decat distanta dintre randurile dinauntru. */
+.sect{padding:72px 7vw;--gut:7vw;
   --iesire:calc(var(--gut) + max(0px, (100vw - 2 * var(--gut) - var(--maxw)) / 2));
   overflow-x:clip}
 @media(max-width:980px){.sect{--gut:5vw}}
@@ -176,7 +180,7 @@ p{margin:0}
 .sect>.wrap{padding-inline:0}
 @media(max-width:980px){.sect{padding:78px 5vw}}
 @media(max-width:680px){.sect{padding-inline:14px}}
-.sect-head{display:flex;flex-direction:column;gap:18px;margin-bottom:clamp(34px,4.4vw,58px)}
+.sect-head{display:flex;flex-direction:column;gap:14px;margin-bottom:clamp(22px,3vw,38px)}
 .hr-gold{height:1px;background:linear-gradient(90deg,var(--gold),rgba(201,154,74,0));border:0;margin:0}
 
 /* ---------- reveal ---------- */
@@ -556,7 +560,7 @@ p{margin:0}
 .info-grid{display:grid;gap:1px;background:rgba(201,154,74,.2)}
 @media(min-width:720px){.info-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1040px){.info-grid{grid-template-columns:repeat(4,1fr)}}
-.info-cell{background:var(--navy);padding:clamp(24px,2.6vw,34px) clamp(20px,2.4vw,32px);display:flex;flex-direction:column;gap:9px}
+.info-cell{background:var(--navy);padding:clamp(18px,2vw,26px) clamp(18px,2.2vw,28px);display:flex;flex-direction:column;gap:7px}
 .info-cell .eyebrow{color:rgba(226,193,124,.72)}
 .info-cell b{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--cream)}
 .info-cell span{font-size:13.5px;color:rgba(245,240,231,.6);line-height:1.5}
@@ -914,7 +918,7 @@ p{margin:0}
     left:22px;right:auto;text-align:left;max-width:62%}}
 .s-copy{display:flex;flex-direction:column;gap:20px}
 .ticks{display:flex;flex-direction:column;gap:2px;margin-top:4px}
-.tick{display:flex;gap:14px;align-items:baseline;padding:13px 0;border-bottom:1px solid var(--line-2)}
+.tick{display:flex;gap:14px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line-2)}
 .tick b{font:700 11px/1 var(--sans);color:var(--gold-deep);letter-spacing:.14em;flex:none}
 .tick span{font-size:15px;color:var(--ink-2)}
 .dark{background:var(--navy);color:var(--cream)}
@@ -1013,7 +1017,7 @@ p{margin:0}
 /* recenzii */
 .rev-grid{display:grid;gap:16px}
 @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
-.rev-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;
+.rev-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;
   display:flex;flex-direction:column;gap:14px}
 .rev-card p{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.45;font-style:italic}
 .rev-card .who{margin-top:auto;font:600 10.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -1026,8 +1030,8 @@ p{margin:0}
 /* locatii */
 .places{display:grid;gap:16px}
 @media(min-width:900px){.places{grid-template-columns:repeat(3,1fr)}}
-.place{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:330px;
-  display:flex;flex-direction:column;justify-content:flex-end;padding:28px;color:var(--cream);
+.place{position:relative;border-radius:var(--r-lg);overflow:hidden;min-height:288px;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:22px;color:var(--cream);
   background:var(--navy);isolation:isolate;transition:transform .4s var(--ease)}
 .place{cursor:pointer}
 .place:hover{transform:translateY(-5px)}
@@ -1059,7 +1063,7 @@ p{margin:0}
 .c-grid{display:grid;gap:clamp(26px,3.4vw,48px)}
 @media(min-width:900px){.c-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 .c-list{display:flex;flex-direction:column;gap:22px}
-.c-item{display:flex;flex-direction:column;gap:6px;padding-bottom:20px;border-bottom:1px solid rgba(201,154,74,.16)}
+.c-item{display:flex;flex-direction:column;gap:5px;padding-bottom:15px;border-bottom:1px solid rgba(201,154,74,.16)}
 .c-item b{font-family:var(--serif);font-size:20px;font-weight:600}
 .c-item span{font-size:14px;color:rgba(245,240,231,.66);line-height:1.55}
 .map-card{border-radius:var(--r-lg);overflow:hidden;position:relative;min-height:260px;background:var(--navy-2)}
@@ -1894,6 +1898,9 @@ p{margin:0}
    Odata cu el pleaca si umbra care exista doar ca sa-l tina lizibil. */
 .ev-gal-sir figcaption, .ev-foto figcaption,
 .pet-galerie figcaption, .tras-banda figcaption{display:none}
+/* Exceptie: la evenimentele trecute scrisul nu STA PESTE fotografie,
+   ci sub ea - acolo e titlul si data, nu o eticheta decorativa. */
+.tras-banda .ev-tr figcaption{display:block}
 .tras-banda figure::after, .pet-galerie figure::after{display:none}
 .ev-foto::before, .ev-gal-sir figure::before{display:none}
 
@@ -1954,6 +1961,55 @@ p{margin:0}
 #evenimente .sect-head{margin-bottom:8px}
 .ev-none{padding-top:clamp(14px,1.8vw,24px)}
 .ev-trecute .eyebrow{margin-bottom:2px}
+
+/* ---------- CARUSELUL CU „PEEK" ----------
+   Masurat la Dishoom: cardurile lor au 76-91% din latimea ecranului, cu
+   urmatorul care se iteste. Asta e tot secretul - cand se vede o bucata
+   din fotografia urmatoare, nimeni nu mai are nevoie de instructiuni ca
+   se trage.
+
+   Trei odata pe calculator, unul si un sfert pe telefon. Inlocuieste noua
+   fotografii una sub alta (1060 px de derulare) cu ~300 px. */
+.tras.multi .tras-banda{gap:10px}
+.tras.multi .tras-banda figure{flex:0 0 78%;aspect-ratio:4/3;scroll-snap-align:start}
+@media(min-width:760px){.tras.multi .tras-banda figure{flex:0 0 calc(50% - 5px)}}
+@media(min-width:1040px){.tras.multi .tras-banda figure{flex:0 0 calc(33.333% - 7px)}}
+.tras.multi .tras-banda img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Evenimentele trecute: afise inalte, deci alt raport. */
+.tras.multi.trecute .tras-banda figure{aspect-ratio:auto;flex:0 0 60%}
+@media(min-width:760px){.tras.multi.trecute .tras-banda figure{flex:0 0 calc(33.333% - 7px)}}
+@media(min-width:1040px){.tras.multi.trecute .tras-banda figure{flex:0 0 calc(25% - 8px)}}
+.tras.multi.trecute .tras-banda{align-items:start}
+
+/* galeria de la petreceri nu mai e grila */
+.pet-galerie.tras{display:block;grid-template-columns:none}
+.pet-galerie.tras .tras-banda figure:first-child{grid-column:auto;grid-row:auto}
+.pet-galerie.tras figure{aspect-ratio:4/3}
+
+/* chenarul de recenzii isi schimba inaltimea dupa recenzia care se vede */
+/* `align-self:start`: fara el, fiecare recenzie se intinde pe toata
+   inaltimea celulei de grila, deci toate raporteaza aceeasi inaltime
+   si chenarul nu are dupa ce sa se potriveasca. */
+.rev-una{align-self:start}
+.rev-card{transition:height .42s var(--ease);padding-bottom:36px}
+.rev-buline{bottom:16px}
+@media (prefers-reduced-motion:reduce){.rev-card{transition:none}}
+
+/* Aceleasi taieri si la celelalte chenare: continutul sta mai aproape de
+   margine, deci intra mai multa informatie pe un ecran. */
+.split{gap:clamp(26px,3.4vw,54px)}
+.despre-flux > p{margin-bottom:12px}
+.insigne{margin-top:clamp(24px,3vw,36px);padding-top:clamp(18px,2.4vw,26px)}
+.ev-trecute{margin-top:clamp(24px,3vw,40px);padding-top:clamp(18px,2.4vw,26px)}
+.rev-grid{gap:clamp(14px,1.8vw,22px)}
+.c-grid{gap:clamp(22px,2.8vw,38px)}
+.pizza-note{padding:clamp(18px,2.2vw,26px)}
+@media(max-width:680px){
+  .sect{padding-block:34px}
+  .place{min-height:248px;padding:18px}
+  .rev-card{padding:18px 18px 32px}
+}
 </style>
 </head>
 <body>
@@ -2272,24 +2328,28 @@ p{margin:0}
       <h2 class="h-lg">Seri care se <span class="it">țin minte.</span></h2>
       <hr class="hr-gold">
     </div>
-    <div id="evWrap" class="rv"></div>
-
-    <!-- Fotografii de la o petrecere ținută aici. Le pusesem în banda
-         care curge singură, printre alte 14 — erau în pagină, dar nu se
-         vedeau, ceea ce e același lucru cu a nu le fi pus. Aici stau pe
-         loc, mari, și se pot mări cu lupa. -->
-    <div class="ev-galerie rv">
-      <span class="eyebrow">Cum arată o seară la Baffi</span>
-      <div class="ev-gal-sir">
-        <figure data-cap="Sala, în seara petrecerii"><img src="img/baffi-petrecere-1.webp" srcset="img/baffi-petrecere-1-900.webp 900w, img/baffi-petrecere-1.webp 1400w" sizes="(min-width:900px) 23vw, 46vw" alt="Sala, în seara petrecerii — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
-        <figure data-cap="Momentul de la bar"><img src="img/baffi-petrecere-2.webp" srcset="img/baffi-petrecere-2-900.webp 900w, img/baffi-petrecere-2.webp 1400w" sizes="(min-width:900px) 23vw, 46vw" alt="Momentul de la bar — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
-        <figure data-cap="Mesele puse, lumina joasă"><img src="img/baffi-petrecere-3.webp" srcset="img/baffi-petrecere-3-900.webp 900w, img/baffi-petrecere-3.webp 1400w" sizes="(min-width:900px) 23vw, 46vw" alt="Mesele puse, lumina joasă — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
-        <figure data-cap="Spre miezul serii"><img src="img/baffi-petrecere-4.webp" srcset="img/baffi-petrecere-4-900.webp 900w, img/baffi-petrecere-4.webp 1400w" sizes="(min-width:900px) 23vw, 46vw" alt="Spre miezul serii — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
+    <!-- Fotografii dintr-o seara ținuta aici. Stateau una sub alta,
+         patru ecrane de derulat. Acum sunt un carusel cu „peek": se
+         vede o bucata din urmatoarea, deci se intelege din prima ca se
+         trage. Apasarea pe oricare deschide galeria intreaga. -->
+    <div class="tras multi rv" id="trasSeri" aria-roledescription="carusel" aria-label="Fotografii de la o seară la Baffi">
+      <div class="tras-banda">
+          <figure data-cap="Sala, în seara petrecerii"><img src="img/baffi-petrecere-1.webp" srcset="img/baffi-petrecere-1-900.webp 900w, img/baffi-petrecere-1.webp 1400w" sizes="(min-width:900px) 31vw, 78vw" alt="Sala, în seara petrecerii — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
+          <figure data-cap="Momentul de la bar"><img src="img/baffi-petrecere-2.webp" srcset="img/baffi-petrecere-2-900.webp 900w, img/baffi-petrecere-2.webp 1400w" sizes="(min-width:900px) 31vw, 78vw" alt="Momentul de la bar — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
+          <figure data-cap="Mesele puse, lumina joasă"><img src="img/baffi-petrecere-3.webp" srcset="img/baffi-petrecere-3-900.webp 900w, img/baffi-petrecere-3.webp 1400w" sizes="(min-width:900px) 31vw, 78vw" alt="Mesele puse, lumina joasă — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
+          <figure data-cap="Spre miezul serii"><img src="img/baffi-petrecere-4.webp" srcset="img/baffi-petrecere-4-900.webp 900w, img/baffi-petrecere-4.webp 1400w" sizes="(min-width:900px) 31vw, 78vw" alt="Spre miezul serii — Baffi Cafe" loading="lazy" decoding="async" width="1400" height="1049"></figure>
+      </div>
+      <div class="tras-jos">
+        <span class="tras-semn" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Trage</span>
+        <div class="tras-buline" role="tablist" aria-label="Fotografii"></div>
       </div>
     </div>
     <!-- Evenimentele trecute. Se umple din cod; stă gol până când e ceva
          de pus în el. -->
     <div id="evTrecute" class="ev-trecute rv" hidden></div>
+    <!-- Abia după ce s-a văzut ce se întâmplă aici vine anunțul despre ce
+         urmează. Invers, prima impresie era „nu avem nimic". -->
+    <div id="evWrap" class="rv"></div>
   </div>
 </section>
 
@@ -2739,7 +2799,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='14.0';
+window.BAFFI_VERSIUNE='15.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -2930,12 +2990,21 @@ function pictezTrecute(){
   const t=trecute();
   if(!t.length){ cutie.hidden=true; return; }
   cutie.hidden=false;
+  /* Si ele intr-un carusel, ca sa nu creasca sectiunea cu un rand nou
+     la fiecare seara trecuta. Cand e una singura, caruselul arata ca o
+     fotografie - nu deranjeaza. */
   cutie.innerHTML=`<span class="eyebrow">Au fost la Baffi</span>
-    <div class="ev-tr-sir">`+t.map(e=>`<figure class="ev-tr">
+    <div class="tras multi trecute" aria-roledescription="carusel" aria-label="Evenimente trecute">
+    <div class="tras-banda">`+t.map(e=>`<figure class="ev-tr" data-cap="${e.t}">
       <span class="ev-tr-poza"><img src="${e.poster}" alt="${e.t} la Baffi Cafe" loading="lazy" decoding="async">
       <span class="ev-tr-semn">A trecut</span></span>
       <figcaption><b>${e.t}</b><span>${evDate(e.start)}</span></figcaption>
-    </figure>`).join('')+`</div>`;
+    </figure>`).join('')+`</div>
+    <div class="tras-jos">${t.length>1?`<span class="tras-semn" aria-hidden="true">Trage</span>
+      <div class="tras-buline" role="tablist" aria-label="Evenimente"></div>`:''}</div>
+    </div>`;
+  /* caruselul se naste dupa ce a pornit restul codului, deci il pornim aici */
+  if(window.porneste_tras) cutie.querySelectorAll('.tras').forEach(window.porneste_tras);
 }
 const LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
 function evDate(iso){
@@ -3050,11 +3119,22 @@ function paintEvents(){
   const file=[...cutie.querySelectorAll('.rev-una')];
   const bul=[...cutie.querySelectorAll('.rev-buline button')];
   let la=0, ceas=null, aluat=false;
+  /* Toate recenziile stau una peste alta, in aceeasi celula de grila, ca
+     sa nu sara chenarul la schimbare. Efectul secundar: chenarul lua
+     inaltimea celei mai LUNGI, iar sub una scurta ramaneau ~90 px de gol.
+     Acum inaltimea urmeaza recenzia care se vede, lin. */
+  function potrivesteInaltimea(){
+    const f=file[la]; if(!f) return;
+    const c=getComputedStyle(cutie);
+    const pern=parseFloat(c.paddingTop)+parseFloat(c.paddingBottom);
+    cutie.style.height=(f.scrollHeight+pern)+'px';
+  }
   function arata(i){
     la=(i+file.length)%file.length;
     file.forEach((f,j)=>f.classList.toggle('pe',j===la));
     bul.forEach((b,j)=>{ b.classList.toggle('on',j===la);
       b.setAttribute('aria-selected', j===la?'true':'false'); });
+    potrivesteInaltimea();
   }
   function porni(){ if(!MOTION||ceas||aluat) return; ceas=setInterval(()=>arata(la+1),7000); }
   function opri(){ if(ceas){ clearInterval(ceas); ceas=null; } }
@@ -3066,6 +3146,10 @@ function paintEvents(){
     new IntersectionObserver(is=>is.forEach(x=>
       x.isIntersecting?porni():opri()),{threshold:.3}).observe(cutie);
   } else porni();
+  potrivesteInaltimea();
+  addEventListener('resize', potrivesteInaltimea, {passive:true});
+  /* fonturile schimba inaltimea textului dupa ce se incarca */
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(potrivesteInaltimea);
 })();
 
 /* ---------- STELE ---------- */
@@ -3725,7 +3809,12 @@ function oraInProgram(hhmm, dataISO){
 /* Pana acum era scris o data, pentru un singur id. Acum e o functie
    chemata pentru FIECARE carusel din pagina - altfel al doilea ar fi ramas
    in urma la fiecare imbunatatire adusa primului. */
-document.querySelectorAll('.tras').forEach(function(cutie){
+/* Pana acum caruselele se porneau o singura data, la incarcare. Doua
+   dintre ele se nasc din cod dupa aceea (evenimentele trecute, galeria de
+   la petreceri), deci pornirea trebuie sa fie chemabila si mai tarziu. */
+window.porneste_tras = function(cutie){
+  if(!cutie || cutie.dataset.pornit) return;
+  cutie.dataset.pornit='1';
   const banda=cutie.querySelector('.tras-banda');
   const figuri=[...banda.querySelectorAll('figure')];
   const buline=cutie.querySelector('.tras-buline');
@@ -3913,7 +4002,8 @@ document.querySelectorAll('.tras').forEach(function(cutie){
   } else porni();
 
   pictează();
-});
+};
+document.querySelectorAll('.tras').forEach(window.porneste_tras);
 
 
 /* ---------- PUNTILE DINTRE BENZI ----------
@@ -4264,9 +4354,17 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
 (function(){
   const g=document.getElementById('petGalerie');
   if(!g||!window.PETRECERI&&typeof PETRECERI==='undefined') return;
-  g.innerHTML=PETRECERI.map(p=>
+  /* Noua fotografii una sub alta insemnau 1060 px de derulare pe telefon
+     - patru ecrane pentru o galerie. Acelasi carusel ca peste tot: trei
+     odata pe calculator, unul si un sfert pe telefon, si apasarea pe
+     oricare deschide galeria intreaga. */
+  g.innerHTML=`<div class="tras-banda">`+PETRECERI.map(p=>
     `<figure data-cap="${p.c}"><img src="img/${p.f}" alt="${p.c}" loading="lazy" decoding="async">`
-    +`</figure>`).join('');
+    +`</figure>`).join('')+`</div>
+    <div class="tras-jos"><span class="tras-semn" aria-hidden="true">Trage</span>
+      <div class="tras-buline" role="tablist" aria-label="Fotografii"></div></div>`;
+  g.classList.add('tras','multi');
+  if(window.porneste_tras) window.porneste_tras(g);
 })();
 /* ---------- LUPA ---------- */
 (function(){
