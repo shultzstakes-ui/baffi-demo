@@ -2799,7 +2799,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='15.0';
+window.BAFFI_VERSIUNE='15.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3996,10 +3996,18 @@ window.porneste_tras = function(cutie){
   buline.addEventListener('click',gata_de_tot);
   document.addEventListener('visibilitychange',()=>
     document.hidden ? opri() : porni());
+  /* Fotografiile din carusel care stau in afara ecranului PE ORIZONTALA
+     raman neincarcate: la o tragere rapida se vedea o caseta goala pana
+     se incarcau. Cand caruselul intra pe ecran, i se cer toate odata. */
+  function cereToate(){
+    cutie.querySelectorAll('img[loading="lazy"]').forEach(i=>{
+      i.loading='eager'; if(!i.complete) i.src=i.src; });
+  }
   if('IntersectionObserver' in window){
-    new IntersectionObserver(is=>is.forEach(x=>
-      x.isIntersecting ? porni() : opri()),{threshold:.3}).observe(cutie);
-  } else porni();
+    new IntersectionObserver(is=>is.forEach(x=>{
+      if(x.isIntersecting){ cereToate(); porni(); } else opri(); }),
+      {threshold:.15, rootMargin:'300px 0px'}).observe(cutie);
+  } else { cereToate(); porni(); }
 
   pictează();
 };
