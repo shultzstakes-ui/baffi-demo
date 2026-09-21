@@ -17,7 +17,7 @@
      nu una relativă — altfel linkul apare fără imagine). -->
 <meta property="og:title" content="Baffi Cafe Bragadiru — tot la Baffi e mai bine">
 <meta property="og:description" content="Grătar, terasă și evenimente în Bragadiru. Comanzi direct de la noi: fără aplicație, fără comision, livrare gratuită de la 70 de lei.">
-<meta property="og:image" content="https://bafficafe.ro/img/baffi-entrance-premium-v6.webp">
+<meta property="og:image" content="https://bafficafe.ro/img/baffi-intrare-lata.webp">
 <meta property="og:image:alt" content="Intrarea în Baffi Cafe din Bragadiru">
 <meta property="og:url" content="https://bafficafe.ro/">
 <meta property="og:site_name" content="Baffi Cafe">
@@ -49,12 +49,12 @@
 })();
 </script>
 <!-- se incarca din timp exact varianta pe care o va folosi, nu alta -->
-<link rel="preload" as="image" href="img/baffi-entrance-premium-v6.webp"
-      imagesrcset="img/baffi-entrance-premium-v6-900.webp 900w, img/baffi-entrance-premium-v6.webp 1400w"
-      imagesizes="(min-width:960px) min(46vw, 720px), 100vw" fetchpriority="high">
+<link rel="preload" as="image" href="img/baffi-intrare-lata.webp"
+      imagesrcset="img/baffi-intrare-lata-900.webp 900w, img/baffi-intrare-lata.webp 1400w"
+      imagesizes="(min-width:960px) min(54vw, 860px), 100vw" fetchpriority="high">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","@id":"https://bafficafe.ro/#restaurant",
-"name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-entrance-premium-v6.webp",
+"name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-intrare-lata.webp",
 "url":"https://bafficafe.ro/","hasMenu":"https://bafficafe.ro/#meniu",
 "description":"Restaurant și grătar în Bragadiru, cu terasă, comenzi directe fără comision de aplicație și evenimente private.",
 "address":{"@type":"PostalAddress","streetAddress":"Strada Safirului 69R","addressLocality":"Bragadiru","addressRegion":"Ilfov","addressCountry":"RO"},
@@ -331,7 +331,13 @@ p{margin:0}
    rotunjite o faceau sa pluteasca pe crem, ca o cartela; fotografia avea
    atunci patru margini vizibile in loc de una. */
 .hero{background:var(--navy);color:var(--paper);position:relative;overflow:hidden;
-  margin:0;border-radius:0;min-height:clamp(700px, 44vw, 880px)}
+  margin:0;border-radius:0;min-height:clamp(560px, 46vw, 820px)}
+/* raporturile care ies, masurate:
+     1024 -> 553x560 = 0,99   se pierde 26% din latime, firma ramane
+     1440 -> 778x662 = 1,17   se pierde 12%
+     1920 -> 860x820 = 1,05   se pierde 21%
+   Fotografia e 1,333, deci se taie mereu pe LATIME - de unde se taie
+   terenul gol din stanga, pe care oricum il acopera degradeul. */
 /* Latimea si inaltimea cresc IMPREUNA cu ecranul, ca raportul casetei sa
    ramana langa raportul fotografiei (0,685) la orice marime:
      1024 -> 470x700 = 0,67   nu se taie nimic
@@ -351,7 +357,11 @@ p{margin:0}
 
    Acum coloana e cel mult 465px. Caseta ramane 465x700, adica 0,66 - fix
    forma fotografiei - la orice latime de ecran. */
-@media(min-width:960px){.hero-grid{grid-template-columns:minmax(0,1fr) min(46%, clamp(470px, 34vw, 720px))}}
+/* Fotografia e acum LATA (4:3, facuta anume), deci caseta poate fi si ea
+   lata si mare - ca la site-ul de referinta, unde deschiderea tine 54%.
+   Inaltimea coboara odata cu latimea ca raportul sa ramana peste 1,0 la
+   orice ecran: o caseta verticala ar taia din firma, care tine 21-71%. */
+@media(min-width:960px){.hero-grid{grid-template-columns:minmax(0,1fr) min(54%, 860px)}}
 .hero-copy{container-type:inline-size;padding:76px clamp(26px,4.2vw,64px) 72px;width:100%;
   display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,2.2vw,26px);position:relative;z-index:2}
 @media(max-width:680px){.hero-copy{padding:48px 22px 46px}}
@@ -400,7 +410,7 @@ p{margin:0}
      marginea ecranului. Firma se vede in continuare intreaga - caseta e
      mai lata decat fotografia, deci se taie de jos, de unde nu se pierde
      nimic. */
-  .hero-media{min-height:clamp(224px,52vw,340px)}}
+  .hero-media{min-height:clamp(240px,56vw,380px)}}
 .hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   object-position:center top}   /* orice ar prisosi se taie de jos: sus e firma */
 /* Caseta isi schimba forma cu ecranul: inalta pe ecran mic (0,67), lata pe
@@ -427,10 +437,13 @@ p{margin:0}
      are 465px si usa tine toata latimea ei: un degrade de 46% inghitea
      jumatate din usa. Cele 12 opriri raman - doar distanta se strange. */
   background:linear-gradient(90deg,
-    var(--navy) 0%, rgba(7,28,44,.975) 2%, rgba(7,28,44,.925) 4%,
-    rgba(7,28,44,.85) 6%, rgba(7,28,44,.75) 8%, rgba(7,28,44,.625) 10%,
-    rgba(7,28,44,.485) 12%, rgba(7,28,44,.34) 14%, rgba(7,28,44,.205) 16%,
-    rgba(7,28,44,.1) 18%, rgba(7,28,44,.03) 19%, rgba(7,28,44,0) 20%)}
+    var(--navy) 0%, rgba(7,28,44,.975) 2%, rgba(7,28,44,.925) 5%,
+    rgba(7,28,44,.85) 7%, rgba(7,28,44,.75) 9%, rgba(7,28,44,.625) 11%,
+    rgba(7,28,44,.485) 13%, rgba(7,28,44,.34) 16%, rgba(7,28,44,.205) 18%,
+    rgba(7,28,44,.1) 20%, rgba(7,28,44,.03) 21%, rgba(7,28,44,0) 23%),
+  /* umbra usoara sus si jos, ca fotografia sa nu se loveasca de marginile
+     panoului - luata de la site-ul de referinta */
+  linear-gradient(rgba(7,28,44,.16), rgba(7,28,44,0) 34%, rgba(7,28,44,.22))}
 @media(max-width:959px){
   /* fotografia urca deasupra titlului - vezi motivul de mai sus */
   .hero-media{order:-1}
@@ -1441,6 +1454,70 @@ p{margin:0}
 .share-meniu:hover{border-color:var(--navy);color:var(--ink)}
 .share-meniu:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 @media(max-width:560px){.share-meniu span{display:none}.share-meniu{padding:0 13px}}
+
+/* ═══════════ CE AM LUAT DE LA SITE-UL DE REFERINTA ═══════════ */
+
+/* --- P2. GRADARE DE CULOARE ---------------------------------------
+   Fotografiile sunt facute cu telefonul, in zile diferite, la lumini
+   diferite. O gradare usoara si ACEEASI pe toate le aduce la un numitor:
+   incep sa para fotografiate pentru brand, nu adunate. Valorile sunt
+   apropiate de cele de la referinta, putin mai retinute.
+
+   Nu se pune pe sigle si pe desene: acolo ar scoate culori false. */
+.s-media img, .carou img, .despre-foto img, .map-card img,
+.rail img, .pet-galerie img, .hero-media img, .ev-foto img{
+  filter:saturate(1.14) contrast(1.045) brightness(1.01)}
+@media (prefers-color-scheme:dark){
+  /* pe ecranele pe care sistemul e pe intuneric, un plus de luminozitate
+     ar arde albul din fotografii */
+  .s-media img, .carou img, .despre-foto img, .map-card img,
+  .rail img, .pet-galerie img, .hero-media img, .ev-foto img{
+    filter:saturate(1.12) contrast(1.03)}}
+
+/* --- P3. FOTOGRAFIA SE STINGE IN CULOAREA SECTIUNII ----------------
+   Fiecare sectiune isi spune culoarea in `--fond`. Fotografia se stinge
+   in ea pe marginea dinspre pagina, plus o umbra foarte usoara sus si
+   jos, care ii da adancime si o desprinde de fundal.
+
+   Data trecuta am refuzat asta spunand ca „o poza stinsa in spatiu gol
+   arata stearsa". Era adevarat doar pentru stingerea in culoarea
+   gresita. Stinsa in culoarea sectiunii, dispare cusatura. */
+.sect{--fond:var(--body-bg)}
+.sect.dark{--fond:var(--navy)}
+.intents{--fond:var(--cream)}
+
+.s-media, .carou, .despre-foto{position:relative}
+.s-media::before, .carou::before, .despre-foto::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 30%,
+                    rgba(7,28,44,0) 72%, rgba(7,28,44,.17))}
+@media(min-width:900px){
+  /* marginea dinspre text se stinge in culoarea sectiunii; cea care iese
+     din pagina ramane taiata drept, ca la referinta */
+  .split:not(.rev) > :is(.s-media,.carou,.despre-foto):first-child::before{
+    background:
+      linear-gradient(90deg, rgba(7,28,44,.10), rgba(7,28,44,0) 26%),
+      linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 30%,
+                      rgba(7,28,44,0) 72%, rgba(7,28,44,.17)),
+      linear-gradient(90deg, transparent 72%, var(--fond))}
+  .split:not(.rev) > :is(.s-media,.carou,.despre-foto):last-child::before,
+  .split.rev > :is(.s-media,.carou,.despre-foto):first-child::before{
+    background:
+      linear-gradient(270deg, rgba(7,28,44,.10), rgba(7,28,44,0) 26%),
+      linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 30%,
+                      rgba(7,28,44,0) 72%, rgba(7,28,44,.17)),
+      linear-gradient(270deg, transparent 72%, var(--fond))}}
+
+/* --- P4. FOTOGRAFIILE SE TAIE DREPT -------------------------------
+   La referinta, TOATE imaginile au coltul drept, iar butoanele si
+   casetele raman rotunjite. O fotografie taiata drept arata editorial;
+   una rotunjita arata a card de aplicatie. Chrome-ul nostru ramane cum
+   era; fotografiile se indreapta. */
+.s-media, .carou, .despre-foto, .map-card,
+.pet-galerie figure, .rail figure, .ev-poster{border-radius:0}
+.s-media img, .carou img, .despre-foto img, .map-card img,
+.pet-galerie img, .rail img{border-radius:0}
 </style>
 </head>
 <body>
@@ -1543,11 +1620,11 @@ p{margin:0}
       </div>
     </div>
     <div class="hero-media">
-      <img src="img/baffi-entrance-premium-v6.webp"
-           srcset="img/baffi-entrance-premium-v6-900.webp 900w, img/baffi-entrance-premium-v6.webp 1400w"
-           sizes="(min-width:960px) min(46vw, 720px), 100vw"
-           data-plin="img/baffi-intrare-plin.webp" alt="Intrarea în Baffi Cafe din Bragadiru"
-           width="1400" height="2127" fetchpriority="high" decoding="async">
+      <img src="img/baffi-intrare-lata.webp"
+           srcset="img/baffi-intrare-lata-900.webp 900w, img/baffi-intrare-lata.webp 1400w"
+           sizes="(min-width:960px) min(54vw, 860px), 100vw"
+           alt="Intrarea în Baffi Cafe din Bragadiru, cu terasa alături"
+           width="1400" height="1050" fetchpriority="high" decoding="async">
     </div>
   </div>
 </section>
@@ -1650,7 +1727,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ MENIU ══════════════ -->
-<section class="sect menu-sect" id="meniu">
+<section class="sect menu-sect" id="meniu" style="background:var(--paper);--fond:var(--paper)">
   <div class="wrap">
     <div class="menu-top">
       <div class="sect-head rv" style="margin:0">
@@ -1716,7 +1793,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ DESPRE NOI ══════════════ -->
-<section class="sect" id="despre">
+<section class="sect" id="despre" style="background:var(--warm);--fond:var(--warm)">
   <div class="wrap">
     <div class="split rv">
       <div class="despre-foto">
@@ -1754,7 +1831,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ TERASA ══════════════ -->
-<section class="sect">
+<section class="sect" style="background:var(--terasa);--fond:var(--terasa)">
   <div class="wrap">
     <div class="split rev rv">
       <div class="s-media" style="aspect-ratio:3/4">
@@ -1780,7 +1857,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ EVENIMENT ══════════════ -->
-<section class="sect" id="evenimente" style="background:var(--eveniment)">
+<section class="sect" id="evenimente" style="background:var(--eveniment);--fond:var(--eveniment)">
   <div class="wrap">
     <div class="sect-head rv">
       <span class="eyebrow">Ce urmează la Baffi</span>
@@ -1847,7 +1924,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ RECENZII ══════════════ -->
-<section class="sect">
+<section class="sect" style="background:var(--cream);--fond:var(--cream)">
   <div class="wrap">
     <div class="sect-head rv">
       <span class="eyebrow">Recenzii Google</span>
@@ -1886,7 +1963,7 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ BAFFI PLACES ══════════════ -->
-<section class="sect" id="locatii" style="background:var(--soft)">
+<section class="sect" id="locatii" style="background:var(--soft);--fond:var(--soft)">
   <div class="wrap">
     <div class="sect-head rv">
       <span class="eyebrow">Baffi Places</span>
@@ -2236,7 +2313,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='9.11';
+window.BAFFI_VERSIUNE='10.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
