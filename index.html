@@ -733,15 +733,21 @@ p{margin:0}
 /* Pe telefon cardul se culcă: text și preț la stânga, poză la dreapta —
    tiparul cu care oamenii sunt deja obișnuiți din aplicațiile de livrare. */
 @media(max-width:559px){
-  /* proporția Human: poza 38%, textul 62%, cardul de minimum 164px */
-  .dish{display:grid;grid-template-columns:38% 62%;
+  /* Fotografia era 38% din latime pe un card de 164 px: un dreptunghi in
+     picioare, care taia farfuria. Acum coloana are exact cat cardul e de
+     inalt, deci fotografia iese PATRATA - si cardul scade de la 164 la
+     132 px. Cu 208 de preparate, sunt peste 6.000 px de derulare mai
+     putin. */
+  .dish{display:grid;grid-template-columns:132px minmax(0,1fr);
     grid-template-areas:"photo body" "photo foot";
-    align-items:stretch;min-height:164px;padding:0;border-radius:18px;overflow:hidden}
+    align-items:stretch;min-height:132px;padding:0;border-radius:16px;overflow:hidden}
   .dish-photo{grid-area:photo;width:100%;height:100%;aspect-ratio:auto;margin:0;border-radius:0}
-  .dish-body{grid-area:body;padding:15px 16px 0;gap:3px}
-  .dish-foot{grid-area:foot;padding:8px 16px 14px;margin-top:0;align-self:end}
-  .dish-name{font-size:15.5px}
-  .dish-desc{font-size:12.2px}
+  .dish-body{grid-area:body;padding:12px 14px 0;gap:2px}
+  .dish-foot{grid-area:foot;padding:6px 14px 12px;margin-top:0;align-self:end}
+  .dish-name{font-size:15px}
+  /* un rand de descriere, nu doua: altfel textul creste peste 132 px si
+     fotografia redevine dreptunghi */
+  .dish-desc{font-size:12px;-webkit-line-clamp:1}
   /* pe telefon insigna nu mai stă peste poză, ci intră în text —
      altfel acoperă exact rândul cu gramajul */
   .dish-badge{position:static;align-self:flex-start;font-size:8px;padding:5px 9px;
@@ -1461,7 +1467,12 @@ p{margin:0}
   transition:border-color .2s var(--ease),color .2s var(--ease)}
 .share-meniu:hover{border-color:var(--navy);color:var(--ink)}
 .share-meniu:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-@media(max-width:560px){.share-meniu span{display:none}.share-meniu{padding:0 13px}}
+/* Pe telefon ramanea doar pictograma, fara niciun cuvant: nimeni nu
+   ghiceste ce face un patrat cu o sageata. Ramane scrisul, scurtat. */
+@media(max-width:560px){
+  .share-meniu{padding:0 12px;font-size:9.5px;letter-spacing:.08em;gap:6px}
+  .share-meniu span{display:inline}
+}
 
 /* ═══════════ CE AM LUAT DE LA SITE-UL DE REFERINTA ═══════════ */
 
@@ -1547,8 +1558,11 @@ p{margin:0}
 .tras{position:relative;overflow:hidden}
 /* Fara spatiu intre diapozitive: dunga de fundal dintre fotografii e
    semnatura unui carusel de sablon. La site-urile bune fotografiile curg
-   una in alta. */
-.tras-banda{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;
+   una in alta.
+   Lipirea (`scroll-snap`) a fost scoasa: cu ea, banda sarea pe cel mai
+   apropiat diapozitiv la fiecare ridicare a degetului, deci nu puteai
+   opri unde vrei. */
+.tras-banda{display:flex;gap:0;overflow-x:auto;scroll-snap-type:none;
   scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
   /* Tragerea laterala o facem noi (vezi codul caruselului), deci
      browserului ii lasam doar verticala si departarea cu doua degete.
@@ -1788,10 +1802,14 @@ p{margin:0}
 .ins-rot{position:relative;display:grid;place-items:center;
   width:clamp(112px,11vw,132px);aspect-ratio:1;border-radius:50%;
   background:var(--navy);color:var(--gold);
-  box-shadow:0 8px 22px -12px rgba(7,28,44,.55);
-  transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
-.insigna:hover .ins-rot{transform:translateY(-3px);
-  box-shadow:0 14px 30px -12px rgba(7,28,44,.6)}
+  border:1px solid rgba(201,154,74,.28)}
+/* Umbra si ridicarea la trecerea cu mouse-ul au fost scoase: pe telefon
+   nu exista mouse, iar sase umbre mari peste o sectiune deschisa sunt
+   exact ce facea dungile. Pe calculator ramane o margine care se aprinde. */
+@media(hover:hover){
+  .ins-rot{transition:border-color .3s var(--ease)}
+  .insigna:hover .ins-rot{border-color:var(--gold)}
+}
 /* cununa se apropie de margine, ca sa lase mijlocul liber pentru cifra */
 .ins-rot .lauri{position:absolute;inset:3%;width:94%;height:94%;
   color:var(--gold);opacity:.95}
@@ -1844,7 +1862,7 @@ p{margin:0}
 
 /* ---------- DESCHIDEREA PE TELEFON ----------
    Cerinta: fotografia SI cele doua butoane, pe primul ecran.
-   Socoteala, la 375x812: banda de sus 28 + antetul 60 + fotografia 323 +
+   Socoteala, la 375x812: banda de sus 28 + antetul 60 + fotografia 297 +
    pernuta 30 + supratitlul 11 + titlul 88 + textul 51 + butoanele 54,
    plus trei goluri de 13 = 684. Incape.
 
@@ -1857,7 +1875,7 @@ p{margin:0}
   .doar-lat{display:none}
   .doar-tel{display:inline}
   .hero-copy{padding:30px 22px 34px;gap:13px}
-  .hero-media{aspect-ratio:1.162;min-height:0}
+  .hero-media{aspect-ratio:1.263;min-height:0}
   .hero .lead{font-size:15.5px;line-height:1.55}
   /* unul langa altul, nu unul sub altul */
   .hero-cta{flex-direction:row;align-items:stretch;gap:10px}
@@ -2010,6 +2028,57 @@ p{margin:0}
   .place{min-height:248px;padding:18px}
   .rev-card{padding:18px 18px 32px}
 }
+
+/* ---------- PUNGA DIN CHENARUL DE LIVRARE ----------
+   Cadrul are punga in dreapta si stanga goala, bleumarin - exact acolo
+   unde sta scrisul. Deci se aseaza pe dreapta si voalul se subtiaza si
+   mai mult peste ea: informatia ramane prima, fotografia se vede. */
+.intent[data-mode="livrare"] .intent-foto img{object-position:72% 50%}
+.intent[data-mode="livrare"] .intent-foto::after{
+  background:linear-gradient(90deg, rgba(7,28,44,.92) 0%, rgba(7,28,44,.86) 32%,
+    rgba(7,28,44,.60) 58%, rgba(7,28,44,.18) 100%)}
+
+/* ---------- SCARA DE 8 ----------
+   Din research: fiecare distanta din pagina e un multiplu de 8, iar
+   pernuta dinauntrul unui chenar nu trebuie sa fie mai mare decat
+   distanta dintre chenare. Pana acum aveam 13, 15, 18, 22, 26 - valori
+   „aproape la fel", care se citesc ca dezordine.
+
+   Banda de informatii de pe telefon (ACUM / PROGRAM / NE GASESTI AICI /
+   COMENZI) era cea mai risipitoare: pernute de 18 si goluri de 9 intre
+   randuri, la patru celule una sub alta. */
+:root{--s1:8px;--s2:16px;--s3:24px;--s4:32px;--s5:40px;--s6:48px;--s7:64px}
+@media(max-width:680px){
+  .sect{padding-block:var(--s5)}
+  .info-cell{padding:var(--s2) var(--s2) calc(var(--s2) + 2px);gap:6px}
+  .info-grid{gap:1px}
+  .info-cell .eyebrow{margin-bottom:2px}
+  .c-item{padding-bottom:var(--s2);gap:4px}
+  .c-list{gap:var(--s2)}
+  .sect-head{margin-bottom:var(--s3);gap:var(--s1)}
+  .rev-ask{margin-top:var(--s3);padding:var(--s2)}
+  .tick{padding:var(--s1) 0}
+  .split{gap:var(--s3)}
+  .s-copy{gap:var(--s2)}
+  .hero-proof{padding:var(--s2) var(--s2)}
+  .intent{padding:var(--s2)}
+  .place{padding:var(--s2)}
+  .pizza-note{padding:var(--s2)}
+}
+
+/* ---------- BANDA DE INFORMATII, PE TELEFON ----------
+   Patru celule una sub alta (ACUM / PROGRAM / NE GASESTI AICI / COMENZI)
+   insemnau 591 px, din care mai bine de jumatate era aer. Randurile de
+   program aveau 6 px de pernuta sus si jos, desi scrisul are 19 px:
+   aproape jumatate din rand era gol. */
+@media(max-width:680px){
+  .info-cell{padding:14px 16px;gap:4px}
+  .info-cell .eyebrow{margin-bottom:0}
+  #hoursList2 li, #hoursList li, .hours-row{padding-block:3px;font-size:13px}
+  .info-cell b, .info-cell .mare{line-height:1.15}
+  .info-cell p, .info-cell span{line-height:1.4}
+  .acum-stare{gap:6px}
+}
 </style>
 </head>
 <body>
@@ -2080,6 +2149,13 @@ p{margin:0}
   </div>
 </nav>
 
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <!-- Cununa de lauri, desenata O DATA. Era desenata din nou pentru
+       fiecare insigna: sase desene x (2 linii de 41 de puncte + 16
+       frunze) = vreo 350 de forme, fiecare cu umbra proprie. Pe
+       telefon asta lasa dungi si purici peste sectiune. -->
+  <symbol id="cununa" viewBox="0 0 120 120"><polyline points="73.3,101.9 75.5,101.1 77.6,100.2 79.7,99.2 81.8,98.1 83.7,96.9 85.6,95.5 87.5,94.1 89.2,92.6 90.9,90.9 92.5,89.2 93.9,87.4 95.3,85.5 96.6,83.6 97.8,81.6 98.8,79.5 99.8,77.4 100.6,75.2 101.3,73.0 101.9,70.7 102.3,68.5 102.7,66.2 102.9,63.8 103.0,61.5 103.0,59.2 102.8,56.9 102.5,54.6 102.1,52.3 101.6,50.0 100.9,47.8 100.1,45.6 99.3,43.4 98.2,41.3 97.1,39.3 95.9,37.3 94.6,35.4 93.1,33.6 91.6,31.8 90.0,30.2 88.3,28.6 86.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="74.6" cy="105.9" rx="7.4" ry="3.1" transform="rotate(-18.0 74.6 105.9)"/><ellipse cx="87.6" cy="99.3" rx="7.0" ry="2.9" transform="rotate(-35.7 87.6 99.3)"/><ellipse cx="97.9" cy="89.1" rx="6.5" ry="2.7" transform="rotate(-53.4 97.9 89.1)"/><ellipse cx="104.7" cy="76.3" rx="6.1" ry="2.5" transform="rotate(-71.1 104.7 76.3)"/><ellipse cx="107.2" cy="61.9" rx="5.6" ry="2.4" transform="rotate(-88.9 107.2 61.9)"/><ellipse cx="105.2" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-106.6 105.2 47.5)"/><ellipse cx="99.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-124.3 99.0 34.4)"/><ellipse cx="89.1" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-142.0 89.1 23.8)"/></g><polyline points="46.7,101.9 44.5,101.1 42.4,100.2 40.3,99.2 38.2,98.1 36.3,96.9 34.4,95.5 32.5,94.1 30.8,92.6 29.1,90.9 27.5,89.2 26.1,87.4 24.7,85.5 23.4,83.6 22.2,81.6 21.2,79.5 20.2,77.4 19.4,75.2 18.7,73.0 18.1,70.7 17.7,68.5 17.3,66.2 17.1,63.8 17.0,61.5 17.0,59.2 17.2,56.9 17.5,54.6 17.9,52.3 18.4,50.0 19.1,47.8 19.9,45.6 20.7,43.4 21.8,41.3 22.9,39.3 24.1,37.3 25.4,35.4 26.9,33.6 28.4,31.8 30.0,30.2 31.7,28.6 33.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="45.4" cy="105.9" rx="7.4" ry="3.1" transform="rotate(198.0 45.4 105.9)"/><ellipse cx="32.4" cy="99.3" rx="7.0" ry="2.9" transform="rotate(215.7 32.4 99.3)"/><ellipse cx="22.1" cy="89.1" rx="6.5" ry="2.7" transform="rotate(233.4 22.1 89.1)"/><ellipse cx="15.3" cy="76.3" rx="6.1" ry="2.5" transform="rotate(251.1 15.3 76.3)"/><ellipse cx="12.8" cy="61.9" rx="5.6" ry="2.4" transform="rotate(268.9 12.8 61.9)"/><ellipse cx="14.8" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-73.4 14.8 47.5)"/><ellipse cx="21.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-55.7 21.0 34.4)"/><ellipse cx="30.9" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-38.0 30.9 23.8)"/></g></symbol>
+</svg>
 <main id="top">
 <!-- ══════════════ HERO ══════════════ -->
 <section class="hero">
@@ -2117,7 +2193,7 @@ p{margin:0}
            srcset="img/baffi-intrare-2-900.webp 900w, img/baffi-intrare-2.webp 1400w"
            sizes="(min-width:960px) min(54vw, 860px), 100vw"
            alt="Intrarea în Baffi Cafe din Bragadiru, cu terasa alături"
-           width="1400" height="1205" fetchpriority="high" decoding="async">
+           width="1250" height="990" fetchpriority="high" decoding="async">
     </div>
   </div>
 </section>
@@ -2127,7 +2203,7 @@ p{margin:0}
   <div class="wrap" style="padding-block:clamp(46px,5vw,72px)">
     <div class="intent-grid rv">
       <a class="intent" href="#meniu" data-mode="livrare">
-        <span class="intent-foto" aria-hidden="true"><img src="img/bcf-serving-mains.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="intent-foto" aria-hidden="true"><img src="img/baffi-punga-livrare.webp" alt="" loading="lazy" decoding="async" width="1400" height="675"></span>
         <span class="num">01 · Vreau acasă</span>
         <h3>Comandă cu livrare</h3>
         <p>Fără cont, fără comision. Gratuit de la 70 de lei.</p>
@@ -2257,27 +2333,27 @@ p{margin:0}
            rând. Cununa e desenată din cod, nu e o imagine. -->
       <div class="insigne">
       <figure class="insigna">
-        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><polyline points="73.3,101.9 75.5,101.1 77.6,100.2 79.7,99.2 81.8,98.1 83.7,96.9 85.6,95.5 87.5,94.1 89.2,92.6 90.9,90.9 92.5,89.2 93.9,87.4 95.3,85.5 96.6,83.6 97.8,81.6 98.8,79.5 99.8,77.4 100.6,75.2 101.3,73.0 101.9,70.7 102.3,68.5 102.7,66.2 102.9,63.8 103.0,61.5 103.0,59.2 102.8,56.9 102.5,54.6 102.1,52.3 101.6,50.0 100.9,47.8 100.1,45.6 99.3,43.4 98.2,41.3 97.1,39.3 95.9,37.3 94.6,35.4 93.1,33.6 91.6,31.8 90.0,30.2 88.3,28.6 86.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="74.6" cy="105.9" rx="7.4" ry="3.1" transform="rotate(-18.0 74.6 105.9)"/><ellipse cx="87.6" cy="99.3" rx="7.0" ry="2.9" transform="rotate(-35.7 87.6 99.3)"/><ellipse cx="97.9" cy="89.1" rx="6.5" ry="2.7" transform="rotate(-53.4 97.9 89.1)"/><ellipse cx="104.7" cy="76.3" rx="6.1" ry="2.5" transform="rotate(-71.1 104.7 76.3)"/><ellipse cx="107.2" cy="61.9" rx="5.6" ry="2.4" transform="rotate(-88.9 107.2 61.9)"/><ellipse cx="105.2" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-106.6 105.2 47.5)"/><ellipse cx="99.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-124.3 99.0 34.4)"/><ellipse cx="89.1" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-142.0 89.1 23.8)"/></g><polyline points="46.7,101.9 44.5,101.1 42.4,100.2 40.3,99.2 38.2,98.1 36.3,96.9 34.4,95.5 32.5,94.1 30.8,92.6 29.1,90.9 27.5,89.2 26.1,87.4 24.7,85.5 23.4,83.6 22.2,81.6 21.2,79.5 20.2,77.4 19.4,75.2 18.7,73.0 18.1,70.7 17.7,68.5 17.3,66.2 17.1,63.8 17.0,61.5 17.0,59.2 17.2,56.9 17.5,54.6 17.9,52.3 18.4,50.0 19.1,47.8 19.9,45.6 20.7,43.4 21.8,41.3 22.9,39.3 24.1,37.3 25.4,35.4 26.9,33.6 28.4,31.8 30.0,30.2 31.7,28.6 33.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="45.4" cy="105.9" rx="7.4" ry="3.1" transform="rotate(198.0 45.4 105.9)"/><ellipse cx="32.4" cy="99.3" rx="7.0" ry="2.9" transform="rotate(215.7 32.4 99.3)"/><ellipse cx="22.1" cy="89.1" rx="6.5" ry="2.7" transform="rotate(233.4 22.1 89.1)"/><ellipse cx="15.3" cy="76.3" rx="6.1" ry="2.5" transform="rotate(251.1 15.3 76.3)"/><ellipse cx="12.8" cy="61.9" rx="5.6" ry="2.4" transform="rotate(268.9 12.8 61.9)"/><ellipse cx="14.8" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-73.4 14.8 47.5)"/><ellipse cx="21.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-55.7 21.0 34.4)"/><ellipse cx="30.9" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-38.0 30.9 23.8)"/></g></svg><span class="ins-nr"><b>2018</b><i>anul</i></span></span>
+        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#cununa"/></svg><span class="ins-nr"><b>2018</b><i>anul</i></span></span>
         <figcaption>Prima ușă, în Bragadiru</figcaption>
       </figure>
       <figure class="insigna">
-        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><polyline points="73.3,101.9 75.5,101.1 77.6,100.2 79.7,99.2 81.8,98.1 83.7,96.9 85.6,95.5 87.5,94.1 89.2,92.6 90.9,90.9 92.5,89.2 93.9,87.4 95.3,85.5 96.6,83.6 97.8,81.6 98.8,79.5 99.8,77.4 100.6,75.2 101.3,73.0 101.9,70.7 102.3,68.5 102.7,66.2 102.9,63.8 103.0,61.5 103.0,59.2 102.8,56.9 102.5,54.6 102.1,52.3 101.6,50.0 100.9,47.8 100.1,45.6 99.3,43.4 98.2,41.3 97.1,39.3 95.9,37.3 94.6,35.4 93.1,33.6 91.6,31.8 90.0,30.2 88.3,28.6 86.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="74.6" cy="105.9" rx="7.4" ry="3.1" transform="rotate(-18.0 74.6 105.9)"/><ellipse cx="87.6" cy="99.3" rx="7.0" ry="2.9" transform="rotate(-35.7 87.6 99.3)"/><ellipse cx="97.9" cy="89.1" rx="6.5" ry="2.7" transform="rotate(-53.4 97.9 89.1)"/><ellipse cx="104.7" cy="76.3" rx="6.1" ry="2.5" transform="rotate(-71.1 104.7 76.3)"/><ellipse cx="107.2" cy="61.9" rx="5.6" ry="2.4" transform="rotate(-88.9 107.2 61.9)"/><ellipse cx="105.2" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-106.6 105.2 47.5)"/><ellipse cx="99.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-124.3 99.0 34.4)"/><ellipse cx="89.1" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-142.0 89.1 23.8)"/></g><polyline points="46.7,101.9 44.5,101.1 42.4,100.2 40.3,99.2 38.2,98.1 36.3,96.9 34.4,95.5 32.5,94.1 30.8,92.6 29.1,90.9 27.5,89.2 26.1,87.4 24.7,85.5 23.4,83.6 22.2,81.6 21.2,79.5 20.2,77.4 19.4,75.2 18.7,73.0 18.1,70.7 17.7,68.5 17.3,66.2 17.1,63.8 17.0,61.5 17.0,59.2 17.2,56.9 17.5,54.6 17.9,52.3 18.4,50.0 19.1,47.8 19.9,45.6 20.7,43.4 21.8,41.3 22.9,39.3 24.1,37.3 25.4,35.4 26.9,33.6 28.4,31.8 30.0,30.2 31.7,28.6 33.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="45.4" cy="105.9" rx="7.4" ry="3.1" transform="rotate(198.0 45.4 105.9)"/><ellipse cx="32.4" cy="99.3" rx="7.0" ry="2.9" transform="rotate(215.7 32.4 99.3)"/><ellipse cx="22.1" cy="89.1" rx="6.5" ry="2.7" transform="rotate(233.4 22.1 89.1)"/><ellipse cx="15.3" cy="76.3" rx="6.1" ry="2.5" transform="rotate(251.1 15.3 76.3)"/><ellipse cx="12.8" cy="61.9" rx="5.6" ry="2.4" transform="rotate(268.9 12.8 61.9)"/><ellipse cx="14.8" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-73.4 14.8 47.5)"/><ellipse cx="21.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-55.7 21.0 34.4)"/><ellipse cx="30.9" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-38.0 30.9 23.8)"/></g></svg><span class="ins-nr"><b>3</b><i>locații</i></span></span>
+        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#cununa"/></svg><span class="ins-nr"><b>3</b><i>locații</i></span></span>
         <figcaption>Bragadiru · Crângași · Berceni</figcaption>
       </figure>
       <figure class="insigna">
-        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><polyline points="73.3,101.9 75.5,101.1 77.6,100.2 79.7,99.2 81.8,98.1 83.7,96.9 85.6,95.5 87.5,94.1 89.2,92.6 90.9,90.9 92.5,89.2 93.9,87.4 95.3,85.5 96.6,83.6 97.8,81.6 98.8,79.5 99.8,77.4 100.6,75.2 101.3,73.0 101.9,70.7 102.3,68.5 102.7,66.2 102.9,63.8 103.0,61.5 103.0,59.2 102.8,56.9 102.5,54.6 102.1,52.3 101.6,50.0 100.9,47.8 100.1,45.6 99.3,43.4 98.2,41.3 97.1,39.3 95.9,37.3 94.6,35.4 93.1,33.6 91.6,31.8 90.0,30.2 88.3,28.6 86.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="74.6" cy="105.9" rx="7.4" ry="3.1" transform="rotate(-18.0 74.6 105.9)"/><ellipse cx="87.6" cy="99.3" rx="7.0" ry="2.9" transform="rotate(-35.7 87.6 99.3)"/><ellipse cx="97.9" cy="89.1" rx="6.5" ry="2.7" transform="rotate(-53.4 97.9 89.1)"/><ellipse cx="104.7" cy="76.3" rx="6.1" ry="2.5" transform="rotate(-71.1 104.7 76.3)"/><ellipse cx="107.2" cy="61.9" rx="5.6" ry="2.4" transform="rotate(-88.9 107.2 61.9)"/><ellipse cx="105.2" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-106.6 105.2 47.5)"/><ellipse cx="99.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-124.3 99.0 34.4)"/><ellipse cx="89.1" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-142.0 89.1 23.8)"/></g><polyline points="46.7,101.9 44.5,101.1 42.4,100.2 40.3,99.2 38.2,98.1 36.3,96.9 34.4,95.5 32.5,94.1 30.8,92.6 29.1,90.9 27.5,89.2 26.1,87.4 24.7,85.5 23.4,83.6 22.2,81.6 21.2,79.5 20.2,77.4 19.4,75.2 18.7,73.0 18.1,70.7 17.7,68.5 17.3,66.2 17.1,63.8 17.0,61.5 17.0,59.2 17.2,56.9 17.5,54.6 17.9,52.3 18.4,50.0 19.1,47.8 19.9,45.6 20.7,43.4 21.8,41.3 22.9,39.3 24.1,37.3 25.4,35.4 26.9,33.6 28.4,31.8 30.0,30.2 31.7,28.6 33.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="45.4" cy="105.9" rx="7.4" ry="3.1" transform="rotate(198.0 45.4 105.9)"/><ellipse cx="32.4" cy="99.3" rx="7.0" ry="2.9" transform="rotate(215.7 32.4 99.3)"/><ellipse cx="22.1" cy="89.1" rx="6.5" ry="2.7" transform="rotate(233.4 22.1 89.1)"/><ellipse cx="15.3" cy="76.3" rx="6.1" ry="2.5" transform="rotate(251.1 15.3 76.3)"/><ellipse cx="12.8" cy="61.9" rx="5.6" ry="2.4" transform="rotate(268.9 12.8 61.9)"/><ellipse cx="14.8" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-73.4 14.8 47.5)"/><ellipse cx="21.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-55.7 21.0 34.4)"/><ellipse cx="30.9" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-38.0 30.9 23.8)"/></g></svg><span class="ins-nr"><b><span id="despreNota">4,5</span><svg class="ins-stea" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg></b><i><span id="despreRec">480</span> păreri</i></span></span>
+        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#cununa"/></svg><span class="ins-nr"><b><span id="despreNota">4,5</span><svg class="ins-stea" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg></b><i><span id="despreRec">480</span> păreri</i></span></span>
         <figcaption>Nota pe Google</figcaption>
       </figure>
       <figure class="insigna">
-        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><polyline points="73.3,101.9 75.5,101.1 77.6,100.2 79.7,99.2 81.8,98.1 83.7,96.9 85.6,95.5 87.5,94.1 89.2,92.6 90.9,90.9 92.5,89.2 93.9,87.4 95.3,85.5 96.6,83.6 97.8,81.6 98.8,79.5 99.8,77.4 100.6,75.2 101.3,73.0 101.9,70.7 102.3,68.5 102.7,66.2 102.9,63.8 103.0,61.5 103.0,59.2 102.8,56.9 102.5,54.6 102.1,52.3 101.6,50.0 100.9,47.8 100.1,45.6 99.3,43.4 98.2,41.3 97.1,39.3 95.9,37.3 94.6,35.4 93.1,33.6 91.6,31.8 90.0,30.2 88.3,28.6 86.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="74.6" cy="105.9" rx="7.4" ry="3.1" transform="rotate(-18.0 74.6 105.9)"/><ellipse cx="87.6" cy="99.3" rx="7.0" ry="2.9" transform="rotate(-35.7 87.6 99.3)"/><ellipse cx="97.9" cy="89.1" rx="6.5" ry="2.7" transform="rotate(-53.4 97.9 89.1)"/><ellipse cx="104.7" cy="76.3" rx="6.1" ry="2.5" transform="rotate(-71.1 104.7 76.3)"/><ellipse cx="107.2" cy="61.9" rx="5.6" ry="2.4" transform="rotate(-88.9 107.2 61.9)"/><ellipse cx="105.2" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-106.6 105.2 47.5)"/><ellipse cx="99.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-124.3 99.0 34.4)"/><ellipse cx="89.1" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-142.0 89.1 23.8)"/></g><polyline points="46.7,101.9 44.5,101.1 42.4,100.2 40.3,99.2 38.2,98.1 36.3,96.9 34.4,95.5 32.5,94.1 30.8,92.6 29.1,90.9 27.5,89.2 26.1,87.4 24.7,85.5 23.4,83.6 22.2,81.6 21.2,79.5 20.2,77.4 19.4,75.2 18.7,73.0 18.1,70.7 17.7,68.5 17.3,66.2 17.1,63.8 17.0,61.5 17.0,59.2 17.2,56.9 17.5,54.6 17.9,52.3 18.4,50.0 19.1,47.8 19.9,45.6 20.7,43.4 21.8,41.3 22.9,39.3 24.1,37.3 25.4,35.4 26.9,33.6 28.4,31.8 30.0,30.2 31.7,28.6 33.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="45.4" cy="105.9" rx="7.4" ry="3.1" transform="rotate(198.0 45.4 105.9)"/><ellipse cx="32.4" cy="99.3" rx="7.0" ry="2.9" transform="rotate(215.7 32.4 99.3)"/><ellipse cx="22.1" cy="89.1" rx="6.5" ry="2.7" transform="rotate(233.4 22.1 89.1)"/><ellipse cx="15.3" cy="76.3" rx="6.1" ry="2.5" transform="rotate(251.1 15.3 76.3)"/><ellipse cx="12.8" cy="61.9" rx="5.6" ry="2.4" transform="rotate(268.9 12.8 61.9)"/><ellipse cx="14.8" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-73.4 14.8 47.5)"/><ellipse cx="21.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-55.7 21.0 34.4)"/><ellipse cx="30.9" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-38.0 30.9 23.8)"/></g></svg><span class="ins-semn"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5v4"/><path d="M12 26a12 12 0 1 1 24 0c0 4.4-2.2 6.6-3.9 8.3S29.5 37.6 29.5 40h-11c0-2.4-.9-4-2.6-5.7S12 30.4 12 26z"/><path d="M19.5 44h9"/></svg></span></span>
+        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#cununa"/></svg><span class="ins-semn"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5v4"/><path d="M12 26a12 12 0 1 1 24 0c0 4.4-2.2 6.6-3.9 8.3S29.5 37.6 29.5 40h-11c0-2.4-.9-4-2.6-5.7S12 30.4 12 26z"/><path d="M19.5 44h9"/></svg></span></span>
         <figcaption>Lumină joasă seara</figcaption>
       </figure>
       <figure class="insigna">
-        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><polyline points="73.3,101.9 75.5,101.1 77.6,100.2 79.7,99.2 81.8,98.1 83.7,96.9 85.6,95.5 87.5,94.1 89.2,92.6 90.9,90.9 92.5,89.2 93.9,87.4 95.3,85.5 96.6,83.6 97.8,81.6 98.8,79.5 99.8,77.4 100.6,75.2 101.3,73.0 101.9,70.7 102.3,68.5 102.7,66.2 102.9,63.8 103.0,61.5 103.0,59.2 102.8,56.9 102.5,54.6 102.1,52.3 101.6,50.0 100.9,47.8 100.1,45.6 99.3,43.4 98.2,41.3 97.1,39.3 95.9,37.3 94.6,35.4 93.1,33.6 91.6,31.8 90.0,30.2 88.3,28.6 86.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="74.6" cy="105.9" rx="7.4" ry="3.1" transform="rotate(-18.0 74.6 105.9)"/><ellipse cx="87.6" cy="99.3" rx="7.0" ry="2.9" transform="rotate(-35.7 87.6 99.3)"/><ellipse cx="97.9" cy="89.1" rx="6.5" ry="2.7" transform="rotate(-53.4 97.9 89.1)"/><ellipse cx="104.7" cy="76.3" rx="6.1" ry="2.5" transform="rotate(-71.1 104.7 76.3)"/><ellipse cx="107.2" cy="61.9" rx="5.6" ry="2.4" transform="rotate(-88.9 107.2 61.9)"/><ellipse cx="105.2" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-106.6 105.2 47.5)"/><ellipse cx="99.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-124.3 99.0 34.4)"/><ellipse cx="89.1" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-142.0 89.1 23.8)"/></g><polyline points="46.7,101.9 44.5,101.1 42.4,100.2 40.3,99.2 38.2,98.1 36.3,96.9 34.4,95.5 32.5,94.1 30.8,92.6 29.1,90.9 27.5,89.2 26.1,87.4 24.7,85.5 23.4,83.6 22.2,81.6 21.2,79.5 20.2,77.4 19.4,75.2 18.7,73.0 18.1,70.7 17.7,68.5 17.3,66.2 17.1,63.8 17.0,61.5 17.0,59.2 17.2,56.9 17.5,54.6 17.9,52.3 18.4,50.0 19.1,47.8 19.9,45.6 20.7,43.4 21.8,41.3 22.9,39.3 24.1,37.3 25.4,35.4 26.9,33.6 28.4,31.8 30.0,30.2 31.7,28.6 33.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="45.4" cy="105.9" rx="7.4" ry="3.1" transform="rotate(198.0 45.4 105.9)"/><ellipse cx="32.4" cy="99.3" rx="7.0" ry="2.9" transform="rotate(215.7 32.4 99.3)"/><ellipse cx="22.1" cy="89.1" rx="6.5" ry="2.7" transform="rotate(233.4 22.1 89.1)"/><ellipse cx="15.3" cy="76.3" rx="6.1" ry="2.5" transform="rotate(251.1 15.3 76.3)"/><ellipse cx="12.8" cy="61.9" rx="5.6" ry="2.4" transform="rotate(268.9 12.8 61.9)"/><ellipse cx="14.8" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-73.4 14.8 47.5)"/><ellipse cx="21.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-55.7 21.0 34.4)"/><ellipse cx="30.9" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-38.0 30.9 23.8)"/></g></svg><span class="ins-semn"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7h24l-2.4 13.5a9.6 9.6 0 0 1-19.2 0z"/><path d="M24 30v11"/><path d="M16 42h16"/></svg></span></span>
+        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#cununa"/></svg><span class="ins-semn"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7h24l-2.4 13.5a9.6 9.6 0 0 1-19.2 0z"/><path d="M24 30v11"/><path d="M16 42h16"/></svg></span></span>
         <figcaption>Bar propriu, vinuri românești</figcaption>
       </figure>
       <figure class="insigna">
-        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><polyline points="73.3,101.9 75.5,101.1 77.6,100.2 79.7,99.2 81.8,98.1 83.7,96.9 85.6,95.5 87.5,94.1 89.2,92.6 90.9,90.9 92.5,89.2 93.9,87.4 95.3,85.5 96.6,83.6 97.8,81.6 98.8,79.5 99.8,77.4 100.6,75.2 101.3,73.0 101.9,70.7 102.3,68.5 102.7,66.2 102.9,63.8 103.0,61.5 103.0,59.2 102.8,56.9 102.5,54.6 102.1,52.3 101.6,50.0 100.9,47.8 100.1,45.6 99.3,43.4 98.2,41.3 97.1,39.3 95.9,37.3 94.6,35.4 93.1,33.6 91.6,31.8 90.0,30.2 88.3,28.6 86.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="74.6" cy="105.9" rx="7.4" ry="3.1" transform="rotate(-18.0 74.6 105.9)"/><ellipse cx="87.6" cy="99.3" rx="7.0" ry="2.9" transform="rotate(-35.7 87.6 99.3)"/><ellipse cx="97.9" cy="89.1" rx="6.5" ry="2.7" transform="rotate(-53.4 97.9 89.1)"/><ellipse cx="104.7" cy="76.3" rx="6.1" ry="2.5" transform="rotate(-71.1 104.7 76.3)"/><ellipse cx="107.2" cy="61.9" rx="5.6" ry="2.4" transform="rotate(-88.9 107.2 61.9)"/><ellipse cx="105.2" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-106.6 105.2 47.5)"/><ellipse cx="99.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-124.3 99.0 34.4)"/><ellipse cx="89.1" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-142.0 89.1 23.8)"/></g><polyline points="46.7,101.9 44.5,101.1 42.4,100.2 40.3,99.2 38.2,98.1 36.3,96.9 34.4,95.5 32.5,94.1 30.8,92.6 29.1,90.9 27.5,89.2 26.1,87.4 24.7,85.5 23.4,83.6 22.2,81.6 21.2,79.5 20.2,77.4 19.4,75.2 18.7,73.0 18.1,70.7 17.7,68.5 17.3,66.2 17.1,63.8 17.0,61.5 17.0,59.2 17.2,56.9 17.5,54.6 17.9,52.3 18.4,50.0 19.1,47.8 19.9,45.6 20.7,43.4 21.8,41.3 22.9,39.3 24.1,37.3 25.4,35.4 26.9,33.6 28.4,31.8 30.0,30.2 31.7,28.6 33.5,27.1" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/><g fill="currentColor"><ellipse cx="45.4" cy="105.9" rx="7.4" ry="3.1" transform="rotate(198.0 45.4 105.9)"/><ellipse cx="32.4" cy="99.3" rx="7.0" ry="2.9" transform="rotate(215.7 32.4 99.3)"/><ellipse cx="22.1" cy="89.1" rx="6.5" ry="2.7" transform="rotate(233.4 22.1 89.1)"/><ellipse cx="15.3" cy="76.3" rx="6.1" ry="2.5" transform="rotate(251.1 15.3 76.3)"/><ellipse cx="12.8" cy="61.9" rx="5.6" ry="2.4" transform="rotate(268.9 12.8 61.9)"/><ellipse cx="14.8" cy="47.5" rx="5.2" ry="2.2" transform="rotate(-73.4 14.8 47.5)"/><ellipse cx="21.0" cy="34.4" rx="4.7" ry="2.0" transform="rotate(-55.7 21.0 34.4)"/><ellipse cx="30.9" cy="23.8" rx="4.3" ry="1.8" transform="rotate(-38.0 30.9 23.8)"/></g></svg><span class="ins-semn"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 35V11l18-4.5V30"/><ellipse cx="13" cy="35" rx="5.5" ry="4.6"/><ellipse cx="31" cy="30" rx="5.5" ry="4.6"/></svg></span></span>
+        <span class="ins-rot"><svg class="lauri" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><use href="#cununa"/></svg><span class="ins-semn"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 35V11l18-4.5V30"/><ellipse cx="13" cy="35" rx="5.5" ry="4.6"/><ellipse cx="31" cy="30" rx="5.5" ry="4.6"/></svg></span></span>
         <figcaption>Seri tematice și meciuri</figcaption>
       </figure>
       </div>
@@ -2799,7 +2875,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='15.1';
+window.BAFFI_VERSIUNE='16.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3894,6 +3970,7 @@ window.porneste_tras = function(cutie){
   }
 
   banda.addEventListener('pointerdown',e=>{
+    cancelAnimationFrame(cutie._raf||0);   /* atingerea opreste alunecarea */
     /* Degetul era lasat pe seama derularii native a browserului. Suna
        rezonabil, dar nu se poate PROBA de aici - si asa am livrat doua
        carusele moarte la atingere, fiindca `touch-action:pan-y` ii
@@ -3919,14 +3996,10 @@ window.porneste_tras = function(cutie){
   });
   function sus(){
     if(!jos) return; jos=false;
-    /* NU se scoate inca `.se-trage`: clasa tine `scroll-snap-type:none`,
-       iar fara ea browserul lipeste banda de cel mai apropiat punct pe loc
-       - masurat, de la 160 px la 0 - si toate socotelile de mai jos ar
-       lucra pe zero. Se scoate abia dupa ce alunecarea s-a terminat. */
-    /* Viteza, in pixeli pe milisecunda. Se cauta inapoi pana la o urma
-       mai veche de cel putin 25 ms: cand browserul trimite mai multe
-       pozitii in acelasi cadru, intre ele sunt sub o milisecunda, iar un
-       fleac rapid ar iesi ca tragere lenesa. */
+    /* Viteza, in pixeli pe milisecunda. Se cauta inapoi pana la o urma mai
+       veche de cel putin 25 ms: cand browserul trimite mai multe pozitii
+       in acelasi cadru, intre ele sunt sub o milisecunda, iar un fleac
+       rapid ar iesi ca tragere lenesa. */
     let v=0;
     if(urme.length>1){
       const b=urme[urme.length-1];
@@ -3935,19 +4008,30 @@ window.porneste_tras = function(cutie){
       const dt=b.t-a.t;
       if(dt>0 && dt<260) v=-(b.x-a.x)/dt;     /* semnul: invers fata de deget */
     }
-    /* unde ar ajunge daca ar aluneca liber, cu frecare */
-    const prezis=banda.scrollLeft + v*170;
-    let i=celDeLa(prezis);
-    /* Un sfert de diapozitiv e de ajuns ca sa treaca mai departe: omul a
-       aratat limpede incotro vrea. Sub un sfert si fara viteza se
-       intoarce - altfel ar sari la fiecare atingere gresita. */
-    const dus=banda.scrollLeft-s0, prag=figuri[0].offsetWidth*0.25;
-    if(Math.abs(dus)>prag && i===celDeLa(s0)){
-      i=Math.max(0, Math.min(figuri.length-1, i+(dus>0?1:-1)));
-    }
-    /* cu cat a fost lasat mai tare, cu atat alunecarea e mai scurta */
-    alunecaLa(stangaLui(i), Math.max(260, Math.min(520, 520-Math.abs(v)*90)),
-      ()=>{ cutie.classList.remove('se-trage'); pictează(); });
+    cutie.classList.remove('se-trage');
+
+    /* ---------- CURGE LIBER, NU SARE PE DIAPOZITIV ----------
+       Pana acum, la fiecare ridicare a degetului banda se lipea de cel
+       mai apropiat diapozitiv. Adica nu puteai opri unde vrei: te trage
+       el. Acum banda isi continua drumul cu frecare si se opreste unde ai
+       lasat-o - ca o banda adevarata. Bulinele arata in continuare unde
+       esti, iar apasarea pe ele duce tot la un diapozitiv anume. */
+    const capat=()=>banda.scrollWidth-banda.clientWidth;
+    if(!MOTION || Math.abs(v)<0.04){ pictează(); return; }
+    let vel=v*16.67;                 /* pixeli pe cadru */
+    let ult=performance.now();
+    cancelAnimationFrame(cutie._raf||0);
+    cutie._raf=requestAnimationFrame(function pas(t){
+      const dt=Math.min(40, t-ult); ult=t;
+      vel *= Math.pow(0.935, dt/16.67);
+      let x=banda.scrollLeft + vel*dt/16.67;
+      if(x<=0){ x=0; vel=0; }
+      const M=capat();
+      if(x>=M){ x=M; vel=0; }
+      banda.scrollLeft=x;
+      if(Math.abs(vel)>0.12) cutie._raf=requestAnimationFrame(pas);
+      else pictează();
+    });
   }
   banda.addEventListener('pointerup',sus);
   banda.addEventListener('pointercancel',sus);
