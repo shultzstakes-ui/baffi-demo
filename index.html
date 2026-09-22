@@ -1636,8 +1636,12 @@ p{margin:0}
    Puntea sta in pernuta de sus a sectiunii, deci nu acopera niciun text,
    si trece sub continut. */
 .punte{position:relative}
+/* Puntea NU are voie sa treaca peste pernuta sectiunii: pernuta e 72 px
+   (40 pe telefon), iar puntea avea 104 - deci intra 32 px peste titlu, si
+   scrisul deschis cadea pe partea luminoasa a degradeului. Asa arata
+   „dunga peste gradient" de la „Ne vedem la masa". */
 .punte::before{content:"";position:absolute;top:0;left:0;right:0;
-  height:var(--punte-h,104px);pointer-events:none;z-index:0;
+  height:var(--punte-h,56px);pointer-events:none;z-index:0;
   background:linear-gradient(180deg,
     rgba(var(--sus-rgb),1) 0%,    rgba(var(--sus-rgb),.985) 6%,
     rgba(var(--sus-rgb),.945) 13%, rgba(var(--sus-rgb),.875) 21%,
@@ -1646,7 +1650,7 @@ p{margin:0}
     rgba(var(--sus-rgb),.21) 67%,  rgba(var(--sus-rgb),.105) 78%,
     rgba(var(--sus-rgb),.035) 89%, rgba(var(--sus-rgb),0) 100%)}
 .punte > *{position:relative;z-index:1}
-@media(max-width:680px){.punte::before{--punte-h:72px}}
+@media(max-width:680px){.punte::before{--punte-h:32px}}
 
 
 
@@ -1833,14 +1837,16 @@ p{margin:0}
 .insigna figcaption{font:600 12.5px/1.45 var(--sans);color:var(--ink);
   max-width:20ch;letter-spacing:.005em}
 @media(max-width:620px){
-  /* trei pe rand se faceau cat o unghie; doua pe rand, mari, cu tot
-     spatiul coloanei folosit */
-  .insigne{grid-template-columns:repeat(2,1fr);gap:22px 12px}
-  .ins-rot{width:min(136px,39vw)}
-  .ins-nr b{font-size:32px}
-  .ins-nr i{font-size:9px}
-  .ins-semn{width:46px}
-  .insigna figcaption{font-size:12.5px;max-width:18ch;line-height:1.4}
+  /* Doua pe rand le facea cat o farfurie si mancau doua ecrane. Trei pe
+     rand, cu cifra tot mare: se citesc dintr-o privire si intra intr-un
+     singur ecran. */
+  .insigne{grid-template-columns:repeat(3,1fr);gap:16px 8px}
+  .ins-rot{width:min(96px,27vw)}
+  .ins-nr b{font-size:22px}
+  .ins-nr i{font-size:7.5px;letter-spacing:.12em}
+  .ins-semn{width:32px}
+  .insigna{gap:8px}
+  .insigna figcaption{font-size:10.5px;max-width:14ch;line-height:1.35}
 }
 @media (prefers-reduced-motion:reduce){.ins-rot{transition:none}}
 
@@ -2031,10 +2037,13 @@ p{margin:0}
    Cadrul are punga in dreapta si stanga goala, bleumarin - exact acolo
    unde sta scrisul. Deci se aseaza pe dreapta si voalul se subtiaza si
    mai mult peste ea: informatia ramane prima, fotografia se vede. */
-.intent[data-mode="livrare"] .intent-foto img{object-position:72% 50%}
-.intent[data-mode="livrare"] .intent-foto::after{
+/* Toate trei au acelasi cadru: subiectul in dreapta, stanga goala si
+   bleumarina. Deci acelasi voal pentru toate - mai gros pe stanga, unde
+   sta scrisul, aproape transparent pe dreapta, unde e subiectul. */
+.intent-foto img{object-position:72% 50%}
+.intent-foto::after{
   background:linear-gradient(90deg, rgba(7,28,44,.92) 0%, rgba(7,28,44,.86) 32%,
-    rgba(7,28,44,.60) 58%, rgba(7,28,44,.18) 100%)}
+    rgba(7,28,44,.58) 60%, rgba(7,28,44,.14) 100%)}
 
 /* ---------- SCARA DE 8 ----------
    Din research: fiecare distanta din pagina e un multiplu de 8, iar
@@ -2120,13 +2129,47 @@ p{margin:0}
    fotografie. */
 .tras.singur .tras-banda{overflow:visible;cursor:default;
   -webkit-mask-image:none;mask-image:none}
-.tras.singur figure{margin:0;max-width:min(52vw,240px)}
-@media(max-width:680px){.tras.singur figure{max-width:60vw}}
+/* Un afis nu are nevoie de jumatate de ecran. */
+.tras.singur figure{margin:0;max-width:min(30vw,190px)}
+@media(max-width:680px){.tras.singur figure{max-width:38vw}}
 
 /* Evenimentele trecute: scrisul sub afis, nu peste el. */
 .tras-sina .ev-tr, .tras.singur .ev-tr{overflow:visible;background:none}
 .tras-sina .ev-tr figcaption, .tras.singur .ev-tr figcaption{
   position:static;background:none;color:var(--ink);padding:10px 0 0}
+
+/* ---------- CARUSELUL DE O SINGURA FOTOGRAFIE ----------
+   Se vede una odata, intreaga. Lipirea e pornita AICI (si numai aici):
+   la un carusel de o poza, o felie din vecina arata a greseala. */
+.tras.unul .tras-banda{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+  scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
+  touch-action:pan-y pinch-zoom;overscroll-behavior-x:contain;
+  -webkit-mask-image:none;mask-image:none}
+.tras.unul .tras-banda::-webkit-scrollbar{display:none}
+.tras.unul.se-trage .tras-banda{cursor:grabbing;scroll-snap-type:none}
+.tras.unul.se-trage img{pointer-events:none}
+.tras.unul .tras-banda figure{flex:0 0 100%;margin:0;position:relative;
+  scroll-snap-align:start;aspect-ratio:16/10;overflow:hidden;background:var(--navy-2)}
+.tras.unul .tras-banda img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ---------- CASETA PARCARII, DINTR-O BUCATA ----------
+   Umbra de adancime statea peste TOT cardul - deci si peste scrisul de
+   sub fotografie, care iesea spalacit. Acum umbra e pe fotografie, iar
+   cardul nu mai are fundal propriu de aratat pe langa ea. */
+.map-card{background:none;border-radius:0;overflow:visible}
+.map-card::before{display:none}
+.map-card figure{margin:0;position:relative;aspect-ratio:3/2;overflow:hidden;
+  border-radius:var(--r-lg);background:var(--navy-2);display:block}
+.map-card figure img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:.94}
+.map-card figure::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(rgba(7,28,44,.10), rgba(7,28,44,0) 30%,
+                             rgba(7,28,44,0) 72%, rgba(7,28,44,.16))}
+.map-card .mc-b{margin-top:14px;color:var(--cream)}
+.map-card .mc-b b{display:block;font-family:var(--serif);font-size:18px;
+  font-weight:600;margin-bottom:4px;color:var(--cream)}
+.map-card .mc-b span{font-size:13px;color:rgba(245,240,231,.66);line-height:1.45}
+.tras.unul.aluneca .tras-banda{scroll-snap-type:none}
 </style>
 </head>
 <body>
@@ -2251,21 +2294,21 @@ p{margin:0}
   <div class="wrap" style="padding-block:clamp(46px,5vw,72px)">
     <div class="intent-grid rv">
       <a class="intent" href="#meniu" data-mode="livrare">
-        <span class="intent-foto" aria-hidden="true"><img src="img/baffi-punga-livrare.webp" alt="" loading="lazy" decoding="async" width="1400" height="675"></span>
+        <span class="intent-foto" aria-hidden="true"><img src="img/baffi-chenar-livrare.webp" alt="" loading="lazy" decoding="async" width="1400" height="652"></span>
         <span class="num">01 · Vreau acasă</span>
         <h3>Comandă cu livrare</h3>
         <p>Fără cont, fără comision. Gratuit de la 70 de lei.</p>
         <span class="go">Deschide meniul <span class="ar">→</span></span>
       </a>
       <a class="intent" href="#meniu" data-mode="ridicare">
-        <span class="intent-foto" aria-hidden="true"><img src="img/baffi-bar-detaliu-lat.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="intent-foto" aria-hidden="true"><img src="img/baffi-chenar-ridicare.webp" alt="" loading="lazy" decoding="async" width="1400" height="650"></span>
         <span class="num">02 · Sunt pe drum</span>
         <h3>Comandă pentru ridicare</h3>
         <p>Alegi ora, noi pregătim. Ajungi și pleci.</p>
         <span class="go">Comandă de ridicat <span class="ar">→</span></span>
       </a>
       <button class="intent" data-open="rez">
-        <span class="intent-foto" aria-hidden="true"><img src="img/baffi-interior-bar.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="intent-foto" aria-hidden="true"><img src="img/baffi-chenar-rezervare.webp" alt="" loading="lazy" decoding="async" width="1400" height="652"></span>
         <span class="num">03 · Ies la Baffi</span>
         <h3>Rezervă o masă</h3>
         <p>Sala, terasa sau lângă bar. Confirmăm prin telefon.</p>
@@ -2348,7 +2391,7 @@ p{margin:0}
     <div class="despre-flux rv">
       <span class="eyebrow">Din 2018, pe Safirului</span>
       <h2 class="h-lg">Am deschis un loc<br>unde ne-ar fi plăcut<br>să <span class="it">mâncăm noi.</span></h2>
-      <div class="tras" id="trasDespre" aria-roledescription="carusel" aria-label="Interiorul Baffi Cafe, de zi cu zi">
+      <div class="tras unul auto" id="trasDespre" aria-roledescription="carusel" aria-label="Interiorul Baffi Cafe, de zi cu zi">
       <div class="tras-banda">
         <figure><img src="img/baffi-interior-sala.webp" srcset="img/baffi-interior-sala-900.webp 900w, img/baffi-interior-sala.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Sala, într-o marți seara" loading="lazy" decoding="async" width="1400" height="875"></figure>
         <figure><img src="img/baffi-interior-bar.webp" srcset="img/baffi-interior-bar-900.webp 900w, img/baffi-interior-bar.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Mesele dinspre stradă" loading="lazy" decoding="async" width="1400" height="875"></figure>
@@ -2416,7 +2459,7 @@ p{margin:0}
       <!-- Acelasi carusel ca la „Despre noi": se trage cu inertie, se
            mareste cu lupa si merge si singur. Inainte era o pereche de
            fotografii care se stingeau una in alta si atat. -->
-      <div class="tras" id="trasTerasa" aria-roledescription="carusel" aria-label="Terasa Baffi Cafe">
+      <div class="tras unul" id="trasTerasa" aria-roledescription="carusel" aria-label="Terasa Baffi Cafe">
         <div class="tras-banda">
           <figure data-cap="Terasa din față"><img src="img/baffi-terasa-2.webp" srcset="img/baffi-terasa-2-900.webp 900w, img/baffi-terasa-2.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Terasa Baffi Cafe, privită în lungul ei" loading="lazy" decoding="async" width="1400" height="874"></figure>
           <figure data-cap="Mesele de pe terasă"><img src="img/baffi-terasa-1-lat.webp" srcset="img/baffi-terasa-1-lat-900.webp 900w, img/baffi-terasa-1-lat.webp 1400w" sizes="(min-width:900px) 46vw, 92vw" alt="Terasa Baffi Cafe, cu mesele pregătite" loading="lazy" decoding="async" width="1400" height="873"></figure>
@@ -2923,7 +2966,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='17.0';
+window.BAFFI_VERSIUNE='18.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -4114,7 +4157,130 @@ window.porneste_tras = function(cutie){
     }), {threshold:.05, rootMargin:'300px 0px'}).observe(cutie);
   } else { cereToate(); porni(); }
 };
-document.querySelectorAll('.tras').forEach(window.porneste_tras);
+
+/* ══════════════════════════════════════════════════════════════════
+   CARUSELUL DE O SINGURA FOTOGRAFIE
+   ══════════════════════════════════════════════════════════════════
+   Aici nu curge nimic: se vede o fotografie odata, se trage cu mana si
+   se aseaza pe fotografie INTREAGA. Fara bucata din urmatoarea in
+   acelasi cadru - asta a fost reclamatia, si are dreptate: la un carusel
+   de o poza, o felie din vecina arata a greseala, nu a continuare.
+
+   Cel cu clasa `auto` trece si singur mai departe, la sase secunde, si
+   se opreste definitiv cand omul pune mana pe el. */
+window.porneste_unul = function(cutie){
+  if(!cutie || cutie.dataset.pornit) return;
+  const banda = cutie.querySelector('.tras-banda');
+  if(!banda) return;
+  const figuri = [...banda.querySelectorAll('figure')];
+  if(figuri.length < 1) return;
+  cutie.dataset.pornit = '1';
+  const jos = cutie.querySelector('.tras-jos');
+  if(jos) jos.remove();
+  if(figuri.length < 2) return;
+
+  const stangaLui = i => figuri[i].offsetLeft;
+  const laCare = () => {
+    let cel = 0, cred = Infinity;
+    figuri.forEach((f,i)=>{ const d=Math.abs(f.offsetLeft - banda.scrollLeft);
+      if(d<cred){cred=d;cel=i;} });
+    return cel;
+  };
+  let raf = 0;
+  function alunecaLa(tinta, durata){
+    cancelAnimationFrame(raf);
+    /* Lipirea si alunecarea proprie nu pot merge deodata: la fiecare cadru
+       browserul ar trage banda inapoi in punctul de lipire. Masurat:
+       fara asta, banda se intorcea la 0 imediat dupa ridicarea degetului.
+       Lipirea se reaprinde abia cand alunecarea s-a terminat - si atunci
+       banda e deja exact pe un punct de lipire, deci nu sare. */
+    cutie.classList.add('aluneca');
+    const de_la = banda.scrollLeft, dist = tinta - de_la;
+    if(!MOTION || Math.abs(dist) < 2){
+      banda.scrollLeft = tinta; cutie.classList.remove('aluneca'); return; }
+    const t0 = performance.now(), curba = t => 1 - Math.pow(1-t, 3);
+    let gata = false;
+    const inchide = () => { if(gata) return; gata = true;
+      banda.scrollLeft = tinta; cutie.classList.remove('aluneca'); };
+    raf = requestAnimationFrame(function pas(acum){
+      const t = Math.min(1, (acum - t0) / durata);
+      banda.scrollLeft = de_la + dist * curba(t);
+      if(t < 1) raf = requestAnimationFrame(pas); else inchide();
+    });
+    setTimeout(inchide, durata + 140);   /* plasa pentru fereastra ascunsa */
+  }
+
+  /* ---------- tragerea ---------- */
+  let jos_deget = false, x0 = 0, s0 = 0, mutat = 0, urme = [], aluat = false;
+  banda.addEventListener('pointerdown', e => {
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    cancelAnimationFrame(raf);
+    jos_deget = true; mutat = 0; x0 = e.clientX; s0 = banda.scrollLeft;
+    urme = [{x:e.clientX, t:performance.now()}];
+    cutie.classList.add('se-trage');
+    aluat = true; opri();
+  });
+  banda.addEventListener('pointermove', e => {
+    if(!jos_deget) return;
+    const d = e.clientX - x0; mutat = Math.max(mutat, Math.abs(d));
+    banda.scrollLeft = s0 - d;
+    urme.push({x:e.clientX, t:performance.now()});
+    if(urme.length > 10) urme.shift();
+  });
+  function sus(){
+    if(!jos_deget) return; jos_deget = false;
+    /* intai se opreste lipirea, abia apoi se scoate clasa de tragere */
+    cutie.classList.add('aluneca');
+    cutie.classList.remove('se-trage');
+    /* viteza din ultimele urme, ca un fleac scurt sa treaca mai departe */
+    let v = 0;
+    if(urme.length > 1){
+      const b = urme[urme.length-1];
+      let a = urme[0];
+      for(let k = urme.length-2; k >= 0; k--){ a = urme[k]; if(b.t - a.t >= 25) break; }
+      const dt = b.t - a.t;
+      if(dt > 0 && dt < 260) v = -(b.x - a.x) / dt;
+    }
+    const lat = figuri[0].offsetWidth || 1;
+    let i = laCare();
+    const dus = banda.scrollLeft - s0;
+    if(Math.abs(dus) > lat * 0.18 || Math.abs(v) > 0.35){
+      const plec = Math.round(s0 / lat);
+      i = Math.max(0, Math.min(figuri.length-1, plec + (dus > 0 ? 1 : -1)));
+    }
+    alunecaLa(stangaLui(i), Math.max(240, Math.min(480, 480 - Math.abs(v)*80)));
+  }
+  banda.addEventListener('pointerup', sus);
+  banda.addEventListener('pointercancel', sus);
+  banda.addEventListener('pointerleave', sus);
+  banda.addEventListener('click', e => {
+    if(mutat > 9){ e.stopPropagation(); e.preventDefault(); }
+  }, true);
+
+  /* ---------- trece singur, doar unde s-a cerut ---------- */
+  let ceas = null;
+  function porni(){
+    if(!cutie.classList.contains('auto') || !MOTION || ceas || aluat) return;
+    ceas = setInterval(() => {
+      alunecaLa(stangaLui((laCare()+1) % figuri.length), 620);
+    }, 6000);
+  }
+  function opri(){ if(ceas){ clearInterval(ceas); ceas = null; } }
+  cutie.addEventListener('pointerenter', opri);
+  cutie.addEventListener('pointerleave', porni);
+  document.addEventListener('visibilitychange', () => document.hidden ? opri() : porni());
+  const cereToate = () => banda.querySelectorAll('img[loading="lazy"]')
+    .forEach(i => { i.loading = 'eager'; if(!i.complete) i.src = i.src; });
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(is => is.forEach(x => {
+      if(x.isIntersecting){ cereToate(); porni(); } else opri();
+    }), {threshold:.2, rootMargin:'200px 0px'}).observe(cutie);
+  } else { cereToate(); porni(); }
+};
+
+/* fiecare carusel pe drumul lui */
+document.querySelectorAll('.tras').forEach(c =>
+  (c.classList.contains('unul') ? window.porneste_unul : window.porneste_tras)(c));
 
 
 
