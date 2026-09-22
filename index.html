@@ -1074,8 +1074,9 @@ p{margin:0}
 .c-item span{font-size:14px;color:rgba(245,240,231,.66);line-height:1.55}
 .map-card{border-radius:var(--r-lg);overflow:hidden;position:relative;min-height:260px;background:var(--navy-2)}
 .map-card img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:.85}
-.map-card .mc-b{position:absolute;left:20px;right:20px;bottom:20px;background:rgba(7,28,44,.86);
-  backdrop-filter:blur(6px);border:1px solid rgba(201,154,74,.24);border-radius:var(--r);padding:16px 18px}
+/* Scrisul sta SUB fotografie, nu peste ea (vezi v14c). O singura regula,
+   nu una care o suprascrie pe alta - altfel nu se mai stie care e adevarul. */
+.map-card .mc-b{margin-top:14px}
 .map-card .mc-b b{display:block;font-family:var(--serif);font-size:18px;margin-bottom:4px}
 .map-card .mc-b span{font-size:13px;color:rgba(245,240,231,.66)}
 .foot{background:var(--navy);color:rgba(245,240,231,.5);border-top:1px solid rgba(201,154,74,.16);
@@ -1722,9 +1723,8 @@ p{margin:0}
   filter:grayscale(.82) contrast(.92) brightness(.94);opacity:.62;
   transition:filter .45s var(--ease),opacity .45s var(--ease)}
 .ev-tr:hover img{filter:grayscale(0) contrast(1) brightness(1);opacity:.94}
-.ev-tr figcaption{position:absolute;left:0;right:0;bottom:0;z-index:2;
-  padding:26px 13px 12px;text-align:left;color:#fff;
-  background:linear-gradient(transparent,rgba(7,28,44,.86))}
+/* Sub fotografie, nu peste ea: acolo e titlul si data, nu o eticheta. */
+.ev-tr figcaption{padding:10px 0 0;text-align:left}
 .ev-tr figcaption b{display:block;font-family:var(--serif);font-size:15px;
   font-weight:600;line-height:1.25}
 .ev-tr figcaption span{font:600 10px/1.3 var(--sans);letter-spacing:.12em;
@@ -1780,7 +1780,10 @@ p{margin:0}
    Ramane exact unde era. Se schimba doar atat: nu se mai intinde (are
    raportul fotografiei, 3:2, deci nu se taie nimic) si ramane pe loc cat
    derulezi pe langa ea - altfel ar fi ramas o jumatate de coloana goala. */
-.map-card{aspect-ratio:3/2;min-height:0;align-self:start;
+/* Raportul sta pe FOTOGRAFIE, nu pe carte: cu el pe carte si cu
+   `overflow:visible`, scrisul de sub fotografie iesea din cutie si cadea
+   peste subsol, sub sigla - dreptunghiul alb peste „Ne vedem la masa". */
+.map-card{min-height:0;align-self:start;
   position:sticky;top:clamp(76px,8vh,104px)}
 .map-card img{opacity:.92}
 @media(max-width:899px){.map-card{position:static}}
@@ -1926,13 +1929,10 @@ p{margin:0}
 .ev-tr{aspect-ratio:auto;background:none}
 .ev-tr-poza{display:block;position:relative;overflow:hidden;aspect-ratio:3/4;
   background:var(--navy-2)}
-.ev-tr figcaption{position:static;padding:10px 0 0;background:none;color:var(--ink)}
 .ev-tr figcaption b{font-family:var(--serif);font-size:15px;font-weight:600;
   display:block;line-height:1.25}
 .ev-tr figcaption span{font:600 10px/1.3 var(--sans);letter-spacing:.12em;
   text-transform:uppercase;color:var(--muted)}
-.map-card figure{margin:0;position:absolute;inset:0}
-.map-card figure img{position:absolute;inset:0}
 
 /* ---------- SPATIUL VERTICAL PE TELEFON ----------
    Pe un ecran de 390 px pagina avea 16.000 px inaltime: derulai minute
@@ -1970,8 +1970,6 @@ p{margin:0}
   overflow:hidden;background:var(--navy-2)}
 .map-card figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .map-card::before{border-radius:inherit}
-.map-card .mc-b{position:static;margin-top:14px;background:none;border:0;
-  backdrop-filter:none;padding:0}
 .map-card .mc-b b{color:var(--cream)}
 
 /* Intre titlul sectiunii de evenimente si „Deocamdata" erau 110 px de
@@ -2079,6 +2077,56 @@ p{margin:0}
   .info-cell p, .info-cell span{line-height:1.4}
   .acum-stare{gap:6px}
 }
+
+/* ---------- CARUSELUL CARE CURGE ----------
+   Fara diapozitive, deci fara lipire si fara dungi din fotografiile
+   vecine. Continutul e dublat si animatia muta exact jumatate: bucla se
+   inchide fara cusatura. */
+.tras{position:relative;overflow:hidden}
+.tras-banda{display:block;overflow:hidden;cursor:grab;
+  touch-action:pan-y pinch-zoom;              /* lateralul il facem noi */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 3%,#000 97%,transparent 100%)}
+.tras.se-trage .tras-banda{cursor:grabbing}
+.tras.se-trage img{pointer-events:none}
+.tras-tug{transform:translate3d(var(--tug,0px),0,0)}
+.tras.se-trage .tras-tug{transition:none}
+.tras-sina{display:flex;gap:4px;width:max-content;
+  animation:trasCurge var(--tras-dur,70s) linear infinite}
+.tras.stat .tras-sina{animation-play-state:paused}
+.tras.se-trage .tras-sina{animation-play-state:paused}
+@keyframes trasCurge{to{transform:translateX(calc(-50% - 2px))}}
+.tras-sina figure{flex:none;margin:0;position:relative;overflow:hidden;
+  background:var(--navy-2)}
+.tras-sina img{width:100%;height:100%;object-fit:cover;display:block}
+@media (prefers-reduced-motion:reduce){
+  .tras-sina{animation:none}
+  .tras-banda{overflow-x:auto!important;touch-action:pan-x pan-y}
+}
+
+/* latimile: cat un card, nu cat ecranul */
+.tras .tras-sina figure{width:78vw;max-width:520px;aspect-ratio:16/10}
+.tras.multi .tras-sina figure{width:72vw;aspect-ratio:4/3}
+@media(min-width:760px){
+  .tras .tras-sina figure{width:min(46vw,520px)}
+  .tras.multi .tras-sina figure{width:min(31vw,360px)}
+}
+@media(min-width:1040px){
+  .tras.multi .tras-sina figure{width:min(24vw,330px)}
+}
+.tras.multi.trecute .tras-sina figure{aspect-ratio:auto;width:min(52vw,240px)}
+
+/* Un carusel cu o singura fotografie nu curge si nu se trage: e o
+   fotografie. */
+.tras.singur .tras-banda{overflow:visible;cursor:default;
+  -webkit-mask-image:none;mask-image:none}
+.tras.singur figure{margin:0;max-width:min(52vw,240px)}
+@media(max-width:680px){.tras.singur figure{max-width:60vw}}
+
+/* Evenimentele trecute: scrisul sub afis, nu peste el. */
+.tras-sina .ev-tr, .tras.singur .ev-tr{overflow:visible;background:none}
+.tras-sina .ev-tr figcaption, .tras.singur .ev-tr figcaption{
+  position:static;background:none;color:var(--ink);padding:10px 0 0}
 </style>
 </head>
 <body>
@@ -2875,7 +2923,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='16.0';
+window.BAFFI_VERSIUNE='17.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3466,8 +3514,13 @@ function openDish(ci,ii){
   document.getElementById('dishIng').innerHTML = `<b>Ce conține</b>${ing}`;
   paintDishBtn();
   closeAll();
-  document.getElementById('mDish').classList.add('on');
+  const fisa=document.getElementById('mDish');
+  fisa.classList.add('on');
   document.body.classList.add('locked');
+  /* fundalul iese din drum si focusul intra in fereastra, ca la
+     celelalte - altfel tastatura ramane in pagina de dedesubt */
+  fundalInert(true);
+  if(typeof focusInauntru==='function') focusInauntru(fisa);
 }
 function paintDishBtn(){
   if(!dishCur) return;
@@ -3613,9 +3666,25 @@ document.addEventListener('pointerdown', e=>{
 }, true);
 
 /* La pornire, tot ce e inchis iese din pagina. */
-document.querySelectorAll('.modal, #cart, #mnav, #lb').forEach(el=>{
-  if(!el.classList.contains('on')) inert(el, true);
-});
+const MATURATE=[...document.querySelectorAll('.modal, #cart, #mnav, #lb')];
+MATURATE.forEach(el=>{ if(!el.classList.contains('on')) inert(el, true); });
+
+/* ---------- INERT-UL URMEAZA CLASA `.on`, SINGUR ----------
+   Pana acum fiecare deschizator trebuia sa-si aminteasca sa scoata
+   `inert`-ul. `openModal()` isi amintea; fisa preparatului nu - si un
+   element inert nu primeste NICIUN clic: nici X-ul, nici clicul in gol.
+   Fereastra ramanea pe ecran si nu se mai putea inchide cu nimic.
+
+   Nu depinde de memoria nimanui: cand un element maturat primeste `.on`,
+   iese din inert; cand o pierde, intra la loc. Orice deschizator viitor
+   e acoperit din nastere. */
+if(window.MutationObserver){
+  const paznic=new MutationObserver(m=>m.forEach(x=>{
+    const el=x.target;
+    if(MATURATE.indexOf(el)>=0) inert(el, !el.classList.contains('on'));
+  }));
+  MATURATE.forEach(el=>paznic.observe(el,{attributes:true,attributeFilter:['class']}));
+}
 
 /* ---------- SERTAR + MODALE ---------- */
 const scrim=document.getElementById('scrim'), cartEl=document.getElementById('cart');
@@ -3885,217 +3954,168 @@ function oraInProgram(hhmm, dataISO){
 /* Pana acum era scris o data, pentru un singur id. Acum e o functie
    chemata pentru FIECARE carusel din pagina - altfel al doilea ar fi ramas
    in urma la fiecare imbunatatire adusa primului. */
-/* Pana acum caruselele se porneau o singura data, la incarcare. Doua
-   dintre ele se nasc din cod dupa aceea (evenimentele trecute, galeria de
-   la petreceri), deci pornirea trebuie sa fie chemabila si mai tarziu. */
+/* ══════════════════════════════════════════════════════════════════
+   CARUSELUL CARE CURGE SINGUR SI SE LASA TRAS
+   ══════════════════════════════════════════════════════════════════
+   Varianta dinainte avea diapozitive: la fiecare ridicare a degetului
+   banda se aseza pe cel mai apropiat. Tehnic mergea; practic, omul nu
+   putea opri unde voia - il trage componenta. Iar cand am scos lipirea,
+   banda ramanea oprita intre doua fotografii, cu cate o dunga din
+   vecine in acelasi cadru.
+
+   Acum nu mai exista diapozitive. Banda curge incet, singura, la vreo
+   44 de pixeli pe secunda. Cand pui degetul pe ea, se opreste si te
+   urmeaza. Cand ii dai drumul, aluneca putin si isi continua drumul DE
+   UNDE AI LASAT-O - deplasarea ta devine avans de faza al animatiei,
+   deci nu sare inapoi.
+
+   Fara „trage", fara buline: cand ceva se misca singur si urmeaza
+   degetul din prima atingere, nu mai are nevoie de instructiuni.
+
+   Continutul e dublat, iar animatia muta exact jumatate - asa bucla se
+   inchide fara cusatura. Copiile sunt marcate `data-clona`, ca lupa sa
+   nu numere aceleasi fotografii de doua ori. */
 window.porneste_tras = function(cutie){
   if(!cutie || cutie.dataset.pornit) return;
-  cutie.dataset.pornit='1';
-  const banda=cutie.querySelector('.tras-banda');
-  const figuri=[...banda.querySelectorAll('figure')];
-  const buline=cutie.querySelector('.tras-buline');
-  const semn=cutie.querySelector('.tras-semn');
-  if(!banda || !buline || figuri.length<2) return;
+  const banda = cutie.querySelector('.tras-banda');
+  if(!banda) return;
+  const bucati = [...banda.children].filter(e=>e.tagName==='FIGURE');
+  if(!bucati.length) return;
+  cutie.dataset.pornit = '1';
 
-  buline.innerHTML=figuri.map((f,i)=>
-    `<button type="button" role="tab" aria-label="Fotografia ${i+1} din ${figuri.length}"
-      aria-selected="${i===0}"${i===0?' class="on"':''}></button>`).join('');
-  const bul=[...buline.querySelectorAll('button')];
-
-  function laCare(){
-    const c=banda.scrollLeft+banda.clientWidth/2;
-    let cel=0, cred=Infinity;
-    figuri.forEach((f,i)=>{ const m=f.offsetLeft+f.offsetWidth/2;
-      const d=Math.abs(m-c); if(d<cred){cred=d;cel=i} });
-    return cel;
-  }
-  function pictează(){
-    const i=laCare();
-    bul.forEach((b,j)=>{ b.classList.toggle('on',j===i);
-      b.setAttribute('aria-selected', j===i?'true':'false'); });
-  }
-  banda.addEventListener('scroll',()=>{ clearTimeout(banda._t);
-    banda._t=setTimeout(pictează,90); },{passive:true});
-  bul.forEach((b,i)=>b.addEventListener('click',()=>alunecaLa(stangaLui(i),420)));
-
-  /* ---------- TRAGEREA, CU INERTIE ----------
-     Prima varianta muta bara direct si, la ridicarea degetului, sarea pe
-     cel mai apropiat diapozitiv. Nu exista inertie: tragi, dai drumul, se
-     opreste. Se simte ca un sertar intepenit.
-
-     Acum se masoara VITEZA cu care a fost lasat - din ultimele patru
-     pozitii, in pixeli pe milisecunda - si se calculeaza unde ar ajunge
-     daca ar aluneca liber. De acolo se alege diapozitivul. Un fleac dat
-     repede trece mai departe; unul lenes se intoarce.
-
-     Alunecarea o facem noi, ca sa aiba incetinire la capat: `scrollIntoView`
-     nu are curba proprie si ajunge tot brusc. */
-  let jos=false, x0=0, s0=0, mutat=0, urme=[];
-
-  function alunecaLa(tinta, durata, gata){
-    /* Lipirea (`scroll-snap`) si alunecarea proprie nu pot merge deodata:
-       la fiecare cadru browserul ar trage banda inapoi in punctul de
-       lipire. Pana acum clasa asta o punea doar tragerea; bulinele si
-       sagetile alunecau cu lipirea pornita. */
-    cutie.classList.add('aluneca');
-    const de_la=banda.scrollLeft, dist=tinta-de_la;
-    if(!MOTION || Math.abs(dist)<2){ banda.scrollLeft=tinta;
-      cutie.classList.remove('aluneca'); gata&&gata(); return; }
-    const t0=performance.now();
-    /* incetinire la capat, fara sa porneasca brusc */
-    const curba=t=>1-Math.pow(1-t,3);
-    let terminat=false;
-    const inchide=()=>{ if(terminat) return; terminat=true;
-      banda.scrollLeft=tinta; cutie.classList.remove('aluneca'); gata&&gata(); };
-    (function pas(acum){
-      if(terminat) return;
-      const t=Math.min(1,(acum-t0)/durata);
-      banda.scrollLeft=de_la+dist*curba(t);
-      if(t<1) requestAnimationFrame(pas); else inchide();
-    })(t0);
-    /* Plasa: daca fereastra ajunge ascunsa intre timp, browserul nu mai da
-       cadre si alunecarea ar ramane in aer, cu lipirea oprita si banda la
-       jumatate de drum. Probat: intr-o fereastra ascunsa, rAF da zero
-       cadre. Asa se duce la capat oricum. */
-    setTimeout(inchide, durata+140);
-  }
-  function celDeLa(x){
-    let cel=0, cred=Infinity;
-    figuri.forEach((f,i)=>{ const m=f.offsetLeft+f.offsetWidth/2-banda.clientWidth/2;
-      const d=Math.abs(m-x); if(d<cred){cred=d;cel=i} });
-    return cel;
-  }
-  function stangaLui(i){
-    return figuri[i].offsetLeft+figuri[i].offsetWidth/2-banda.clientWidth/2;
+  /* O singura fotografie nu e carusel. Daca o dublam ca sa curga bucla,
+     omul vede acelasi afis de doua ori, unul langa altul - exact ce s-a
+     intamplat la un singur eveniment trecut. Sta pur si simplu acolo. */
+  if(bucati.length < 2){
+    cutie.classList.add('singur');
+    const j0 = cutie.querySelector('.tras-jos');
+    if(j0) j0.remove();
+    return;
   }
 
-  banda.addEventListener('pointerdown',e=>{
-    cancelAnimationFrame(cutie._raf||0);   /* atingerea opreste alunecarea */
-    /* Degetul era lasat pe seama derularii native a browserului. Suna
-       rezonabil, dar nu se poate PROBA de aici - si asa am livrat doua
-       carusele moarte la atingere, fiindca `touch-action:pan-y` ii
-       interzicea browserului exact miscarea pe care ma bazam.
-       Acum degetul merge pe acelasi drum ca mouse-ul: aceeasi inertie,
-       acelasi prag, acelasi rezultat. Browserului ii ramane verticala. */
-    jos=true; mutat=0; x0=e.clientX; s0=banda.scrollLeft;
-    urme=[{x:e.clientX, t:performance.now()}];
+  /* semnul „trage" si bulinele nu mai au rost */
+  const jos = cutie.querySelector('.tras-jos');
+  if(jos) jos.remove();
+
+  const sina = document.createElement('div');
+  sina.className = 'tras-sina';
+  bucati.forEach(f => sina.appendChild(f));
+  bucati.forEach(f => {
+    const c = f.cloneNode(true);
+    c.setAttribute('aria-hidden', 'true');
+    c.dataset.clona = '1';
+    c.querySelectorAll('img').forEach(i => i.alt = '');
+    sina.appendChild(c);
+  });
+  const tug = document.createElement('div');
+  tug.className = 'tras-tug';
+  tug.appendChild(sina);
+  banda.appendChild(tug);
+  banda.style.overflowX = 'hidden';   /* miscarea o da animatia, nu derularea */
+
+  /* Fotografiile din afara ecranului pe orizontala nu se incarca singure:
+     la o tragere rapida s-ar vedea o caseta goala. */
+  const cereToate = () => banda.querySelectorAll('img[loading="lazy"]')
+    .forEach(i => { i.loading = 'eager'; if(!i.complete) i.src = i.src; });
+
+  /* Viteza se calculeaza din latimea reala, ca sa fie aceeasi pe orice
+     ecran, si se RECALCULEAZA pe masura ce intra fotografiile: masurata
+     inainte de incarcare, latimea e mica si banda ar zbura. */
+  const setViteza = () => {
+    const l = sina.scrollWidth / 2;
+    if(l < 200) return;
+    cutie.style.setProperty('--tras-dur', Math.min(220, Math.max(40, Math.round(l / 44))) + 's');
+  };
+  setViteza();
+  addEventListener('resize', setViteza, {passive:true});
+  sina.querySelectorAll('img').forEach(i => {
+    if(i.complete) return;
+    i.addEventListener('load', setViteza, {once:true});
+    i.addEventListener('error', setViteza, {once:true});
+  });
+  if(window.ResizeObserver) new ResizeObserver(setViteza).observe(sina);
+
+  /* ---------- tragerea, peste mersul de fond ---------- */
+  let apucat = null, faza = 0, deplasare = 0, viteza = 0, ultX = 0, ultT = 0,
+      raf = 0, gataId = 0, mutat = 0;
+  const jumate = () => Math.max(1, sina.scrollWidth / 2);
+  const durata = () => parseFloat(getComputedStyle(sina).animationDuration) || 70;
+  const aplicaFaza = () => { sina.style.animationDelay = (-faza) + 's'; };
+  const scrie = () => tug.style.setProperty('--tug', deplasare.toFixed(2) + 'px');
+
+  function apuca(x){
+    cancelAnimationFrame(raf); clearTimeout(gataId);
+    apucat = {x, tug: deplasare};
+    viteza = 0; ultX = x; ultT = performance.now(); mutat = 0;
     cutie.classList.add('se-trage');
-    /* Captura e un lux, nu o conditie: fara ea tragerea merge oricum,
-       doar ca se opreste daca degetul iese din banda. Cand degetul a
-       fost deja ridicat - sau cand evenimentul vine din cod - nu mai
-       exista niciun indicator activ cu acel numar si apelul arunca. */
-    try{ banda.setPointerCapture && banda.setPointerCapture(e.pointerId); }
-    catch(err){ /* mergem mai departe fara captura */ }
-  });
-  banda.addEventListener('pointermove',e=>{
-    if(!jos) return;
-    const d=e.clientX-x0; mutat=Math.max(mutat,Math.abs(d));
-    banda.scrollLeft=s0-d;
-    urme.push({x:e.clientX, t:performance.now()});
-    if(urme.length>10) urme.shift();
-  });
-  function sus(){
-    if(!jos) return; jos=false;
-    /* Viteza, in pixeli pe milisecunda. Se cauta inapoi pana la o urma mai
-       veche de cel putin 25 ms: cand browserul trimite mai multe pozitii
-       in acelasi cadru, intre ele sunt sub o milisecunda, iar un fleac
-       rapid ar iesi ca tragere lenesa. */
-    let v=0;
-    if(urme.length>1){
-      const b=urme[urme.length-1];
-      let a=urme[0];
-      for(let k=urme.length-2;k>=0;k--){ a=urme[k]; if(b.t-a.t>=25) break; }
-      const dt=b.t-a.t;
-      if(dt>0 && dt<260) v=-(b.x-a.x)/dt;     /* semnul: invers fata de deget */
-    }
+  }
+  function trage(x){
+    if(!apucat) return;
+    const t = performance.now(), dt = Math.max(8, t - ultT);
+    viteza = viteza * 0.7 + ((x - ultX) / dt) * 0.3;   /* netezita */
+    ultX = x; ultT = t;
+    deplasare = apucat.tug + (x - apucat.x);
+    mutat = Math.max(mutat, Math.abs(x - apucat.x));
+    scrie();
+  }
+  /* Deplasarea in pixeli devine avans de faza pe animatie: banda isi
+     continua drumul exact de unde a ramas, fara salt inapoi. */
+  function preiaFaza(){
+    clearTimeout(gataId); cancelAnimationFrame(raf);
+    const d = durata();
+    faza = (faza - (deplasare / jumate()) * d) % d;
+    if(faza < 0) faza += d;
+    deplasare = 0; scrie(); aplicaFaza();
     cutie.classList.remove('se-trage');
-
-    /* ---------- CURGE LIBER, NU SARE PE DIAPOZITIV ----------
-       Pana acum, la fiecare ridicare a degetului banda se lipea de cel
-       mai apropiat diapozitiv. Adica nu puteai opri unde vrei: te trage
-       el. Acum banda isi continua drumul cu frecare si se opreste unde ai
-       lasat-o - ca o banda adevarata. Bulinele arata in continuare unde
-       esti, iar apasarea pe ele duce tot la un diapozitiv anume. */
-    const capat=()=>banda.scrollWidth-banda.clientWidth;
-    if(!MOTION || Math.abs(v)<0.04){ pictează(); return; }
-    let vel=v*16.67;                 /* pixeli pe cadru */
-    let ult=performance.now();
-    cancelAnimationFrame(cutie._raf||0);
-    cutie._raf=requestAnimationFrame(function pas(t){
-      const dt=Math.min(40, t-ult); ult=t;
-      vel *= Math.pow(0.935, dt/16.67);
-      let x=banda.scrollLeft + vel*dt/16.67;
-      if(x<=0){ x=0; vel=0; }
-      const M=capat();
-      if(x>=M){ x=M; vel=0; }
-      banda.scrollLeft=x;
-      if(Math.abs(vel)>0.12) cutie._raf=requestAnimationFrame(pas);
-      else pictează();
+  }
+  function elibereaza(){
+    if(!apucat) return;
+    apucat = null;
+    gataId = setTimeout(preiaFaza, 760);   /* plasa: daca nu vin cadre */
+    if(!MOTION || Math.abs(viteza) < 0.03){ preiaFaza(); return; }
+    let v = Math.max(-3.2, Math.min(3.2, viteza)), t0 = performance.now(), ult = t0;
+    raf = requestAnimationFrame(function glisa(t){
+      const dt = Math.min(40, t - ult); ult = t;
+      v *= Math.pow(0.93, dt / 16.67);
+      deplasare += v * dt; scrie();
+      if(Math.abs(v) > 0.02 && t - t0 < 700) raf = requestAnimationFrame(glisa);
+      else preiaFaza();
     });
   }
-  banda.addEventListener('pointerup',sus);
-  banda.addEventListener('pointercancel',sus);
-  banda.addEventListener('pointerleave',sus);
-  /* un clic care vine dupa o tragere nu e clic */
-  banda.addEventListener('click',e=>{ if(mutat>9){ e.stopPropagation(); e.preventDefault(); } },true);
 
-  /* sagetile de la tastatura */
-  banda.setAttribute('tabindex','0');
-  banda.addEventListener('keydown',e=>{
-    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
-    e.preventDefault();
-    const i=Math.min(figuri.length-1,Math.max(0,laCare()+(e.key==='ArrowRight'?1:-1)));
-    alunecaLa(stangaLui(i),380);
+  banda.addEventListener('pointerdown', e => {
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    apuca(e.clientX);
+    addEventListener('pointermove', cuMouse);
+    addEventListener('pointerup', opreste, {once:true});
+    addEventListener('pointercancel', opreste, {once:true});
   });
+  function cuMouse(e){ trage(e.clientX); }
+  function opreste(){ removeEventListener('pointermove', cuMouse); elibereaza(); }
 
-  /* semnul „trage" se misca o singura data, cand ajunge in ecran */
-  if(MOTION && 'IntersectionObserver' in window){
-    const o=new IntersectionObserver(is=>{ is.forEach(x=>{
-      if(x.isIntersecting){ semn.classList.add('arata'); o.disconnect(); } }); },{threshold:.5});
-    o.observe(cutie);
-  }
+  /* degetul: derularea nativa nu mai exista, deci o facem noi */
+  banda.addEventListener('touchstart', e => { if(e.touches[0]) apuca(e.touches[0].clientX); }, {passive:true});
+  banda.addEventListener('touchmove',  e => { if(e.touches[0]) trage(e.touches[0].clientX); }, {passive:true});
+  banda.addEventListener('touchend', elibereaza, {passive:true});
+  banda.addEventListener('touchcancel', elibereaza, {passive:true});
 
-  /* ---------- MERGE SINGUR ----------
-     Cerut anume. Pana acum se misca doar daca il trageai, iar cine nu
-     observa semnul „trage" vedea o singura fotografie si mergea mai
-     departe. Acum trece singur la 5,5 secunde.
+  /* o tragere nu e un clic: altfel fiecare tragere ar deschide lupa */
+  banda.addEventListener('click', e => {
+    if(mutat > 9){ e.stopPropagation(); e.preventDefault(); }
+  }, true);
 
-     Din clipa in care omul pune mana pe el, ceasul se opreste definitiv:
-     daca s-a apucat sa aleaga, nu mai are nimeni ce sa-i mute fotografia
-     de sub deget. Pana atunci se opreste si cand trece cu mouse-ul peste,
-     cand fereastra nu e in fata si cand banda nu e pe ecran. */
-  let ceas=null, aluat=false;
-  function treci(){
-    if(jos||aluat) return;
-    alunecaLa(stangaLui((laCare()+1)%figuri.length), 620, pictează);
-  }
-  function porni(){ if(!MOTION||ceas||aluat) return; ceas=setInterval(treci,5500); }
-  function opri(){ if(ceas){ clearInterval(ceas); ceas=null; } }
-  function gata_de_tot(){ aluat=true; opri(); }
-
-  cutie.addEventListener('pointerenter',opri);
-  cutie.addEventListener('pointerleave',porni);
-  cutie.addEventListener('pointerdown',gata_de_tot);
-  banda.addEventListener('keydown',gata_de_tot);
-  buline.addEventListener('click',gata_de_tot);
-  document.addEventListener('visibilitychange',()=>
-    document.hidden ? opri() : porni());
-  /* Fotografiile din carusel care stau in afara ecranului PE ORIZONTALA
-     raman neincarcate: la o tragere rapida se vedea o caseta goala pana
-     se incarcau. Cand caruselul intra pe ecran, i se cer toate odata. */
-  function cereToate(){
-    cutie.querySelectorAll('img[loading="lazy"]').forEach(i=>{
-      i.loading='eager'; if(!i.complete) i.src=i.src; });
-  }
+  /* nu se invarte cat timp nu e pe ecran sau fereastra nu e in fata */
+  const opri = () => cutie.classList.add('stat');
+  const porni = () => { if(MOTION) cutie.classList.remove('stat'); };
+  document.addEventListener('visibilitychange', () => document.hidden ? opri() : porni());
   if('IntersectionObserver' in window){
-    new IntersectionObserver(is=>is.forEach(x=>{
-      if(x.isIntersecting){ cereToate(); porni(); } else opri(); }),
-      {threshold:.15, rootMargin:'300px 0px'}).observe(cutie);
+    new IntersectionObserver(is => is.forEach(x => {
+      if(x.isIntersecting){ cereToate(); porni(); } else opri();
+    }), {threshold:.05, rootMargin:'300px 0px'}).observe(cutie);
   } else { cereToate(); porni(); }
-
-  pictează();
 };
 document.querySelectorAll('.tras').forEach(window.porneste_tras);
+
 
 
 /* ---------- PUNTILE DINTRE BENZI ----------
@@ -4504,7 +4524,9 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
   }
   function deschide(fig){
     const grup=fig.closest(GRUPURI); if(!grup) return;
-    const figuri=[...grup.querySelectorAll('figure')].filter(f=>f.querySelector('img'));
+    /* clonele din caruselele care curg nu se numara de doua ori */
+    const figuri=[...grup.querySelectorAll('figure')]
+      .filter(f=>f.querySelector('img') && !f.dataset.clona);
     set=figuri.map(f=>{ const im=f.querySelector('img');
       return {src:sursaMare(im), alt:im.alt||'', cap:textul(f)}; });
     idx=Math.max(0, figuri.indexOf(fig));
