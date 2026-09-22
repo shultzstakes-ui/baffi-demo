@@ -2170,6 +2170,46 @@ p{margin:0}
   font-weight:600;margin-bottom:4px;color:var(--cream)}
 .map-card .mc-b span{font-size:13px;color:rgba(245,240,231,.66);line-height:1.45}
 .tras.unul.aluneca .tras-banda{scroll-snap-type:none}
+
+/* ---------- DESCHIDEREA, PE LAPTOP ----------
+   Fotografia are raportul 1,263. Caseta avea 769x666, adica 1,155: mai
+   inalta decat fotografia, deci browserul o umfla ca sa umple inaltimea
+   si intrarea iesea marita si impinsa spre dreapta, pe sub text.
+
+   Caseta se largeste (58% in loc de 54%) si inaltimea ei se leaga de
+   latime: nu poate depasi latimea impartita la 1,2. Asa fotografia intra
+   aproape intreaga, la marimea ei, nu umflata. */
+@media(min-width:960px){
+  /* Coloana ramane cat a fost aprobata. Marimea intrarii pe ecran e
+     data de TAIETURA fotografiei, nu de caseta: cu o taietura stransa
+     firma va domina oricat as ingusta coloana. */
+  .hero-grid{grid-template-columns:minmax(0,1fr) min(54%, 860px)}
+}
+}
+
+/* ---------- FOTOGRAFIILE DIN CARUSEL, CA RESTUL CASEI ----------
+   Cand am rescris caruselul, fotografiile lui au ramas taiate drept, fara
+   umbra de adancime - nu mi s-a cerut asta, e o schimbare pe care am
+   facut-o fara sa vreau. Se intorc la tratamentul casei: aceleasi colturi
+   rotunjite si aceeasi umbra foarte usoara sus si jos ca la toate
+   celelalte fotografii din pagina. */
+.tras-sina figure, .tras.unul .tras-banda figure{
+  border-radius:var(--r-md,14px);overflow:hidden}
+.tras-sina figure::after, .tras.unul .tras-banda figure::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  border-radius:inherit;
+  background:linear-gradient(rgba(7,28,44,.13), rgba(7,28,44,0) 28%,
+                             rgba(7,28,44,0) 70%, rgba(7,28,44,.17))}
+/* afisele de eveniment au scrisul dedesubt, deci nu au ce umbri */
+.tras-sina .ev-tr::after, .tras.singur .ev-tr::after{display:none}
+.tras-sina .ev-tr, .tras.singur .ev-tr{border-radius:0}
+.tras-sina .ev-tr .ev-tr-poza, .tras.singur .ev-tr .ev-tr-poza{
+  border-radius:var(--r-md,14px);overflow:hidden}
+
+/* Banda nu mai merge dintr-o animatie CSS: pozitia ei o scrie codul, in
+   pixeli. Asa degetul si mersul de fond nu se mai bat pe acelasi lucru. */
+.tras-sina{animation:none!important}
+.tras-tug{transform:none!important}
 </style>
 </head>
 <body>
@@ -2966,7 +3006,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='18.0';
+window.BAFFI_VERSIUNE='19.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -4064,79 +4104,85 @@ window.porneste_tras = function(cutie){
   /* Viteza se calculeaza din latimea reala, ca sa fie aceeasi pe orice
      ecran, si se RECALCULEAZA pe masura ce intra fotografiile: masurata
      inainte de incarcare, latimea e mica si banda ar zbura. */
-  const setViteza = () => {
-    const l = sina.scrollWidth / 2;
-    if(l < 200) return;
-    cutie.style.setProperty('--tras-dur', Math.min(220, Math.max(40, Math.round(l / 44))) + 's');
-  };
-  setViteza();
-  addEventListener('resize', setViteza, {passive:true});
-  sina.querySelectorAll('img').forEach(i => {
-    if(i.complete) return;
-    i.addEventListener('load', setViteza, {once:true});
-    i.addEventListener('error', setViteza, {once:true});
-  });
-  if(window.ResizeObserver) new ResizeObserver(setViteza).observe(sina);
+  /* Viteza nu se mai calculeaza: banda merge cu 44 de pixeli pe secunda,
+     acelasi ritm pe orice ecran, fiindca acum miscarea e in pixeli, nu
+     intr-o animatie a carei durata trebuia potrivita cu latimea. */
 
-  /* ---------- tragerea, peste mersul de fond ---------- */
-  let apucat = null, faza = 0, deplasare = 0, viteza = 0, ultX = 0, ultT = 0,
-      raf = 0, gataId = 0, mutat = 0;
+  /* ---------- O SINGURA POZITIE, IN PIXELI ----------
+     Inainte, banda mergea dintr-o animatie CSS, iar tragerea muta o
+     invelitoare peste ea. La eliberare incercam sa traducem deplasarea in
+     „avans de faza" - dar faza era o valoare tinuta de noi, care NU stia
+     unde ajunsese animatia intre timp. De aia banda sarea inapoi la
+     fiecare atingere si se simtea ca se impotriveste.
+
+     Acum exista o singura valoare: `poz`, in pixeli. O misca fie mersul
+     de fond, fie degetul (unu la unu), fie alunecarea de dupa. Nu mai
+     sunt doua adevaruri care sa se bata. */
+  let poz = 0, vDrag = 0, tras = false, x0 = 0, poz0 = 0, mutat = 0;
+  let ultX = 0, ultT = 0, ultCadru = 0, rafId = 0, peEcran = false;
+  const V_FOND = 44 / 1000;          /* pixeli pe milisecunda, ritm de citit */
   const jumate = () => Math.max(1, sina.scrollWidth / 2);
-  const durata = () => parseFloat(getComputedStyle(sina).animationDuration) || 70;
-  const aplicaFaza = () => { sina.style.animationDelay = (-faza) + 's'; };
-  const scrie = () => tug.style.setProperty('--tug', deplasare.toFixed(2) + 'px');
+  const aseaza = () => { sina.style.transform = 'translate3d(' + (-poz) + 'px,0,0)'; };
+
+  function cadru(t){
+    const dt = Math.min(50, t - (ultCadru || t)); ultCadru = t;
+    if(!tras){
+      if(Math.abs(vDrag) > 0.015){
+        poz -= vDrag * dt;                       /* alunecarea de dupa deget */
+        vDrag *= Math.pow(0.94, dt / 16.67);
+      } else if(MOTION){
+        vDrag = 0;
+        poz += V_FOND * dt;                      /* mersul de fond */
+      }
+    }
+    const J = jumate();
+    if(poz >= J) poz -= J;
+    if(poz < 0) poz += J;
+    aseaza();
+    rafId = requestAnimationFrame(cadru);
+  }
+  function porneste(){
+    if(rafId) return;
+    ultCadru = 0;
+    rafId = requestAnimationFrame(cadru);
+  }
+  function opreste(){ cancelAnimationFrame(rafId); rafId = 0; }
 
   function apuca(x){
-    cancelAnimationFrame(raf); clearTimeout(gataId);
-    apucat = {x, tug: deplasare};
-    viteza = 0; ultX = x; ultT = performance.now(); mutat = 0;
+    tras = true; vDrag = 0; mutat = 0;
+    x0 = x; poz0 = poz; ultX = x; ultT = performance.now();
     cutie.classList.add('se-trage');
+    porneste();
   }
   function trage(x){
-    if(!apucat) return;
+    if(!tras) return;
     const t = performance.now(), dt = Math.max(8, t - ultT);
-    viteza = viteza * 0.7 + ((x - ultX) / dt) * 0.3;   /* netezita */
+    /* viteza netezita: altfel ultimul cadru dicteaza tot si zvacneste */
+    vDrag = vDrag * 0.65 + ((x - ultX) / dt) * 0.35;
     ultX = x; ultT = t;
-    deplasare = apucat.tug + (x - apucat.x);
-    mutat = Math.max(mutat, Math.abs(x - apucat.x));
-    scrie();
-  }
-  /* Deplasarea in pixeli devine avans de faza pe animatie: banda isi
-     continua drumul exact de unde a ramas, fara salt inapoi. */
-  function preiaFaza(){
-    clearTimeout(gataId); cancelAnimationFrame(raf);
-    const d = durata();
-    faza = (faza - (deplasare / jumate()) * d) % d;
-    if(faza < 0) faza += d;
-    deplasare = 0; scrie(); aplicaFaza();
-    cutie.classList.remove('se-trage');
+    poz = poz0 - (x - x0);                       /* unu la unu cu degetul */
+    mutat = Math.max(mutat, Math.abs(x - x0));
   }
   function elibereaza(){
-    if(!apucat) return;
-    apucat = null;
-    gataId = setTimeout(preiaFaza, 760);   /* plasa: daca nu vin cadre */
-    if(!MOTION || Math.abs(viteza) < 0.03){ preiaFaza(); return; }
-    let v = Math.max(-3.2, Math.min(3.2, viteza)), t0 = performance.now(), ult = t0;
-    raf = requestAnimationFrame(function glisa(t){
-      const dt = Math.min(40, t - ult); ult = t;
-      v *= Math.pow(0.93, dt / 16.67);
-      deplasare += v * dt; scrie();
-      if(Math.abs(v) > 0.02 && t - t0 < 700) raf = requestAnimationFrame(glisa);
-      else preiaFaza();
-    });
+    if(!tras) return;
+    tras = false;
+    cutie.classList.remove('se-trage');
+    /* daca degetul a stat pe loc, banda isi reia mersul; daca a fost
+       aruncata, pleaca cu viteza ei si incetineste singura */
+    vDrag = Math.max(-4, Math.min(4, vDrag));
+    if(Math.abs(vDrag) < 0.02) vDrag = 0;
   }
 
   banda.addEventListener('pointerdown', e => {
     if(e.pointerType === 'mouse' && e.button !== 0) return;
     apuca(e.clientX);
     addEventListener('pointermove', cuMouse);
-    addEventListener('pointerup', opreste, {once:true});
-    addEventListener('pointercancel', opreste, {once:true});
+    addEventListener('pointerup', opresteMouse, {once:true});
+    addEventListener('pointercancel', opresteMouse, {once:true});
   });
   function cuMouse(e){ trage(e.clientX); }
-  function opreste(){ removeEventListener('pointermove', cuMouse); elibereaza(); }
+  function opresteMouse(){ removeEventListener('pointermove', cuMouse); elibereaza(); }
 
-  /* degetul: derularea nativa nu mai exista, deci o facem noi */
   banda.addEventListener('touchstart', e => { if(e.touches[0]) apuca(e.touches[0].clientX); }, {passive:true});
   banda.addEventListener('touchmove',  e => { if(e.touches[0]) trage(e.touches[0].clientX); }, {passive:true});
   banda.addEventListener('touchend', elibereaza, {passive:true});
@@ -4148,14 +4194,21 @@ window.porneste_tras = function(cutie){
   }, true);
 
   /* nu se invarte cat timp nu e pe ecran sau fereastra nu e in fata */
-  const opri = () => cutie.classList.add('stat');
-  const porni = () => { if(MOTION) cutie.classList.remove('stat'); };
-  document.addEventListener('visibilitychange', () => document.hidden ? opri() : porni());
+  /* `peEcran` spune daca banda e in ecran - si NUMAI observatorul il
+     schimba. Cand fereastra trece in fundal se opreste doar bucla, nu si
+     steagul: altfel, la intoarcere, `peEcran` era deja fals si banda nu
+     mai pornea niciodata. Masurat: dupa o trecere in fundal ramanea
+     inghetata la -226 px. */
+  const opri = () => { peEcran = false; opreste(); };
+  const porni = () => { peEcran = true; porneste(); };
+  document.addEventListener('visibilitychange',
+    () => document.hidden ? opreste() : (peEcran && porneste()));
   if('IntersectionObserver' in window){
     new IntersectionObserver(is => is.forEach(x => {
       if(x.isIntersecting){ cereToate(); porni(); } else opri();
     }), {threshold:.05, rootMargin:'300px 0px'}).observe(cutie);
   } else { cereToate(); porni(); }
+  aseaza();
 };
 
 /* ══════════════════════════════════════════════════════════════════
