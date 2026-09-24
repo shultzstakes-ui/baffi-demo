@@ -2226,6 +2226,18 @@ p{margin:0}
   .tras.multi:not(.trecute) .tras-sina figure{flex:none;width:80vw;max-width:none}
 }
 
+/* ---------- „DESPRE" PE BLEUMARIN (varianta A, 25.09) ----------
+   Stilul de baza vine din .dark (cel de la Evenimente private). Aici
+   doar ce era scris pentru fond deschis: supratitlul albastru, textul
+   inchis, discurile insignelor (bleumarin pe bleumarin nu s-ar vedea). */
+#despre.dark .eyebrow{color:var(--gold-lite)}
+#despre.dark .lead, #despre.dark p{color:rgba(245,240,231,.8)}
+#despre.dark b{color:var(--cream)}
+#despre.dark .despre-final{color:rgba(245,240,231,.88)!important}
+#despre.dark .insigne{border-color:rgba(201,154,74,.18)}
+#despre.dark .ins-rot{background:var(--navy-2);border-color:rgba(201,154,74,.4)}
+#despre.dark .insigna figcaption{color:rgba(245,240,231,.72)}
+
 /* ---------- COMANDA PROGRAMATA (25.09) ---------- */
 .nota-inchis{margin:0 0 14px;padding:12px 14px;border-radius:12px;font-size:13.5px;line-height:1.5;
   color:var(--ink);background:rgba(201,154,74,.12);border:1px solid var(--line-gold)}
@@ -2473,7 +2485,7 @@ p{margin:0}
      zi cu zi. Cele cu mese in randuri lungi s-au mutat la evenimente,
      fiindca arata un local pregatit de petrecere, nu unul in care intri
      marti seara. -->
-<section class="sect" id="despre" style="background:var(--cream);--fond:var(--cream)">
+<section class="sect dark" id="despre" style="background:var(--navy);--fond:var(--navy)">
   <div class="wrap">
     <!-- Textul mergea pe o coloana de 583 px si 1158 px inaltime, langa
          un carusel de 364: 794 px de gol in dreapta lui. Acum caruselul
@@ -3058,7 +3070,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='21.0';
+window.BAFFI_VERSIUNE='21.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3229,7 +3241,11 @@ const PETRECERI=[
   {f:'baffi-bar-bufet.webp', c:'Barul, zi de eveniment'},
   {f:'baffi-masa-cadou.webp', c:'Masa așezată'},
   {f:'baffi-masa-turcoaz.webp', c:'Sala mică'},
+  /* 25.09: veranda din capatul celalalt - pe site era doar dinspre intrare */
+  {f:'baffi-veranda-masa.webp', c:'Veranda, cu masa lungă'},
   {f:'baffi-dulciuri.webp', c:'Prăjituri'},
+  /* 25.09: bufetul de la bar, de aproape - pe site era doar de departe */
+  {f:'baffi-bar-detaliu.webp', c:'Bufetul de la bar, de aproape'},
   {f:'baffi-sala-02.webp', c:'Mesele lungi, pe două rânduri'},
   {f:'baffi-sala-03.webp', c:'Spre intrare, cu mesele puse'}
 ];
