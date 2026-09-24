@@ -1566,10 +1566,7 @@ p{margin:0}
 .tras-banda{display:flex;gap:0;overflow-x:auto;scroll-snap-type:none;
   scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
   /* Tragerea laterala o facem noi (vezi codul caruselului), deci
-     browserului ii lasam doar verticala si departarea cu doua degete.
-     Inainte scria tot `pan-y`, dar atunci tragerea laterala nu o facea
-     nimeni: nici browserul, fiindca ii era interzisa, nici codul,
-     fiindca iesea din start pentru degete. */
+     browserului ii lasam doar verticala si departarea cu doua degete. */
   touch-action:pan-y pinch-zoom;
   overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
 .tras-banda::-webkit-scrollbar{display:none}
@@ -1884,7 +1881,13 @@ p{margin:0}
   .doar-lat{display:none}
   .doar-tel{display:inline}
   .hero-copy{padding:30px 22px 34px;gap:13px}
-  .hero-media{aspect-ratio:1.263;min-height:0}
+  /* `width:100%` nu e de forma: pe Safari caseta avea LATIME ZERO, iar
+     cu `aspect-ratio` inaltimea urmeaza latimea - deci fotografia din
+     deschidere pur si simplu nu se vedea pe iPhone. Toti copiii ei sunt
+     asezati absolut, deci latimea din continut e zero, si WebKit o ia pe
+     aceea in loc sa intinda cutia pe coloana. Masurat: 0x0 pe Safari,
+     390x309 pe Chrome. */
+  .hero-media{aspect-ratio:1.263;min-height:0;width:100%}
   .hero .lead{font-size:15.5px;line-height:1.55}
   /* unul langa altul, nu unul sub altul */
   .hero-cta{flex-direction:row;align-items:stretch;gap:10px}
@@ -3006,7 +3009,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='19.0';
+window.BAFFI_VERSIUNE='19.1';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
