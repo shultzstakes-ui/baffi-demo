@@ -121,7 +121,9 @@
   --paper:#fffdf9; --cream:#f5efe6; --soft:#ece3d7; --soft-blue:#e8eef0;
   --body-bg:#f2ece3; --warm:#fffaf3; --terasa:#f7f1e9; --eveniment:#eee6dc;
   --white:#fff;
-  --ink:#14212a; --ink-2:#3c4a53; --muted:#6c716f;
+  /* crem in loc de alb (25.09): trei trepte, toate calde */
+  --crem-foaie:#f8f3eb; --crem-card:#fbf7f1;
+  --ink:#14212a; --ink-2:#3c4a53; --muted:#5e6361;
   --line:rgba(7,28,44,.1); --line-2:rgba(7,28,44,.06);
   --line-gold:rgba(201,154,74,.32);
 
@@ -491,11 +493,11 @@ p{margin:0}
   max-width:1060px;margin-inline:auto;
   box-shadow:0 18px 44px rgba(7,28,44,.07)}
 @media(min-width:820px){.intent-grid{grid-template-columns:repeat(3,1fr)}}
-.intent{background:var(--paper);padding:clamp(20px,2.2vw,28px);display:flex;
+.intent{background:var(--crem-foaie);padding:clamp(20px,2.2vw,28px);display:flex;
   flex-direction:column;gap:7px;position:relative;text-align:left;
   transition:background .3s var(--ease),transform .3s var(--ease)}
 .intent:hover{transform:translateY(-2px)}
-.intent:hover{background:var(--white)}
+.intent:hover{background:var(--crem-card)}
 .intent .num{font:700 9.5px/1 var(--sans);letter-spacing:.2em;color:var(--gold-deep)}
 .intent h3{font-size:clamp(18px,1.6vw,21px);line-height:1.2}
 .intent p{font-size:13.6px;color:var(--muted);line-height:1.5;max-width:30ch}
@@ -614,7 +616,7 @@ p{margin:0}
 .menu-top{display:grid;gap:clamp(22px,3vw,40px);align-items:end;margin-bottom:26px}
 @media(min-width:900px){.menu-top{grid-template-columns:minmax(0,1fr) minmax(300px,420px)}}
 .menu-tools{display:flex;flex-direction:column;gap:12px}
-.search{display:flex;align-items:center;gap:12px;background:var(--white);border:1px solid var(--line);
+.search{display:flex;align-items:center;gap:12px;background:var(--crem-card);border:1px solid var(--line);
   border-radius:999px;padding:13px 20px;transition:border-color .25s var(--ease),box-shadow .25s var(--ease)}
 .search:focus-within{border-color:var(--navy);box-shadow:0 0 0 4px rgba(7,28,44,.06)}
 .search input{flex:1;border:0;outline:0;background:none;font-size:15px;min-width:0}
@@ -626,7 +628,7 @@ p{margin:0}
   color:var(--muted);transition:.25s var(--ease)}
 .seg button.on{background:var(--navy);color:var(--cream)}
 .cat-rail{display:flex;gap:8px;overflow-x:auto;padding-block:4px 14px;scrollbar-width:none;
-  position:sticky;top:var(--hdr-h);z-index:20;background:var(--paper);
+  position:sticky;top:var(--hdr-h);z-index:20;background:var(--cream);
   margin-inline:calc(var(--pad) * -1);padding-inline:var(--pad);
   border-bottom:1px solid var(--line-2)}
 .cat-rail::-webkit-scrollbar{display:none}
@@ -638,7 +640,7 @@ p{margin:0}
   mask-image:linear-gradient(90deg,transparent 0,#000 34px)}
 .cat-rail.fade-l.fade-r{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 46px),transparent 100%);
   mask-image:linear-gradient(90deg,transparent 0,#000 34px,#000 calc(100% - 46px),transparent 100%)}
-.chip{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--white);
+.chip{padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:var(--crem-card);
   font:600 12.5px/1 var(--sans);color:var(--ink-2);white-space:nowrap;transition:.25s var(--ease)}
 .chip:hover{border-color:var(--navy)}
 .chip.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
@@ -678,7 +680,7 @@ p{margin:0}
 /* întoarcerea la lista de secțiuni */
 .cat-back{display:inline-flex;align-items:center;gap:7px;flex:none;
   font:600 10.5px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
-  padding:8px 12px 8px 8px;border:1px solid var(--line);border-radius:999px;background:var(--white);
+  padding:8px 12px 8px 8px;border:1px solid var(--line);border-radius:999px;background:var(--crem-card);
   transition:.25s var(--ease)}
 .cat-back:hover{border-color:var(--navy);color:var(--navy)}
 @media(max-width:559px){.cat-h{flex-wrap:wrap;gap:10px}.cat-back{order:-1}}
@@ -693,7 +695,7 @@ p{margin:0}
 @media(min-width:1000px){.dishes{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:1320px){.dishes{grid-template-columns:repeat(4,1fr)}}
 
-.dish{position:relative;display:flex;flex-direction:column;background:var(--white);
+.dish{position:relative;display:flex;flex-direction:column;background:var(--crem-card);
   border:1px solid var(--line-2);border-radius:var(--r-lg);overflow:hidden;
   transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
 .dish:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--line)}
@@ -805,7 +807,7 @@ p{margin:0}
 .scrim{position:fixed;inset:0;z-index:70;background:rgba(7,28,44,.55);backdrop-filter:blur(3px);
   opacity:0;pointer-events:none;transition:opacity .4s var(--ease)}
 .scrim.on{opacity:1;pointer-events:auto}
-.cart{position:fixed;top:0;right:0;bottom:0;z-index:80;width:min(440px,100%);background:var(--paper);
+.cart{position:fixed;top:0;right:0;bottom:0;z-index:80;width:min(440px,100%);background:var(--crem-foaie);
   display:flex;flex-direction:column;transform:translateX(101%);transition:transform .5s var(--ease);
   box-shadow:var(--shadow-lg)}
 .cart.on{transform:none}
@@ -822,7 +824,7 @@ p{margin:0}
 .quick{margin-top:26px;display:flex;flex-direction:column;gap:8px}
 .quick .qh{font:600 10.5px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:4px}
 .quick button{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border:1px solid var(--line);
-  border-radius:var(--r);background:var(--white);transition:.25s var(--ease)}
+  border-radius:var(--r);background:var(--crem-card);transition:.25s var(--ease)}
 .quick button:hover{border-color:var(--navy);transform:translateX(3px)}
 .quick .qn{font-weight:600;font-size:14px}
 .quick .qc{font:600 9.5px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:4px}
@@ -831,7 +833,7 @@ p{margin:0}
 .ci .cn{font-weight:600;font-size:14.4px;line-height:1.35}
 .ci .cp{font-size:12.6px;color:var(--muted);margin-top:3px}
 .ci .cr{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:9px;flex:none}
-.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--white)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;background:var(--crem-card)}
 .qty button{width:30px;height:30px;display:grid;place-items:center;color:var(--navy);font-size:16px;line-height:1}
 .qty button:hover{color:var(--gold-deep)}
 .qty b{min-width:22px;text-align:center;font:700 13.5px/1 var(--sans)}
@@ -853,7 +855,7 @@ p{margin:0}
   opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
 @media(min-width:760px){.modal{place-items:center;padding:28px}}
 .modal.on{opacity:1;pointer-events:auto}
-.modal-card{position:relative;width:min(560px,100%);max-height:92vh;overflow-y:auto;background:var(--paper);
+.modal-card{position:relative;width:min(560px,100%);max-height:92vh;overflow-y:auto;background:var(--crem-foaie);
   border-radius:var(--r-lg) var(--r-lg) 0 0;transform:translateY(28px);transition:transform .45s var(--ease);
   box-shadow:var(--shadow-lg)}
 @media(min-width:760px){.modal-card{border-radius:var(--r-lg)}}
@@ -867,13 +869,13 @@ p{margin:0}
 .f-row{display:flex;flex-direction:column;gap:7px;margin-bottom:15px}
 .f-row label{font:600 10.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep)}
 .f-row input,.f-row textarea,.f-row select{border:1px solid var(--line);border-radius:12px;padding:13px 15px;
-  background:var(--white);outline:0;transition:border-color .2s var(--ease),box-shadow .2s var(--ease);font-size:15px}
+  background:var(--crem-card);outline:0;transition:border-color .2s var(--ease),box-shadow .2s var(--ease);font-size:15px}
 .f-row input:focus,.f-row textarea:focus,.f-row select:focus{border-color:var(--navy);box-shadow:0 0 0 4px rgba(7,28,44,.06)}
 .f-row textarea{min-height:82px;resize:vertical}
 .f-2{display:grid;gap:15px}
 @media(min-width:520px){.f-2{grid-template-columns:1fr 1fr}}
 .pick{display:flex;gap:8px;flex-wrap:wrap}
-.pick button{padding:11px 17px;border-radius:999px;border:1px solid var(--line);background:var(--white);
+.pick button{padding:11px 17px;border-radius:999px;border:1px solid var(--line);background:var(--crem-card);
   font:600 13px/1 var(--sans);color:var(--ink-2);transition:.22s var(--ease)}
 .pick button.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
 .sum{background:var(--cream);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;margin-bottom:18px}
@@ -1021,7 +1023,7 @@ p{margin:0}
 /* recenzii */
 .rev-grid{display:grid;gap:16px}
 @media(min-width:760px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
-.rev-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;
+.rev-card{background:var(--crem-card);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;
   display:flex;flex-direction:column;gap:14px}
 .rev-card p{font-family:var(--serif);font-size:19px;font-weight:600;line-height:1.45;font-style:italic}
 .rev-card .who{margin-top:auto;font:600 10.5px/1 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -1229,6 +1231,10 @@ p{margin:0}
 .rail-track{display:flex;gap:14px;width:max-content;
   animation:railFlow var(--flow-dur,70s) linear infinite}
 @keyframes railFlow{to{transform:translateX(calc(-50% - 7px))}}
+/* 25.09: banda de la Evenimente private merge acum din JS, ca toate
+   celelalte benzi (o singura pozitie in pixeli). Animatia ramane doar
+   pentru orice alta banda .rail care nu a trecut pe motorul nou. */
+.rail.curge-js .rail-track{animation:none}
 .rail:hover .rail-track,
 .rail.is-drag .rail-track,
 .rail.e-tras .rail-track{animation-play-state:paused}
@@ -1268,7 +1274,7 @@ p{margin:0}
   color:var(--gold-lite);white-space:nowrap}
 .zone-nota{display:block;margin-top:10px;font-size:12.6px;line-height:1.55;
   color:rgba(245,240,231,.6)}
-.zone-nota a{color:var(--gold-lite)}
+.zone-nota a{color:var(--gold-lite);text-decoration:underline;text-underline-offset:3px}
 
 /* ---------- DESPRE NOI ---------- */
 #despre .split{align-items:start}
@@ -2210,6 +2216,26 @@ p{margin:0}
 .tras-sina{animation:none!important}
 .tras-tug{transform:none!important}
 
+/* ---------- BENZILE CARE CURG, PE TELEFON (25.09, cerut) ----------
+   Pe telefon fotografiile din benzi aveau 520 px pe un ecran de 347: nu
+   se vedea niciodata una intreaga. Cauza: regula comuna `flex:0 0 78%`
+   lua procentul din banda intreaga (vezi L030). Acum o fotografie are
+   80% din ecran si se vede venind urmatoarea. Pe calculator ramane cum a
+   fost aprobata. „Despre" isi are regula ei, iar afisele trecute la fel. */
+@media(max-width:759px){
+  .tras.multi:not(.trecute) .tras-sina figure{flex:none;width:80vw;max-width:none}
+}
+
+/* ---------- COMANDA PROGRAMATA (25.09) ---------- */
+.nota-inchis{margin:0 0 14px;padding:12px 14px;border-radius:12px;font-size:13.5px;line-height:1.5;
+  color:var(--ink);background:rgba(201,154,74,.12);border:1px solid var(--line-gold)}
+.nota-inchis b{color:var(--navy)}
+
+/* ---------- ACCES DIN TASTATURA (25.09) ----------
+   Caruselele se pot folosi si fara deget: Tab ajunge la ele, sagetile le
+   muta. Conturul auriu arata unde esti. */
+.tras-banda:focus-visible, .rail:focus-visible{outline:2px solid var(--gold);outline-offset:4px;border-radius:var(--r-md,14px)}
+
 /* ---------- BAFFI PLACES, PE TELEFON (24.09) ----------
    Trei chenare de cate 248 px, unul sub altul: nu se vedeau niciodata
    toate odata. Acum fiecare are cam 170 px si toate trei incap pe un
@@ -2324,7 +2350,7 @@ p{margin:0}
            nu două variante de ținut minte. -->
       <p class="lead on-navy">Grătar, plită încinsă și porții care nu se cer explicate.<span class="doar-lat"> Comanzi direct de la noi — fără aplicație, fără comision, cu livrare gratuită de la 70 de lei.</span><span class="doar-tel"> Livrare gratuită de la 70 de lei.</span></p>
       <div class="hero-cta" id="heroCta">
-        <a class="btn btn-gold btn-trace" href="#meniu"><span class="btn-lumina" aria-hidden="true"></span>Comandă acum <span class="ar">→</span></a>
+        <a class="btn btn-gold btn-trace" href="#meniu"><span class="btn-lumina" aria-hidden="true"></span><span id="ctaComanda">Comandă acum</span> <span class="ar">→</span></a>
         <button class="btn btn-ghost-gold btn-trace" data-open="rez"><span class="btn-lumina" aria-hidden="true"></span>Rezervă o masă</button>
       </div>
       <div class="hero-tags">
@@ -2414,13 +2440,13 @@ p{margin:0}
 </section>
 
 <!-- ══════════════ MENIU ══════════════ -->
-<section class="sect menu-sect" id="meniu" style="background:var(--paper);--fond:var(--paper)">
+<section class="sect menu-sect" id="meniu" style="background:var(--cream);--fond:var(--cream)">
   <div class="wrap">
     <div class="menu-top">
       <div class="sect-head rv" style="margin:0">
         <span class="eyebrow">Comandă direct de la Baffi</span>
         <h2 class="h-lg">Pofta ta,<br>la câteva <span class="it">atingeri.</span></h2>
-        <p class="lead">Tot meniul casei — <b id="itemCount">208</b> de preparate și băuturi, cu gramaje și ingrediente. Adaugi în coș, alegi livrare sau ridicare, iar comanda ajunge direct la noi.</p>
+        <p class="lead"><b id="itemCount">208</b> de preparate. Comanzi direct, fără comision.</p>
       </div>
       <div class="menu-tools rv">
         <div class="search">
@@ -2447,7 +2473,7 @@ p{margin:0}
      zi cu zi. Cele cu mese in randuri lungi s-au mutat la evenimente,
      fiindca arata un local pregatit de petrecere, nu unul in care intri
      marti seara. -->
-<section class="sect" id="despre" style="background:var(--warm);--fond:var(--warm)">
+<section class="sect" id="despre" style="background:var(--cream);--fond:var(--cream)">
   <div class="wrap">
     <!-- Textul mergea pe o coloana de 583 px si 1158 px inaltime, langa
          un carusel de 364: 794 px de gol in dreapta lui. Acum caruselul
@@ -2768,7 +2794,7 @@ p{margin:0}
 <footer class="foot">
   <div class="wrap">
     <img src="img/logo-gold.webp" alt="Baffi Cafe" width="760" height="235" loading="lazy">
-    <span>Tot la Baffi e mai bine! · © <span id="yr">2026</span> Baffi Cafe · <b id="ver" style="font-weight:700;opacity:.75"></b></span>
+    <span>Tot la Baffi e mai bine! · © <span id="yr">2026</span> Baffi Cafe · <b id="ver" style="font-weight:700"></b></span>
     <div class="fr">
       <a href="meniu/">Meniu complet</a>
       <a href="#despre">Despre noi</a>
@@ -2820,6 +2846,7 @@ p{margin:0}
         <div class="f-row"><label for="fPhone">Telefon</label><input id="fPhone" type="tel" placeholder="07xx xxx xxx" autocomplete="tel"></div>
       </div>
       <div class="f-row" id="rowAddr"><label id="lbl-adresa-de-livrare" for="fAddr">Adresa de livrare</label><input id="fAddr" placeholder="Strada, număr, bloc, apartament, reper" autocomplete="street-address"></div>
+      <div class="nota-inchis" id="notaInchis" role="status" hidden></div>
       <div class="f-row">
         <label id="lblTime">Când?</label>
         <div class="pick" role="radiogroup" aria-labelledby="lblTime" id="pickTime">
@@ -3031,7 +3058,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='20.1';
+window.BAFFI_VERSIUNE='21.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3855,7 +3882,7 @@ function openModal(id, zonaCeruta){
     const d=document.getElementById('rDate');
     if(!d.value){const n=new Date();d.value=n.toISOString().slice(0,10);d.min=n.toISOString().slice(0,10)}
   }
-  if(id==='checkout') paintSum();
+  if(id==='checkout'){ paintSum(); aplicaProgramarea(); }
 }
 function bindOpeners(){
   document.querySelectorAll('[data-open]').forEach(b=>{
@@ -4030,6 +4057,52 @@ document.getElementById('primitDa').addEventListener('click',()=>{
   save(); paintCart(); ascundePrimit(); openCart();
 });
 
+
+/* ---------- COMANDA PROGRAMATA, CAND SUNTEM INCHISI (25.09) ----------
+   Seara dupa inchidere si dimineata inainte de deschidere, omul care se
+   gandeste la pranzul de maine pleca de pe pagina: scria doar „Inchis
+   acum". Acum comanda intra pentru urmatoarea deschidere, cu ora aleasa
+   de el (sau „cum deschidem"), iar mesajul spune din primul rand ca e
+   PROGRAMATA si pentru cand. In ultima jumatate de ora dinainte de
+   inchidere tot programata e: o comanda „cat de repede" nu mai are cand
+   sa fie facuta (aceeasi regula ca la ora aleasa, mai jos).
+   Daca bucataria nu primeste comenzi pe a doua zi: COMANDA_PROGRAMATA=false. */
+const COMANDA_PROGRAMATA=true;
+function programare(){
+  if(!COMANDA_PROGRAMATA) return null;
+  const n=new Date(), m=n.getHours()*60+n.getMinutes();
+  const [o,c]=HOURS[n.getDay()];
+  if(m>=o*60 && m<c*60-30) return null;          /* deschis: comanda de acum */
+  const zi=new Date(n);
+  if(m>=c*60-30) zi.setDate(zi.getDate()+1);     /* dupa inchidere: a doua zi */
+  const dd=x=>String(x).padStart(2,'0');
+  return {
+    /* in ultima jumatate de ora suntem inca deschisi - nota spune altceva */
+    inchidem: (m>=o*60 && m<c*60) ? c : 0,
+    cuvant: zi.getDate()===n.getDate() ? 'azi' : 'mâine',
+    zi: ZI[zi.getDay()],
+    data: dd(zi.getDate())+'.'+dd(zi.getMonth()+1),
+    iso: zi.getFullYear()+'-'+dd(zi.getMonth()+1)+'-'+dd(zi.getDate()),
+    deschide: HOURS[zi.getDay()][0]
+  };
+}
+function aplicaProgramarea(){
+  const P=programare();
+  const cta=document.getElementById('ctaComanda');
+  if(cta) cta.textContent = P ? 'Comandă pentru '+P.cuvant : 'Comandă acum';
+  const nota=document.getElementById('notaInchis');
+  if(nota){
+    nota.hidden=!P;
+    if(P) nota.innerHTML=(P.inchidem ? 'Închidem la '+fmtH(P.inchidem)+', deci comanda ta intră pentru <b>'
+                                     : 'Acum suntem închiși. Comanda ta intră pentru <b>')+P.cuvant
+      +', '+P.zi.toLowerCase()+' '+P.data+'</b> — o pregătim de la '+fmtH(P.deschide)+'.';
+  }
+  const asap=document.querySelector('#pickTime [data-t="asap"]');
+  if(asap) asap.textContent = P ? (P.cuvant==='azi'?'Azi':'Mâine')+', cum deschidem ('+fmtH(P.deschide)+')'
+                                : 'Cât de repede se poate';
+}
+aplicaProgramarea();
+setInterval(aplicaProgramarea, 60000);
 
 /* ---------- ORA, VERIFICATA FATA DE PROGRAM ----------
    Programul e scris o singura data in pagina, in HOURS, si de acolo se ia.
@@ -4217,6 +4290,15 @@ window.porneste_tras = function(cutie){
     if(mutat > 9){ e.stopPropagation(); e.preventDefault(); }
   }, true);
 
+  /* tastatura: Tab ajunge aici, sagetile imping banda cam o fotografie */
+  banda.tabIndex = 0;
+  banda.addEventListener('keydown', e => {
+    if(e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault();
+    vDrag = e.key === 'ArrowRight' ? -1.1 : 1.1;
+    porneste();
+  });
+
   /* nu se invarte cat timp nu e pe ecran sau fereastra nu e in fata */
   /* `peEcran` spune daca banda e in ecran - si NUMAI observatorul il
      schimba. Cand fereastra trece in fundal se opreste doar bucla, nu si
@@ -4333,6 +4415,14 @@ window.porneste_unul = function(cutie){
   banda.addEventListener('click', e => {
     if(mutat > 9){ e.stopPropagation(); e.preventDefault(); }
   }, true);
+  /* tastatura: sagetile trec la fotografia urmatoare / anterioara */
+  banda.tabIndex = 0;
+  banda.addEventListener('keydown', e => {
+    if(e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    e.preventDefault(); opri();
+    const i = Math.max(0, Math.min(figuri.length-1, laCare() + (e.key === 'ArrowRight' ? 1 : -1)));
+    alunecaLa(stangaLui(i), 420);
+  });
 
   /* ---------- trece singur, doar unde s-a cerut ---------- */
   let ceas = null;
@@ -4449,11 +4539,22 @@ const TEXTE_GATA={
     gata:'Revenim cu oferta după ce punem cifrele cap la cap. Dacă e urgent, sună-ne.'}
 };
 
+/* O comanda programata nu primeste „te sunam imediat" la 23:30: primeste
+   cand o sunam de fapt - la deschidere. */
+function texteGata(tip, prog){
+  const T=TEXTE_GATA[tip]||TEXTE_GATA.comanda;
+  if(tip!=='comanda'||!prog) return T;
+  const cand=prog.cuvant+', de la '+fmtH(prog.deschide);
+  return Object.assign({}, T, {
+    p2:'Te sunăm '+cand+', ca să confirmăm ce ai comandat și ora.',
+    scurt:'Te sunăm '+cand+'.',
+    gata:'Te sunăm '+cand+' de la '+TELAFIS+' ca să confirmăm. Coșul s-a golit — comanda e la noi.'});
+}
 const gataMod=document.getElementById('mGata');
-function aratGata(tip, cod, rezumat, txt){
-  ultima={tip:tip, cod:cod, txt:txt, rezumat:rezumat, cand:Date.now(), confirmat:false};
+function aratGata(tip, cod, rezumat, txt, prog){
+  ultima={tip:tip, cod:cod, txt:txt, rezumat:rezumat, cand:Date.now(), confirmat:false, prog:prog||null};
   scrieUltima();
-  const T=TEXTE_GATA[tip];
+  const T=texteGata(tip, prog);
   document.getElementById('gataEticheta').textContent=T.eticheta;
   document.getElementById('gataCod').textContent=cod;
   document.getElementById('gataP1').textContent=T.p1;
@@ -4475,7 +4576,7 @@ function aratGata(tip, cod, rezumat, txt){
 /* Confirmarea vine de la om, nu din cod. Abia acum se goleste cosul. */
 function confirmaTrimis(discret){
   if(!ultima) return;
-  const T=TEXTE_GATA[ultima.tip]||TEXTE_GATA.comanda;
+  const T=texteGata(ultima.tip, ultima.prog);
   if(ultima.tip==='comanda'){
     /* inainte de golire, lista ramane in telefonul lui pentru „ca data trecuta" */
     if(cart.length) scrieLista(cart.map(x=>({k:x.k,n:x.n,p:x.p,c:x.c,q:x.q})));
@@ -4519,7 +4620,7 @@ function poateReia(){
 function aratReia(){
   if(reiaAratata || !poateReia() || gataMod.classList.contains('on')) return;
   reiaAratata=true;
-  const T=TEXTE_GATA[ultima.tip]||TEXTE_GATA.comanda;
+  const T=texteGata(ultima.tip, ultima.prog);
   document.getElementById('reiaT').innerHTML=
     T.eticheta+' '+ultima.cod+'<span>Ai apucat să o trimiți pe WhatsApp?</span>';
   reia.classList.add('on');
@@ -4558,10 +4659,11 @@ document.getElementById('sendWa').addEventListener('click',()=>{
   /* Pana acum, „la o ora anume" fara ora completata trimitea „la ora —".
      Programul il stim deja in pagina (HOURS), deci il si folosim: n-are
      rost sa ceri livrare la 8 dimineata cand se deschide la 10. */
+  const P=programare();
   if(timeMode==='ora'){
     const h=val('fHour');
     if(!h) return err('errCk','Ai ales o oră anume — scrie și ora, te rugăm.');
-    const p=oraInProgram(h);
+    const p=oraInProgram(h, P?P.iso:undefined);
     if(!p.ok) return err('errCk',p.mesaj);
   }
   if(fact==='juridica'){
@@ -4577,7 +4679,10 @@ document.getElementById('sendWa').addEventListener('click',()=>{
     val('fBank')  ? `\u2022 Banca: ${val('fBank')}` : '',
     val('fIban')  ? `\u2022 IBAN: ${val('fIban')}` : '',
     val('fDeleg') ? `\u2022 Preia: ${val('fDeleg')}` : ''].filter(Boolean);
-  const when=timeMode==='asap'?'cât de repede se poate':('la ora '+(val('fHour')||'—'));
+  const when = !P
+    ? (timeMode==='asap'?'cât de repede se poate':('la ora '+(val('fHour')||'—')))
+    : (P.cuvant+' ('+P.zi.toLowerCase()+' '+P.data+'), '
+       +(timeMode==='asap'?'cum deschidem — '+fmtH(P.deschide):'la ora '+val('fHour')));
   const linie='\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014\u2014';
   /* Codul comenzii ESTE ora la care a intrat: barmanul poate spune
      "comanda de la 19:47" si toata lumea stie care. Litera desparte
@@ -4587,7 +4692,8 @@ document.getElementById('sendWa').addEventListener('click',()=>{
   const cod='#B-'+dd(acum.getHours())+dd(acum.getMinutes())+'-'
     +'ABCDEFGHJKLMNPRSTUVXZ'[Math.floor(Math.random()*21)];
   const t=[
-    `*COMANDĂ NOUĂ ${cod}*`,
+    P ? `*COMANDĂ PROGRAMATĂ ${cod}*` : `*COMANDĂ NOUĂ ${cod}*`,
+    ...(P ? [`*PENTRU ${P.cuvant.toUpperCase()}, ${P.zi.toUpperCase()} ${P.data} — ${timeMode==='asap'?fmtH(P.deschide):val('fHour')}*`] : []),
     `${dd(acum.getDate())}.${dd(acum.getMonth()+1)} · ora ${dd(acum.getHours())}:${dd(acum.getMinutes())} · de pe site`,
     linie,
     `*${mode==='livrare'?'LIVRARE':'RIDICARE DE LA RESTAURANT'}*`,
@@ -4610,9 +4716,9 @@ document.getElementById('sendWa').addEventListener('click',()=>{
   send(t);
   /* rezumatul ramane scris pe ecran: omul vede ce a trimis, nu doar ca a trimis */
   aratGata('comanda', cod,
-    '<div><span>'+count()+' produse</span><b>'+money(total())+'</b></div>'
+    '<div><span>'+count()+(count()===1?' produs':' produse')+'</span><b>'+money(total())+'</b></div>'
     +'<div><span>'+(mode==='livrare'?'Livrare':'Ridicare de la restaurant')+'</span>'
-    +'<span>'+when+'</span></div>', t);
+    +'<span>'+when+'</span></div>', t, P);
 });
 document.getElementById('sendRez').addEventListener('click',()=>{
   if(val('rName').length<3) return err('errRez','Scrie-ne numele tău.');
@@ -5030,7 +5136,11 @@ function confettiFrom(el){
 /* ---------- 6. galeriile se trag cu mâna ---------- */
 document.querySelectorAll('.rail').forEach(rail=>{
   let st=null, moved=0;
+  /* si din tastatura: Tab ajunge la banda, sagetile o deruleaza */
+  if(!rail.hasAttribute('tabindex')) rail.tabIndex=0;
   rail.addEventListener('pointerdown',e=>{
+    /* banda care curge singura se trage prin motorul ei (galeria 7) */
+    if(rail.classList.contains('curge-js')) return;
     /* Doar mouse și stylus. Pe telefon lăsăm derularea nativă: dacă am prelua
        degetul aici, un scroll vertical peste galerie s-ar transforma în
        tragere laterală și pagina ar părea blocată. */
@@ -5083,89 +5193,56 @@ if(autoRail&&MOTION){
   autoRail.appendChild(tug);
   autoRail.style.scrollSnapType='none';
   autoRail.style.overflowX='hidden';          // mișcarea o dă animația
-  /* Durata se calculează din lățimea reală, ca viteza să fie aceeași pe orice
-     ecran. Se RECALCULEAZĂ pe măsură ce intră pozele: dacă o măsurăm înainte
-     să se încarce, lățimea e mică, durata iese de câteva secunde și galeria
-     zboară. Plus limite, ca o măsurătoare greșită să nu strice nimic. */
-  const setViteza=()=>{
-    const l=track.scrollWidth/2;
-    if(l<200) return;                       // încă nu s-au încărcat pozele
-    const sec=Math.min(150,Math.max(30,Math.round(l/48)));
-    autoRail.style.setProperty('--flow-dur',sec+'s');
-  };
-  /* Observatorul de marime anunta singur cand se schimba latimea benzii -
-     si prima data, si la fiecare fotografie care intra. Pana pe 24.09 se
-     masura si de mana, la pornire: asta il obliga pe telefon sa aseze
-     toata sectiunea de evenimente private in timpul incarcarii, desi e la
-     sapte ecrane mai jos. Masuratoarea de mana ramane doar unde lipseste
-     observatorul. */
-  if(window.ResizeObserver) new ResizeObserver(setViteza).observe(track);
-  else {
-    setViteza();
-    addEventListener('resize',setViteza,{passive:true});
-    addEventListener('load',setViteza);
-    track.querySelectorAll('img').forEach(i=>{
-      if(i.complete) return;
-      i.addEventListener('load',setViteza,{once:true});
-      i.addEventListener('error',setViteza,{once:true});
-    });
+  /* ---------- O SINGURA POZITIE, IN PIXELI (25.09) ----------
+     Banda asta era ultima care mergea pe animatie CSS, iar tragerea se
+     traducea la final in „faza" de animatie - exact varianta care se
+     opunea degetului la celelalte carusele pana la v19. Plus un al doilea
+     mecanism de tragere (cel general, de mai sus) care se amesteca peste.
+     Acum merge ca toate celelalte benzi: o singura pozitie, `poz`, pe care
+     o misca fie mersul de fond, fie degetul (unu la unu), fie alunecarea
+     de dupa. Cand ii dai drumul, isi continua mersul de unde ai lasat-o. */
+  autoRail.classList.add('curge-js');
+  let poz=0, vDrag=0, tras=false, x0=0, poz0=0, mutat=0;
+  let ultX=0, ultT=0, ultCadru=0, rafId=0, peEcran=false;
+  const V_FOND=48/1000;                  /* pixeli pe milisecunda, ca pana acum */
+  /* perioada buclei: jumatate din banda plus jumatate de spatiu - exact
+     cat muta vechea animatie (calc(-50% - 7px)), deci fara cusatura */
+  const perioada=()=>Math.max(1, track.scrollWidth/2 + 7);
+  const aseaza=()=>{ track.style.transform='translate3d('+(-poz)+'px,0,0)'; };
+  function cadru(t){
+    const dt=Math.min(50, t-(ultCadru||t)); ultCadru=t;
+    if(!tras){
+      if(Math.abs(vDrag)>0.015){ poz-=vDrag*dt; vDrag*=Math.pow(0.94, dt/16.67); }
+      else { vDrag=0; poz+=V_FOND*dt; }
+    }
+    const P=perioada();
+    if(poz>=P) poz-=P;
+    if(poz<0) poz+=P;
+    aseaza();
+    rafId=requestAnimationFrame(cadru);
   }
-  /* ---------- tragerea cu mâna, peste mersul de fond ----------
-     Cât ții, animația stă pe loc și galeria urmează degetul. Când dai
-     drumul, deplasarea ta NU se pierde și NU sare înapoi: o convertim în
-     avans de fază al animației, iar galeria pornește mai departe exact de
-     unde ai lăsat-o. */
-  let apucat=null, faza=0, deplasare=0, viteza=0, ultimX=0, ultimT=0, raf=0, gataId=0;
-  const jumatate=()=>Math.max(1,track.scrollWidth/2);
-  const durata=()=>parseFloat(getComputedStyle(track).animationDuration)||70;
-  const aplicaFaza=()=>{ track.style.animationDelay=(-faza)+'s' };
-  const scrie=()=>tug.style.setProperty('--tug',deplasare.toFixed(2)+'px');
-
+  function porneste(){ if(rafId) return; ultCadru=0; rafId=requestAnimationFrame(cadru); }
+  function opreste(){ cancelAnimationFrame(rafId); rafId=0; }
   function apuca(x){
-    cancelAnimationFrame(raf); clearTimeout(gataId);
-    apucat={x,tug:deplasare};
-    viteza=0; ultimX=x; ultimT=performance.now();
-    autoRail.classList.add('e-tras');
+    tras=true; vDrag=0; mutat=0; x0=x; poz0=poz; ultX=x; ultT=performance.now();
+    autoRail.classList.add('e-tras'); porneste();
   }
   function trage(x){
-    if(!apucat) return;
-    const t=performance.now(), dt=Math.max(8,t-ultimT);
-    /* viteza netezită: altfel ultimul cadru dictează totul și zvâcnește */
-    viteza=viteza*0.7+((x-ultimX)/dt)*0.3;
-    ultimX=x; ultimT=t;
-    deplasare=apucat.tug+(x-apucat.x);
-    scrie();
-  }
-  /* mutăm deplasarea în pixeli în avans de fază pe animație:
-     galeria continuă de unde a rămas, fără salt */
-  function preiaFaza(){
-    clearTimeout(gataId); cancelAnimationFrame(raf);
-    const d=durata();
-    faza=(faza - (deplasare/jumatate())*d) % d;
-    if(faza<0) faza+=d;
-    deplasare=0; scrie(); aplicaFaza();
-    autoRail.classList.remove('e-tras');
+    if(!tras) return;
+    const t=performance.now(), dt=Math.max(8,t-ultT);
+    vDrag=vDrag*0.65+((x-ultX)/dt)*0.35;   /* viteza netezita */
+    ultX=x; ultT=t;
+    poz=poz0-(x-x0);                          /* unu la unu cu degetul */
+    mutat=Math.max(mutat, Math.abs(x-x0));
   }
   function elibereaza(){
-    if(!apucat) return;
-    apucat=null;
-    /* alunecare scurtă după ce ridici degetul, apoi predarea către animație.
-       Plasa de siguranță pe ceas: dacă browserul nu dă cadre, predarea se
-       face oricum și galeria nu rămâne blocată în poziția trasă. */
-    gataId=setTimeout(preiaFaza,760);
-    if(!MOTION||Math.abs(viteza)<0.03){ preiaFaza(); return }
-    let v=Math.max(-3.2,Math.min(3.2,viteza)), t0=performance.now(), ult=t0;
-    const glisa=t=>{
-      const dt=Math.min(40,t-ult); ult=t;
-      v*=Math.pow(0.93,dt/16.67);
-      deplasare+=v*dt; scrie();
-      if(Math.abs(v)>0.02 && t-t0<700) raf=requestAnimationFrame(glisa);
-      else preiaFaza();
-    };
-    raf=requestAnimationFrame(glisa);
+    if(!tras) return;
+    tras=false; autoRail.classList.remove('e-tras');
+    vDrag=Math.max(-4, Math.min(4, vDrag));
+    if(Math.abs(vDrag)<0.02) vDrag=0;
   }
-
   autoRail.addEventListener('pointerdown',e=>{
+    if(e.pointerType==='touch') return;       /* degetul are drumul lui, mai jos */
     if(e.pointerType==='mouse'&&e.button!==0) return;
     apuca(e.clientX);
     addEventListener('pointermove',mutaCuMouse);
@@ -5174,12 +5251,25 @@ if(autoRail&&MOTION){
   });
   function mutaCuMouse(e){ trage(e.clientX) }
   function opresteMouse(){ removeEventListener('pointermove',mutaCuMouse); elibereaza() }
-
-  /* degetul: overflow e ascuns, deci derularea nativă nu ne mai ajută */
   autoRail.addEventListener('touchstart',e=>{ if(e.touches[0]) apuca(e.touches[0].clientX) },{passive:true});
   autoRail.addEventListener('touchmove',e=>{ if(e.touches[0]) trage(e.touches[0].clientX) },{passive:true});
   autoRail.addEventListener('touchend',elibereaza,{passive:true});
   autoRail.addEventListener('touchcancel',elibereaza,{passive:true});
+  autoRail.tabIndex=0;
+  autoRail.addEventListener('keydown',e=>{
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft') return;
+    e.preventDefault(); vDrag=e.key==='ArrowRight'?-1.1:1.1; porneste();
+  });
+  /* o tragere nu e un clic: altfel ar deschide farfuria peste care s-a oprit */
+  autoRail.addEventListener('click',e=>{ if(mutat>9){e.preventDefault();e.stopPropagation()} },true);
+  /* merge doar cat e pe ecran si cat fereastra e in fata */
+  document.addEventListener('visibilitychange',()=>document.hidden?opreste():(peEcran&&porneste()));
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(is=>is.forEach(x=>{
+      if(x.isIntersecting){ peEcran=true; porneste(); } else { peEcran=false; opreste(); }
+    }),{threshold:.05, rootMargin:'300px 0px'}).observe(autoRail);
+  } else { peEcran=true; porneste(); }
+  aseaza();
 }
 
 /* ============================================================
