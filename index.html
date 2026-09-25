@@ -6,6 +6,7 @@
 <title>Baffi Cafe Bragadiru — comandă, rezervă, sărbătorește</title>
 <meta name="description" content="Restaurant și grătar în Bragadiru, Str. Safirului 69R. Comandă direct de la Baffi, fără aplicație și fără comision, cu livrare gratuită de la 70 de lei. Rezervări, terasă și evenimente private.">
 <meta name="robots" content="noindex,nofollow">
+<script>window.BAFFI_MEDIU='demo'</script>
 <meta name="theme-color" content="#071c2c">
 <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
 <link rel="apple-touch-icon" sizes="152x152" href="img/apple-touch-icon-152x152.png">
@@ -3070,7 +3071,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='21.1';
+window.BAFFI_VERSIUNE='21.2';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -3107,8 +3108,10 @@ const CFG = {
 
   // Adresele celorlalte două locații Baffi. Când se mută pe domeniul lor,
   // se schimbă AICI, o singură dată, și se actualizează peste tot în pagină.
-  linkKids:  'https://shultzstakes-ui.github.io/baffi-demo/kids/',
-  linkOasis: 'https://shultzstakes-ui.github.io/baffi-demo/oasis/',
+  /* relative: Kids si Oasis stau pe acelasi domeniu (D15) - merg la fel
+     pe demo, pe test si pe bafficafe.ro */
+  linkKids:  'kids/',
+  linkOasis: 'oasis/',
 
   // Secțiunea deschisă când omul ajunge prima dată la meniu.
   // 'toate' = îi arătăm lista de secțiuni; sau numele exact al unei secțiuni.
@@ -4506,8 +4509,15 @@ document.querySelectorAll('.tras').forEach(c =>
 const val=id=>document.getElementById(id).value.trim();
 const phoneOk=p=>/^(\+?4)?0?7\d{8}$/.test(p.replace(/[\s.-]/g,''));
 function err(id,msg){const e=document.getElementById(id);e.textContent=msg;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),6000)}
+/* Pe macheta si pe test mesajul ajunge pe WhatsApp-ul ADEVARAT al
+   restaurantului. Pachetul pune BAFFI_MEDIU; pe site-ul public nu
+   exista, si mesajul pleaca neatins. */
+const MARCA_MEDIU = window.BAFFI_MEDIU
+  ? '*\u26a0 ' + (window.BAFFI_MEDIU === 'test' ? 'TEST' : 'MACHET\u0102')
+    + ' DE PE SITE \u2014 NU PREG\u0102TI\u021aI*\n\n'
+  : '';
 function send(txt){
-  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(txt),'_blank','noopener');
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(MARCA_MEDIU+txt),'_blank','noopener');
 }
 
 /* ---------- CONFIRMAREA ----------

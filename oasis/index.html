@@ -9,6 +9,7 @@
 <link rel="apple-touch-icon" sizes="152x152" href="img/apple-touch-icon-152x152.png">
 <link rel="apple-touch-icon" sizes="120x120" href="img/apple-touch-icon-120x120.png">
 <meta name="robots" content="noindex,nofollow">
+<script>window.BAFFI_MEDIU='demo'</script>
 <meta name="theme-color" content="#071d28">
 <script>
 /* Daca ceva din pagina crapa, se VEDE: banda rosie cu eroarea exacta.
@@ -833,8 +834,9 @@ function cel(e, sel){
 window.BAFFI_VERSIUNE='2.0';
 const CFG={
   tel:'+40756021501', wa:'40756021501',
-  linkCafe:'https://shultzstakes-ui.github.io/baffi-demo/',
-  linkKids:'https://shultzstakes-ui.github.io/baffi-demo/kids/',
+  /* relative: acelasi domeniu cu Cafe si Kids (D15) */
+  linkCafe:'../',
+  linkKids:'../kids/',
   /* tarife orientative, din surse publice pentru sezonul 2026 */
   tarif:{ 'Luni–Vineri':{adult:50,copil:30}, 'Weekend':{adult:70,copil:40} }
 };
@@ -928,7 +930,14 @@ function err(msg){
   e.textContent=msg; e.classList.add('on');
   clearTimeout(err._t); err._t=setTimeout(()=>e.classList.remove('on'),6000);
 }
-function send(txt){window.open('https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(txt),'_blank','noopener')}
+/* Pe macheta si pe test mesajul ajunge pe WhatsApp-ul ADEVARAT al
+   restaurantului. Pachetul pune BAFFI_MEDIU; pe site-ul public nu
+   exista, si mesajul pleaca neatins. */
+const MARCA_MEDIU = window.BAFFI_MEDIU
+  ? '*\u26a0 ' + (window.BAFFI_MEDIU === 'test' ? 'TEST' : 'MACHET\u0102')
+    + ' DE PE SITE \u2014 NU PREG\u0102TI\u021aI*\n\n'
+  : '';
+function send(txt){window.open('https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(MARCA_MEDIU+txt),'_blank','noopener')}
 
 document.getElementById('trimite').addEventListener('click',()=>{
   if(!val('oData')) return err('Alege data vizitei — de la ea pornește tot.');
