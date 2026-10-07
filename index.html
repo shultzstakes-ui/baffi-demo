@@ -57,9 +57,13 @@
 <!-- se incarca din timp exact varianta pe care o va folosi, nu alta -->
 <!-- `type`: browserul care nu stie AVIF sare peste preincarcare si ia
      WebP-ul din <picture>, fara sa descarce de doua ori. -->
-<link rel="preload" as="image" type="image/avif"
-      imagesrcset="img/baffi-intrare-2-900.avif 900w, img/baffi-intrare-2.avif 1250w"
-      imagesizes="(min-width:960px) min(54vw, 860px), 100vw" fetchpriority="high">
+<!-- Deschiderea e un video (07.10). Primul se cere un singur cadru din el,
+     ca imagine usoara: pe telefon banda din mijloc, pe calculator cadrul
+     intreg. Videoul vine abia dupa ce pagina s-a aratat. -->
+<link rel="preload" as="image" type="image/avif" href="img/erou-video-telefon.avif"
+      media="(max-width:959px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/avif" href="img/erou-video-calculator.avif"
+      media="(min-width:960px)" fetchpriority="high">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Restaurant","@id":"https://bafficafe.ro/#restaurant",
 "name":"Baffi Cafe","image":"https://bafficafe.ro/img/baffi-intrare-2.webp",
@@ -2239,6 +2243,27 @@ p{margin:0}
 #despre.dark .ins-rot{background:var(--navy-2);border-color:rgba(201,154,74,.4)}
 #despre.dark .insigna figcaption{color:rgba(245,240,231,.72)}
 
+/* ---------- VIDEOUL DIN DESCHIDERE (07.10) ----------
+   Cadrul (imaginea) si videoul stau unul peste altul, in aceeasi pozitie.
+   Videoul porneste invizibil si apare lin cand chiar ruleaza. Fara filtrul
+   de culoare al fotografiilor: cadrul trebuie sa fie identic cu videoul,
+   altfel s-ar vedea trecerea. */
+.hero-media.cu-video{background:var(--navy)}
+.hero-media.cu-video img{filter:none!important;object-position:50% 50%}
+.erou-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:50% 50%;opacity:0;transition:opacity .9s var(--ease);pointer-events:none}
+.erou-video.pornit{opacity:1}
+/* Calculatorul: coloana e mai lata decat videoul (vertical). Videoul intra
+   intreg, pe mijloc, si se topeste in bleumarin la stanga si la dreapta -
+   aceeasi idee ca degradeul care topea fotografia in panou. */
+@media(min-width:960px){
+  .hero-media.cu-video img, .hero-media.cu-video .erou-video{
+    left:50%;right:auto;width:auto;height:100%;aspect-ratio:816/1104;
+    transform:translateX(-50%);
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,#000 11%,#000 89%,transparent 100%)}
+}
+
 /* ---------- COMANDA PROGRAMATA (25.09) ---------- */
 .nota-inchis{margin:0 0 14px;padding:12px 14px;border-radius:12px;font-size:13.5px;line-height:1.5;
   color:var(--ink);background:rgba(201,154,74,.12);border:1px solid var(--line-gold)}
@@ -2379,20 +2404,21 @@ p{margin:0}
         </div>
       </div>
     </div>
-    <div class="hero-media">
-      <!-- AVIF: aceeasi fotografie, aceeasi fidelitate, cu 22% mai putin de
-           descarcat (52 KB in loc de 66 KB pe telefon). Browserele care nu
-           stiu AVIF iau WebP-ul de dedesubt. -->
+    <div class="hero-media cu-video">
+      <!-- Cadrul de la 0,6 s din reclama: apare instant si e ce vede omul
+           pana porneste videoul (sau in locul lui, pe date mobile putine). -->
       <picture>
-        <source type="image/avif"
-                srcset="img/baffi-intrare-2-900.avif 900w, img/baffi-intrare-2.avif 1250w"
-                sizes="(min-width:960px) min(54vw, 860px), 100vw">
-        <img src="img/baffi-intrare-2.webp"
-             srcset="img/baffi-intrare-2-900.webp 900w, img/baffi-intrare-2.webp 1400w"
-             sizes="(min-width:960px) min(54vw, 860px), 100vw"
-             alt="Intrarea în Baffi Cafe din Bragadiru, cu terasa alături"
-             width="1250" height="990" fetchpriority="high" decoding="async">
+        <source type="image/avif" media="(max-width:959px)" srcset="img/erou-video-telefon.avif">
+        <source type="image/webp" media="(max-width:959px)" srcset="img/erou-video-telefon.webp">
+        <source type="image/avif" srcset="img/erou-video-calculator.avif">
+        <img src="img/erou-video-calculator.webp"
+             alt="Platouri, burgeri, paste și caracatiță la Baffi"
+             width="816" height="1104" fetchpriority="high" decoding="async">
       </picture>
+      <video class="erou-video" muted playsinline loop preload="none" aria-hidden="true"
+             tabindex="-1" disablepictureinpicture
+             data-telefon="video/erou-telefon.mp4"
+             data-calculator="video/erou-calculator.mp4"></video>
     </div>
   </div>
 </section>
@@ -3071,7 +3097,7 @@ p{margin:0}
 <div class="toast" id="toast"></div>
 <script src="meniu-date.js"></script>
 <script>
-window.BAFFI_VERSIUNE='21.2';
+window.BAFFI_VERSIUNE='22.0';
 /* ============================================================
    BAFFI v4 — logica paginii. Fără framework, fără build.
    Tot ce are dată se stinge singur (vezi EVENTS + HOURS).
@@ -5121,6 +5147,48 @@ if(hw&&MOTION){
     hw.classList.remove('hero-word'); void hw.offsetWidth; hw.classList.add('hero-word');
   },1900);
 }
+
+/* ---------- VIDEOUL DIN DESCHIDERE (07.10) ----------
+   Se cere abia dupa ce pagina s-a aratat, ca sa nu intarzie nimic din ce
+   se vede primul. Nu se cere deloc pe „mai putina miscare", pe economisire
+   de date sau pe 2G: acolo ramane cadrul. Daca telefonul refuza pornirea
+   singura (de pildă pe economisire de baterie), ramane tot cadrul. */
+(function(){
+  const v=document.querySelector('.erou-video'); if(!v) return;
+  const c=navigator.connection||{};
+  if(!MOTION || c.saveData || /(^|-)2g$/.test(c.effectiveType||'')) return;
+  let cerut=false;
+  function porneste(){
+    if(cerut) return; cerut=true;
+    v.src=v.dataset[matchMedia('(max-width:959px)').matches?'telefon':'calculator'];
+    /* Videoul apare abia de la cadrul din imagine (0,6 s), deci trecerea nu
+       se vede. Pornea de la 0, din bleumarin: o palpaire la aparitie. Nici
+       `#t=0.6`, nici saltul la incarcare nu tineau in Chrome (masurat 07.10:
+       ajungea tot la 0). Asa merge oricum: pana la 0,6 s videoul e invizibil.
+       Buclele urmatoare trec prin respiratia de bleumarin, si acolo e voita. */
+    const arata=()=>v.classList.add('pornit');
+    v.addEventListener('playing',()=>{
+      if(v.currentTime<0.55){ v.addEventListener('seeked',arata,{once:true}); v.currentTime=0.6; }
+      else arata();
+    },{once:true});
+    v.play().catch(()=>{});
+  }
+  const dupaIncarcare=()=>('requestIdleCallback' in window)
+    ? requestIdleCallback(porneste,{timeout:1500}) : setTimeout(porneste,400);
+  if(document.readyState==='complete') dupaIncarcare();
+  else addEventListener('load',dupaIncarcare,{once:true});
+  /* nu ruleaza degeaba: oprit cand nu se vede sau cand fila e in fundal */
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(([e])=>{
+      if(!cerut) return;
+      if(e.isIntersecting && !document.hidden) v.play().catch(()=>{}); else v.pause();
+    },{threshold:.1}).observe(v);
+  }
+  document.addEventListener('visibilitychange',()=>{
+    if(!cerut) return;
+    if(document.hidden) v.pause(); else v.play().catch(()=>{});
+  });
+})();
 
 /* ---------- 3+4. traseul pe butoane și nota care tresare ---------- */
 if(MOTION){
