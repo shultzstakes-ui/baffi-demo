@@ -372,6 +372,7 @@ p{margin:0}
 .p-cafe{background:linear-gradient(165deg,#071c2c,#0c4169)}
 .p-kids{background:linear-gradient(165deg,#2b2a72,#6550e8)}
 .p-oasis{background:linear-gradient(165deg,#0b4548,#62d4cc)}
+@media(min-width:900px){.places.doua{grid-template-columns:repeat(2,1fr)}}
 .place::after{content:"";position:absolute;inset:0;z-index:-1;
   background:radial-gradient(120% 80% at 80% 0%,rgba(255,255,255,.14),transparent 60%)}
 .place .tag{position:absolute;top:20px;left:26px;display:flex;align-items:center;gap:8px;
@@ -501,11 +502,10 @@ body.locked{overflow:hidden}
 <div class="network-bar" aria-label="Locațiile Baffi">
   <span>BAFFI PLACES</span>
   <div aria-label="Navigare între locațiile Baffi">
-    <a data-net="cafe"><i>B</i><b>CAFÉ</b></a>
-    <a class="active" href="#top" aria-current="page"><i>B</i><b>KIDS</b></a>
     <a data-net="oasis"><i>B</i><b>OASIS</b></a>
+    <a class="active" href="#top" aria-current="page"><i>B</i><b>KIDS</b></a>
   </div>
-  <small>BRAGADIRU · CRÂNGAȘI · BERCENI</small>
+  <small>BERCENI · CRÂNGAȘI</small>
 </div>
 
 <header class="hdr" id="hdr">
@@ -677,11 +677,11 @@ body.locked{overflow:hidden}
         <b>Ce faci tu:</b> alegi ziua și aduci copiii.</p>
       <p>În restul săptămânii locul nu stă: cursuri de dans și teatru, ateliere,
         după-amiezi în care părinții își beau cafeaua cât timp copiii se joacă.</p>
-      <p>Bucătăria vine de la Baffi Cafe. Nu se mănâncă altfel la petrecerea unui copil
+      <p>Mâncarea e de la bucătăria Baffi. Nu se mănâncă altfel la petrecerea unui copil
         decât la o masă de duminică — doar porțiile sunt pe măsură.</p>
       <p class="despre-final">Tu vii cu copiii. Noi strângem după.</p>
       <div class="despre-cifre">
-        <div><b>3</b><span>Locuri Baffi: Bragadiru, Crângași, Berceni</span></div>
+        <div><b>2</b><span>Locuri Baffi: Crângași și Berceni</span></div>
         <div><b>5</b><span>Etajul din Itaoui Center, Calea Crângași 29</span></div>
       </div>
     </div>
@@ -795,15 +795,15 @@ body.locked{overflow:hidden}
   <div class="wrap">
     <div class="sect-head rv">
       <span class="eyebrow">Baffi Places</span>
-      <h2 class="h-lg">Trei locuri.<br>Trei <span class="it">stări.</span></h2>
-      <p class="lead">Același nume, trei experiențe cu personalitate proprie. Alegi starea și ajungi direct la locația potrivită.</p>
+      <h2 class="h-lg">Două locuri.<br>Două <span class="it">stări.</span></h2>
+      <p class="lead">Același nume, două experiențe cu personalitate proprie. Alegi starea și ajungi direct la locația potrivită.</p>
     </div>
-    <div class="places rv">
-      <a class="place p-cafe" data-net="cafe" target="_blank" rel="noopener">
-        <span class="tag"><i>B</i>Baffi Café</span>
-        <div class="k">01 · Bragadiru · Restaurant</div>
-        <h3>Gust, foc<br>și seri lungi.</h3>
-        <span class="go">Descoperă Baffi Café <span class="ar">↗</span></span>
+    <div class="places doua rv">
+      <a class="place p-oasis" data-net="oasis" target="_blank" rel="noopener">
+        <span class="tag"><i>B</i>Baffi Oasis</span>
+        <div class="k">01 · Berceni · Restaurant &amp; piscină</div>
+        <h3>Soare, apă<br>și zile lente.</h3>
+        <span class="go">Descoperă Baffi Oasis <span class="ar">↗</span></span>
       </a>
       <div class="place p-kids">
         <span class="tag"><i>B</i>Baffi Kids</span><span class="badge">Ești aici</span>
@@ -811,12 +811,6 @@ body.locked{overflow:hidden}
         <h3>Joacă mare.<br>Griji mici.</h3>
         <a class="go" href="#top">Vezi Baffi Kids <span class="ar">↑</span></a>
       </div>
-      <a class="place p-oasis" data-net="oasis" target="_blank" rel="noopener">
-        <span class="tag"><i>B</i>Baffi Oasis</span>
-        <div class="k">03 · Berceni · Pool &amp; Summer Club</div>
-        <h3>Soare, apă<br>și zile lente.</h3>
-        <span class="go">Descoperă Baffi Oasis <span class="ar">↗</span></span>
-      </a>
     </div>
   </div>
 </section>
@@ -835,7 +829,6 @@ body.locked{overflow:hidden}
     <span><b>BAFFI KIDS</b> · Calea Crângași 29 · Itaoui Center · etaj 5</span>
     <div class="fr">
       <a href="tel:+40736856880">0736 856 880</a>
-      <a data-net="cafe">Baffi Café ↗</a>
       <a data-net="oasis">Baffi Oasis ↗</a>
       <a href="../termeni-si-conditii/">Termeni</a>
       <a href="../protectia-datelor/">Protecția datelor</a>
@@ -942,17 +935,15 @@ function cel(e, sel){
    Cererea pleacă ca mesaj WhatsApp gata scris, exact ca la Cafe:
    când apare un server, se schimbă doar funcția send().
    ============================================================ */
-window.BAFFI_VERSIUNE='2.0';
+window.BAFFI_VERSIUNE='2.1';
 const CFG={
   tel:'+40736856880', wa:'40736856880',
-  /* relative: acelasi domeniu cu Cafe si Oasis (D15) */
-  linkCafe:'../',
-  linkOasis:'../oasis/'
+  /* relative: Oasis e chiar prima pagina a domeniului (D15, 01.11) */
+  linkOasis:'../'
 };
 const MOTION=!matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* legăturile către celelalte două locații, dintr-un singur loc */
-document.querySelectorAll('[data-net="cafe"]').forEach(a=>a.href=CFG.linkCafe);
 document.querySelectorAll('[data-net="oasis"]').forEach(a=>a.href=CFG.linkOasis);
 document.querySelectorAll('a[href^="tel:"]').forEach(a=>a.href='tel:'+CFG.tel);
 document.getElementById('yr').textContent=new Date().getFullYear();
